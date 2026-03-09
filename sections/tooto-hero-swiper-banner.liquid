@@ -1,0 +1,495 @@
+{%- liquid
+  assign bg_widths = '1200, 1600, 2000, 3000, 3840'
+  assign bg_sizes = '100vw'
+-%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div
+  id="tooto-hero-swiper-{{ section.id }}"
+  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} tooto-hero-swiper"
+  style="padding-block-start: {{ section.settings.padding-block-start }}px; padding-block-end: {{ section.settings.padding-block-end }}px;"
+>
+  <div class="tooto-hero-swiper__inner" style="min-height: {{ section.settings.section_height }}vh;">
+    <div class="swiper tooto-hero-swiper__swiper">
+      <div class="swiper-wrapper">
+        {%- for block in section.blocks -%}
+          <div class="swiper-slide tooto-hero-swiper__slide" {{ block.shopify_attributes }}>
+            <div class="tooto-hero-swiper__media">
+              {%- if block.settings.media_type == 'video' and block.settings.video != blank -%}
+                {{
+                  block.settings.video
+                  | video_tag:
+                    autoplay: true,
+                    loop: true,
+                    controls: false,
+                    muted: true,
+                    playsinline: true,
+                    class: 'tooto-hero-swiper__video'
+                }}
+                <button class="tooto-hero-swiper__play" aria-label="Play/Pause"></button>
+              {%- elsif block.settings.media_type == 'image' and block.settings.image != blank -%}
+                {{
+                  block.settings.image
+                  | image_url: width: 3000
+                  | image_tag:
+                    widths: bg_widths,
+                    sizes: bg_sizes,
+                    alt: block.settings.image.alt,
+                    loading: 'eager',
+                    fetchpriority: 'high',
+                    class: 'tooto-hero-swiper__image'
+                }}
+              {%- else -%}
+                {{ 'hero-apparel-1' | placeholder_svg_tag: 'tooto-hero-swiper__image tooto-hero-swiper__image--placeholder' }}
+              {%- endif -%}
+            </div>
+
+            <div class="tooto-hero-swiper__content tooto-hero-swiper__content--{{ section.settings.content_position }}">
+              {%- if block.settings.heading_bold != blank or block.settings.heading_light != blank -%}
+                <h2 class="tooto-hero-swiper__heading">
+                  {%- if block.settings.heading_bold != blank -%}
+                    <span class="tooto-hero-swiper__heading-bold">{{ block.settings.heading_bold | escape }}</span>
+                  {%- endif -%}
+                  {%- if block.settings.heading_light != blank -%}
+                    <span class="tooto-hero-swiper__heading-light">{{ block.settings.heading_light | escape }}</span>
+                  {%- endif -%}
+                </h2>
+              {%- endif -%}
+
+              {%- if block.settings.description != blank -%}
+                <p class="tooto-hero-swiper__description">{{ block.settings.description }}</p>
+              {%- endif -%}
+
+              {%- if block.settings.cta_label != blank and block.settings.cta_url != blank -%}
+                <a class="tooto-hero-swiper__cta" href="{{ block.settings.cta_url }}">{{ block.settings.cta_label | escape }}</a>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <button class="tooto-hero-swiper__arrow tooto-hero-swiper__arrow--prev" id="tooto-hero-prev-{{ section.id }}" aria-label="Previous">&#8249;</button>
+    <button class="tooto-hero-swiper__arrow tooto-hero-swiper__arrow--next" id="tooto-hero-next-{{ section.id }}" aria-label="Next">&#8250;</button>
+    <div class="tooto-hero-swiper__pagination" id="tooto-hero-pagination-{{ section.id }}"></div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const sectionEl = document.getElementById('tooto-hero-swiper-{{ section.id }}');
+    if (!sectionEl) return;
+
+    const swiperEl = sectionEl.querySelector('.tooto-hero-swiper__swiper');
+    const paginationEl = document.getElementById('tooto-hero-pagination-{{ section.id }}');
+    const prevBtn = document.getElementById('tooto-hero-prev-{{ section.id }}');
+    const nextBtn = document.getElementById('tooto-hero-next-{{ section.id }}');
+
+    const swiper = new Swiper(swiperEl, {
+      slidesPerView: 1,
+      loop: true,
+      effect: 'slide',
+      speed: 600,
+      autoplay: {{ section.settings.autoplay | json }},
+      navigation: {
+        prevEl: prevBtn,
+        nextEl: nextBtn,
+      },
+      pagination: {
+        el: paginationEl,
+        clickable: true,
+        renderBullet: function (index, className) {
+          return '<button class="' + className + ' tooto-hero-swiper__dot" aria-label="Go to slide ' + (index + 1) + '"></button>';
+        },
+      },
+      on: {
+        slideChange: function () {
+          // Pause all videos except the active one
+          const slides = sectionEl.querySelectorAll('.tooto-hero-swiper__slide');
+          slides.forEach(function (slide, i) {
+            const video = slide.querySelector('video');
+            if (!video) return;
+            if (i === swiper.realIndex) {
+              // keep muted autoplay
+              video.play().catch(function() {});
+            } else {
+              video.pause();
+            }
+          });
+        },
+      },
+    });
+
+    // Play/unmute toggle for videos
+    sectionEl.addEventListener('click', function (e) {
+      const btn = e.target.closest('.tooto-hero-swiper__play');
+      if (!btn) return;
+      const slide = btn.closest('.tooto-hero-swiper__slide');
+      const video = slide && slide.querySelector('video');
+      if (!video) return;
+      if (video.muted) {
+        video.muted = false;
+        video.play().catch(function(){});
+        btn.classList.add('is-playing');
+      } else {
+        video.muted = true;
+        btn.classList.remove('is-playing');
+      }
+    });
+  })();
+</script>
+
+{% stylesheet %}
+  .tooto-hero-swiper__inner {
+    grid-column: 1 / -1;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  .section--page-width .tooto-hero-swiper__inner {
+    grid-column: 2;
+  }
+
+  /* ── Swiper 基础结构 ── */
+  .tooto-hero-swiper__swiper {
+    overflow: hidden;
+    width: 100%;
+    min-width: 0;
+    position: relative;
+    min-height: 0;
+  }
+
+  .tooto-hero-swiper__swiper > .swiper-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    box-sizing: content-box;
+    position: relative;
+    width: 100%;
+    height: auto;
+    z-index: 1;
+    will-change: transform;
+  }
+
+  .tooto-hero-swiper__swiper > .swiper-wrapper > .swiper-slide {
+    flex: 0 0 100%;
+    width: 100%;
+    position: relative;
+    display: block;
+    height: auto;
+    box-sizing: border-box;
+  }
+
+  /* ── 媒体层 ── */
+  .tooto-hero-swiper__media {
+    position: absolute;
+    inset: 0;
+  }
+
+  .tooto-hero-swiper__image,
+  .tooto-hero-swiper__image--placeholder,
+  .tooto-hero-swiper__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .tooto-hero-swiper__play {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.9);
+    background: rgba(0,0,0,0.25);
+    cursor: pointer;
+  }
+
+  /* ── 文案层 ── */
+  .tooto-hero-swiper__content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 48px 60px;
+    width: min(720px, 100%);
+  }
+
+  .tooto-hero-swiper__content--left {
+    align-items: flex-start;
+    text-align: left;
+    justify-content: flex-end;
+    height: 100%;
+  }
+
+  .tooto-hero-swiper__content--center {
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    height: 100%;
+  }
+
+  .tooto-hero-swiper__heading {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.0;
+  }
+
+  .tooto-hero-swiper__heading-bold {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--color-background);
+  }
+
+  .tooto-hero-swiper__heading-light {
+    font-size: 3rem;
+    font-weight: 400;
+    color: var(--color-background);
+  }
+
+  .tooto-hero-swiper__description {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--color-background);
+    opacity: 0.9;
+    margin: 0;
+  }
+
+  .tooto-hero-swiper__cta {
+    display: inline-block;
+    padding: 12px 28px;
+    border: 1.5px solid var(--color-background);
+    color: var(--color-background);
+    text-decoration: none;
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+    transition: opacity 0.2s ease;
+    width: fit-content;
+  }
+
+  .tooto-hero-swiper__cta:hover {
+    opacity: 0.8;
+  }
+
+  /* 箭头 & 分页 */
+  .tooto-hero-swiper__arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: var(--color-background);
+    opacity: 0.6;
+    padding: 8px;
+    cursor: pointer;
+  }
+  .tooto-hero-swiper__arrow--prev { left: 12px; }
+  .tooto-hero-swiper__arrow--next { right: 12px; }
+  .tooto-hero-swiper__arrow:hover { opacity: 1; }
+
+  .tooto-hero-swiper__pagination {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+  }
+  .tooto-hero-swiper__pagination .tooto-hero-swiper__dot {
+    width: 36px;
+    height: 2px;
+    border: none;
+    border-radius: 2px;
+    background-color: var(--color-background);
+    opacity: 0.3;
+    padding: 0;
+  }
+  .tooto-hero-swiper__pagination .swiper-pagination-bullet-active.tooto-hero-swiper__dot {
+    opacity: 1;
+  }
+
+  /* ── 响应式 ── */
+  @media (max-width: 767px) {
+    .tooto-hero-swiper__content {
+      padding: 28px 20px;
+      width: 100%;
+    }
+    .tooto-hero-swiper__heading-bold,
+    .tooto-hero-swiper__heading-light {
+      font-size: 2.2rem;
+    }
+    .tooto-hero-swiper__pagination {
+      bottom: 12px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Tooto Hero Swiper",
+  "tag": "section",
+  "class": "tooto-hero-swiper-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "content_position",
+      "label": "Content Position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "section_height",
+      "label": "Section Height (vh)",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "vh",
+      "default": 80
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        { "value": "page-width", "label": "Page width" },
+        { "value": "full-width", "label": "Full width" }
+      ],
+      "default": "full-width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "select",
+          "id": "media_type",
+          "label": "Media Type",
+          "options": [
+            { "value": "image", "label": "Image" },
+            { "value": "video", "label": "Video (Shopify file)" }
+          ],
+          "default": "image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Background Image"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Background Video (autoplay muted)"
+        },
+        {
+          "type": "text",
+          "id": "heading_bold",
+          "label": "Heading Bold Line",
+          "default": "Weave"
+        },
+        {
+          "type": "text",
+          "id": "heading_light",
+          "label": "Heading Light Line",
+          "default": "Inspiration"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Unroll Your Story"
+        },
+        {
+          "type": "text",
+          "id": "cta_label",
+          "label": "CTA Label",
+          "default": "See More"
+        },
+        {
+          "type": "url",
+          "id": "cta_url",
+          "label": "CTA URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tooto Hero Swiper",
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "media_type": "image",
+            "heading_bold": "Weave",
+            "heading_light": "Inspiration",
+            "description": "Unroll Your Story",
+            "cta_label": "See More"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "media_type": "image",
+            "heading_bold": "Crafted",
+            "heading_light": "For Living",
+            "description": "Discover cozy textures and timeless designs",
+            "cta_label": "Explore"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
