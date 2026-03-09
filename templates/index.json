@@ -44,6 +44,7 @@
         "card_1": {
           "type": "card",
           "settings": {
+            "image": "shopify://shop_images/2548_2x_8168ec64-a1da-4e19-be1e-397f24b51277.webp",
             "badge": "Cloud Series",
             "title": "Woo Carpet Series 1",
             "link": ""
@@ -100,9 +101,9 @@
       ],
       "settings": {
         "heading": "Woo Cityofgems Slogn",
-        "description": "Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel. Their inherent elasticity reduces foot fatigue, making them ideal for bedrooms or children's rooms.",
+        "description": "Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel. Their inherent elasticity reduces foot fatigue, making them ideal for bedrooms or children’s rooms.",
         "link_label": "See More",
-        "link_url": "",
+        "link_url": "shopify://collections/all",
         "section_width": "page-width",
         "color_scheme": "scheme-1",
         "padding-block-start": 60,
