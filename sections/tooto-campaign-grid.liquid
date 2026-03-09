@@ -1,0 +1,386 @@
+{%- liquid
+  assign card_img_widths = '400, 600, 900'
+  assign card_img_sizes = '(min-width: 990px) 33vw, (min-width: 750px) 50vw, 100vw'
+-%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div
+  id="tooto-campaign-grid-{{ section.id }}"
+  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} tooto-campaign-grid"
+  style="padding-block-start: {{ section.settings.padding-block-start }}px; padding-block-end: {{ section.settings.padding-block-end }}px;"
+>
+  <div class="tooto-campaign-grid__inner">
+
+    {%- comment -%} ── Header：左侧标题 + 右侧 SEE MORE 按钮 ── {%- endcomment -%}
+    <div class="tooto-campaign-grid__header">
+      <h2 class="tooto-campaign-grid__heading">
+        <strong>{{ section.settings.heading_bold | escape }}</strong>{{ section.settings.heading_light | escape }}
+      </h2>
+      {%- if section.settings.cta_label != blank and section.settings.cta_url != blank -%}
+        <a class="tooto-campaign-grid__cta" href="{{ section.settings.cta_url }}">
+          {{ section.settings.cta_label | escape }}
+        </a>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} ── 卡片网格 ── {%- endcomment -%}
+    <div class="tooto-campaign-grid__grid">
+      {%- for block in section.blocks -%}
+        <div class="tooto-campaign-grid__card" {{ block.shopify_attributes }}>
+
+          {%- comment -%} 图片 {%- endcomment -%}
+          <div class="tooto-campaign-grid__image-wrapper">
+            {%- if block.settings.image != blank -%}
+              {{
+                block.settings.image
+                | image_url: width: 900
+                | image_tag:
+                  widths: card_img_widths,
+                  sizes: card_img_sizes,
+                  alt: block.settings.image.alt,
+                  loading: 'lazy',
+                  class: 'tooto-campaign-grid__image'
+              }}
+            {%- else -%}
+              {{ 'collection-1' | placeholder_svg_tag: 'tooto-campaign-grid__image tooto-campaign-grid__image--placeholder' }}
+            {%- endif -%}
+          </div>
+
+          {%- comment -%} 文字内容 {%- endcomment -%}
+          <div class="tooto-campaign-grid__card-body">
+            {%- if block.settings.title != blank -%}
+              <p class="tooto-campaign-grid__card-title">{{ block.settings.title | escape }}</p>
+            {%- endif -%}
+            {%- if block.settings.description != blank -%}
+              <p class="tooto-campaign-grid__card-desc">{{ block.settings.description | escape }}</p>
+            {%- endif -%}
+            {%- if block.settings.link_url != blank -%}
+              <a class="tooto-campaign-grid__card-link" href="{{ block.settings.link_url }}">
+                {{ block.settings.link_label | default: 'Details' | escape }}
+              </a>
+            {%- endif -%}
+          </div>
+
+        </div>
+      {%- endfor -%}
+    </div>
+
+  </div>
+</div>
+
+{% stylesheet %}
+  /* ── 脱离主题 section grid ── */
+  .tooto-campaign-grid__inner {
+    grid-column: 1 / -1;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .section--page-width .tooto-campaign-grid__inner {
+    grid-column: 2;
+  }
+
+  /* ── Header ── */
+  .tooto-campaign-grid__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .tooto-campaign-grid__heading {
+    margin: 0;
+    font-size: 2.25rem;
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--color-foreground-heading);
+  }
+
+  .tooto-campaign-grid__heading strong {
+    font-weight: 800;
+  }
+
+  /* ── SEE MORE 空心按钮 ── */
+  .tooto-campaign-grid__cta {
+    display: inline-block;
+    padding: 10px 24px;
+    border: 1.5px solid var(--color-foreground);
+    color: var(--color-foreground);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .tooto-campaign-grid__cta:hover {
+    background-color: var(--color-foreground);
+    color: var(--color-background);
+  }
+
+  /* ── 卡片网格 ── */
+  .tooto-campaign-grid__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  /* ── 单张卡片 ── */
+  .tooto-campaign-grid__card {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* ── 图片 ── */
+  .tooto-campaign-grid__image-wrapper {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+
+  .tooto-campaign-grid__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+
+  .tooto-campaign-grid__card:hover .tooto-campaign-grid__image {
+    transform: scale(1.04);
+  }
+
+  .tooto-campaign-grid__image--placeholder {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ── 卡片正文 ── */
+  .tooto-campaign-grid__card-body {
+    padding-top: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .tooto-campaign-grid__card-title {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--color-foreground-heading);
+  }
+
+  .tooto-campaign-grid__card-desc {
+    margin: 0;
+    font-size: 0.75rem;
+    line-height: 1.55;
+    color: var(--color-foreground);
+    opacity: 0.7;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .tooto-campaign-grid__card-link {
+    font-size: 0.75rem;
+    color: var(--color-foreground);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: opacity 0.2s ease;
+    width: fit-content;
+    margin-top: 2px;
+  }
+
+  .tooto-campaign-grid__card-link:hover {
+    opacity: 0.6;
+  }
+
+  /* ── 响应式 ── */
+  @media (max-width: 989px) {
+    .tooto-campaign-grid__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 749px) {
+    .tooto-campaign-grid__heading {
+      font-size: 1.75rem;
+    }
+
+    .tooto-campaign-grid__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+  }
+
+  @media (max-width: 479px) {
+    .tooto-campaign-grid__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Tooto Campaign Grid",
+  "tag": "section",
+  "class": "tooto-campaign-grid-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "text",
+      "id": "heading_bold",
+      "label": "Heading Bold Part",
+      "default": "Woo"
+    },
+    {
+      "type": "text",
+      "id": "heading_light",
+      "label": "Heading Light Part",
+      "default": " Campaign"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA Button Label",
+      "default": "SEE MORE"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA Button URL"
+    },
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        { "value": "page-width", "label": "Page width" },
+        { "value": "full-width", "label": "Full width" }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Campaign Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Card Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Discuss global trends in rug design"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Deep-dive into wool, nylon, jute materials and traditional/modern production techniques."
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link Label",
+          "default": "Details"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tooto Campaign Grid",
+      "settings": {
+        "heading_bold": "Woo",
+        "heading_light": " Campaign",
+        "cta_label": "SEE MORE",
+        "section_width": "page-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 60,
+        "padding-block-end": 60
+      },
+      "blocks": [
+        {
+          "type": "card",
+          "settings": {
+            "title": "Discuss global trends in rug design",
+            "description": "Deep-dive into wool, nylon, jute materials and traditional/modern production techniques.",
+            "link_label": "Details"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "title": "Discuss global trends in rug design",
+            "description": "Deep-dive into wool, nylon, jute materials and traditional/modern production techniques.",
+            "link_label": "Details"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "title": "Discuss global trends in rug design",
+            "description": "Deep-dive into wool, nylon, jute materials and traditional/modern production techniques.",
+            "link_label": "Details"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

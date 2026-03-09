@@ -1,0 +1,259 @@
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div
+  id="tooto-trust-bar-{{ section.id }}"
+  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} tooto-trust-bar"
+  style="padding-block-start: {{ section.settings.padding-block-start }}px; padding-block-end: {{ section.settings.padding-block-end }}px;"
+>
+  <div class="tooto-trust-bar__inner">
+    <ul class="tooto-trust-bar__list">
+      {%- for block in section.blocks -%}
+        <li class="tooto-trust-bar__item" {{ block.shopify_attributes }}>
+
+          {%- comment -%} 图标 {%- endcomment -%}
+          {%- if block.settings.icon != 'none' -%}
+            <span class="tooto-trust-bar__icon">
+              {%- case block.settings.icon -%}
+                {%- when 'return' -%}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="1 4 1 10 7 10"></polyline>
+                    <path d="M3.51 15a9 9 0 1 0 .49-3.51"></path>
+                  </svg>
+                {%- when 'guarantee' -%}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                  </svg>
+                {%- when 'shipping' -%}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="1" y="3" width="15" height="13"></rect>
+                    <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                    <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                    <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                  </svg>
+                {%- when 'secure' -%}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                  </svg>
+              {%- endcase -%}
+            </span>
+          {%- endif -%}
+
+          {%- comment -%} 文字 {%- endcomment -%}
+          {%- if block.settings.label != blank -%}
+            <span class="tooto-trust-bar__label">{{ block.settings.label | escape }}</span>
+          {%- endif -%}
+
+        </li>
+
+        {%- comment -%} 分隔符（最后一项后不加）{%- endcomment -%}
+        {%- unless forloop.last -%}
+          <li class="tooto-trust-bar__divider" aria-hidden="true">/</li>
+        {%- endunless -%}
+
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+
+{% stylesheet %}
+  /* ── 脱离主题 section grid ── */
+  .tooto-trust-bar__inner {
+    grid-column: 1 / -1;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .section--page-width .tooto-trust-bar__inner {
+    grid-column: 2;
+  }
+
+  /* ── 列表 ── */
+  .tooto-trust-bar__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0;
+    width: 100%;
+  }
+
+  /* ── 每一项 ── */
+  .tooto-trust-bar__item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 32px;
+    flex: 1;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  /* ── 图标 ── */
+  .tooto-trust-bar__icon {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    color: var(--color-foreground);
+    opacity: 0.85;
+  }
+
+  /* ── 文字 ── */
+  .tooto-trust-bar__label {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-foreground);
+    white-space: nowrap;
+  }
+
+  /* ── 分隔符 ── */
+  .tooto-trust-bar__divider {
+    color: var(--color-foreground);
+    opacity: 0.35;
+    font-size: 0.875rem;
+    flex-shrink: 0;
+    list-style: none;
+    user-select: none;
+  }
+
+  /* ── 响应式 ── */
+  @media (max-width: 749px) {
+    .tooto-trust-bar__list {
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tooto-trust-bar__divider {
+      display: none;
+    }
+
+    .tooto-trust-bar__item {
+      padding: 0;
+      flex: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Tooto Trust Bar",
+  "tag": "section",
+  "class": "tooto-trust-bar-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        { "value": "page-width", "label": "Page width" },
+        { "value": "full-width", "label": "Full width" }
+      ],
+      "default": "full-width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-3"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 20
+    }
+  ],
+  "blocks": [
+    {
+      "type": "trust_item",
+      "name": "Trust Item",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "return", "label": "Free Returns" },
+            { "value": "guarantee", "label": "Guarantee" },
+            { "value": "shipping", "label": "Shipping" },
+            { "value": "secure", "label": "Secure Payment" }
+          ],
+          "default": "return"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Free Returns"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tooto Trust Bar",
+      "settings": {
+        "section_width": "full-width",
+        "color_scheme": "scheme-3",
+        "padding-block-start": 20,
+        "padding-block-end": 20
+      },
+      "blocks": [
+        {
+          "type": "trust_item",
+          "settings": {
+            "icon": "return",
+            "label": "Free Returns"
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "icon": "guarantee",
+            "label": "Satisfaction Guaranteed"
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "icon": "shipping",
+            "label": "Free Shipping"
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "icon": "secure",
+            "label": "Secure Payment"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
