@@ -255,6 +255,107 @@
         "padding-block-start": 0,
         "padding-block-end": 0
       }
+    },
+    "tooto_campaign_grid_HWCrzh": {
+      "type": "tooto-campaign-grid",
+      "blocks": {
+        "card_CUbUPL": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/2836_2x_109aa7ef-594a-43ae-8f82-43678ad8f20c.webp",
+            "title": "Discuss global trends in rug design",
+            "description": "Deep-dive into wool, nylon, jute materials and traditional/modern production techniques.",
+            "link_label": "Details",
+            "link_url": ""
+          }
+        },
+        "card_CgUNGe": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/2835_2x_a186dc01-1558-4201-ae62-0c9a2241dcbb.webp",
+            "title": "Discuss global trends in rug design",
+            "description": "Deep-dive into wool, nylon, jute materials and traditional/modern production techniques.",
+            "link_label": "Details",
+            "link_url": ""
+          }
+        },
+        "card_hxcTKg": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/2834_2x_3f4efd5b-5f8a-4cc3-b45e-19d18c4720d2.webp",
+            "title": "Discuss global trends in rug design",
+            "description": "Deep-dive into wool, nylon, jute materials and traditional/modern production techniques.",
+            "link_label": "Details",
+            "link_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "card_CUbUPL",
+        "card_CgUNGe",
+        "card_hxcTKg"
+      ],
+      "name": "Tooto Campaign Grid",
+      "settings": {
+        "heading_bold": "Woo",
+        "heading_light": "Campaign",
+        "cta_label": "SEE MORE",
+        "cta_url": "",
+        "section_width": "page-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 60,
+        "padding-block-end": 60
+      }
+    },
+    "tooto_story_slider_TM7PHp": {
+      "type": "tooto-story-slider",
+      "blocks": {
+        "slide_kk7kwW": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/2135_2x_c2261bed-a792-4611-a935-bff1b6300046.webp",
+            "caption": "Suitable for medieval style"
+          }
+        },
+        "slide_Up7qpk": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/2134_2x_08a0fb54-043b-43b3-a61e-c9b5d66ff2c5.webp",
+            "caption": "Suitable for cream style"
+          }
+        },
+        "slide_tmbcPa": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/2130_2x_703bb913-0508-410a-9460-243c0b5affe0.webp",
+            "caption": "Suitable for modern minimalist style"
+          }
+        },
+        "slide_fXTyjn": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/2135_2x_c2261bed-a792-4611-a935-bff1b6300046.webp",
+            "caption": "Suitable for medieval style"
+          }
+        }
+      },
+      "block_order": [
+        "slide_kk7kwW",
+        "slide_Up7qpk",
+        "slide_tmbcPa",
+        "slide_fXTyjn"
+      ],
+      "name": "Tooto Story Slider",
+      "settings": {
+        "heading_bold": "Woo",
+        "heading_light": "Story",
+        "cta_label": "More Story",
+        "cta_url": "",
+        "section_width": "full-width",
+        "color_scheme": "scheme-2",
+        "padding-block-start": 60,
+        "padding-block-end": 60
+      }
     }
   },
   "order": [
@@ -264,6 +365,8 @@
     "tooto_series_hero_cityofgems",
     "tooto_series_hero_pathof_shule",
     "tooto_product_grid_1",
-    "tooto_promo_banner_1"
+    "tooto_promo_banner_1",
+    "tooto_campaign_grid_HWCrzh",
+    "tooto_story_slider_TM7PHp"
   ]
 }
