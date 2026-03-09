@@ -68,27 +68,12 @@
             "link": ""
           }
         },
-        "card_4": {
+        "card_AypMNG": {
           "type": "card",
           "settings": {
-            "badge": "New Series",
-            "title": "Woo Carpet Series 4",
-            "link": ""
-          }
-        },
-        "card_5": {
-          "type": "card",
-          "settings": {
-            "badge": "New Series",
-            "title": "Woo Carpet Series 5",
-            "link": ""
-          }
-        },
-        "card_6": {
-          "type": "card",
-          "settings": {
-            "badge": "New Series",
-            "title": "Woo Carpet Series 6",
+            "image": "shopify://shop_images/2548_2x_8168ec64-a1da-4e19-be1e-397f24b51277.webp",
+            "badge": "Cloud Series",
+            "title": "Woo Carpet Series 1",
             "link": ""
           }
         }
@@ -97,9 +82,7 @@
         "card_1",
         "card_2",
         "card_3",
-        "card_4",
-        "card_5",
-        "card_6"
+        "card_AypMNG"
       ],
       "settings": {
         "heading": "Woo Cityofgems Slogn",
@@ -110,38 +93,6 @@
         "color_scheme": "scheme-1",
         "padding-block-start": 60,
         "padding-block-end": 60
-      }
-    },
-    "tooto_series_hero_cityofgems": {
-      "type": "tooto-series-hero",
-      "settings": {
-        "heading_bold": "CityofGems",
-        "heading_light": "Series",
-        "description": "Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel. Their inherent elasticity reduces foot fatigue, making them ideal for bedrooms or children's rooms.",
-        "link_label": "Shop More",
-        "link_url": "",
-        "overlay_opacity": 20,
-        "section_height": 75,
-        "section_width": "full-width",
-        "color_scheme": "scheme-1",
-        "padding-block-start": 0,
-        "padding-block-end": 0
-      }
-    },
-    "tooto_series_hero_pathof_shule": {
-      "type": "tooto-series-hero",
-      "settings": {
-        "heading_bold": "Pathof",
-        "heading_light": "Shule",
-        "description": "Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel. Their inherent elasticity reduces foot fatigue, making them ideal for bedrooms or children's rooms.",
-        "link_label": "Shop More",
-        "link_url": "",
-        "overlay_opacity": 20,
-        "section_height": 75,
-        "section_width": "full-width",
-        "color_scheme": "scheme-1",
-        "padding-block-start": 0,
-        "padding-block-end": 0
       }
     },
     "tooto_product_showcase_1": {
@@ -178,6 +129,7 @@
         "variant_66xFgL"
       ],
       "settings": {
+        "left_image": "shopify://shop_images/222_2x_87bc1db2-19f4-48ee-a7cc-6f03280ae676.webp",
         "series_label_bold": "Pathof",
         "series_label_light": "Shule",
         "link_label": "See More",
@@ -185,6 +137,40 @@
         "product_name_bold": "Cloud",
         "product_name_light": "Scape",
         "product_subtitle": "Woven Serenity Wool Rug  0981",
+        "section_width": "full-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "tooto_series_hero_cityofgems": {
+      "type": "tooto-series-hero",
+      "settings": {
+        "image": "shopify://shop_images/160_2x_fd0b4bec-73c4-4d66-8500-4957768f66aa.webp",
+        "heading_bold": "CityofGems",
+        "heading_light": "Series",
+        "description": "Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel. Their inherent elasticity reduces foot fatigue, making them ideal for bedrooms or children's rooms.",
+        "link_label": "Shop More",
+        "link_url": "shopify://collections/all",
+        "overlay_opacity": 20,
+        "section_height": 75,
+        "section_width": "full-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "tooto_series_hero_pathof_shule": {
+      "type": "tooto-series-hero",
+      "settings": {
+        "image": "shopify://shop_images/160_2x_1.webp",
+        "heading_bold": "Pathof",
+        "heading_light": "Shule",
+        "description": "Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel. Their inherent elasticity reduces foot fatigue, making them ideal for bedrooms or children's rooms.",
+        "link_label": "Shop More",
+        "link_url": "shopify://collections/all",
+        "overlay_opacity": 20,
+        "section_height": 75,
         "section_width": "full-width",
         "color_scheme": "scheme-1",
         "padding-block-start": 0,
@@ -270,9 +256,9 @@
   "order": [
     "tooto_hero_swiper_1",
     "tooto_series_slider_1",
+    "tooto_product_showcase_1",
     "tooto_series_hero_cityofgems",
     "tooto_series_hero_pathof_shule",
-    "tooto_product_showcase_1",
     "tooto_product_grid_1",
     "tooto_promo_banner_1"
   ]
