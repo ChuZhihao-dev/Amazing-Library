@@ -186,25 +186,29 @@
     width: 100%;
     min-width: 0;
     position: relative;
+    min-height: 0;
   }
 
   .tooto-product-showcase__swiper > .swiper-wrapper {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
     align-items: stretch;
     box-sizing: content-box;
     position: relative;
     width: 100%;
+    height: auto !important;
     z-index: 1;
     will-change: transform;
   }
 
   .tooto-product-showcase__swiper > .swiper-wrapper > .swiper-slide {
-    flex-shrink: 0;
-    width: 100%;
+    flex: 0 0 100% !important;
+    width: 100% !important;
     position: relative;
     display: block;
+    height: auto !important;
+    box-sizing: border-box;
   }
 
   /* ── 左栏 ── */
