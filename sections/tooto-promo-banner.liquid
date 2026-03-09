@@ -1,0 +1,307 @@
+{%- liquid
+  assign bg_widths = '750, 1100, 1500, 2000, 3000, 3840'
+  assign bg_sizes = '100vw'
+-%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div
+  id="tooto-promo-banner-{{ section.id }}"
+  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} tooto-promo-banner"
+  style="padding-block-start: {{ section.settings.padding-block-start }}px; padding-block-end: {{ section.settings.padding-block-end }}px;"
+>
+  <div
+    class="tooto-promo-banner__inner"
+    style="min-height: {{ section.settings.section_height }}vh;"
+  >
+
+    {%- comment -%} ── 背景图 ── {%- endcomment -%}
+    <div class="tooto-promo-banner__bg">
+      {%- if section.settings.image != blank -%}
+        {{
+          section.settings.image
+          | image_url: width: 2000
+          | image_tag:
+            widths: bg_widths,
+            sizes: bg_sizes,
+            alt: section.settings.image.alt,
+            loading: 'eager',
+            fetchpriority: 'high',
+            class: 'tooto-promo-banner__bg-image'
+        }}
+      {%- else -%}
+        {{ 'hero-apparel-2' | placeholder_svg_tag: 'tooto-promo-banner__bg-image tooto-promo-banner__bg-image--placeholder' }}
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} ── 遮罩 ── {%- endcomment -%}
+    {%- if section.settings.overlay_opacity > 0 -%}
+      <div
+        class="tooto-promo-banner__overlay"
+        style="opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};"
+      ></div>
+    {%- endif -%}
+
+    {%- comment -%} ── 内容层：居中 标题 + 描述 + CTA ── {%- endcomment -%}
+    <div class="tooto-promo-banner__content">
+
+      {%- if section.settings.heading != blank -%}
+        <h2 class="tooto-promo-banner__heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.description != blank -%}
+        <p class="tooto-promo-banner__description">{{ section.settings.description }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.cta_label != blank and section.settings.cta_url != blank -%}
+        <a
+          class="tooto-promo-banner__cta"
+          href="{{ section.settings.cta_url }}"
+        >
+          {{ section.settings.cta_label | escape }}
+        </a>
+      {%- endif -%}
+
+    </div>
+
+  </div>
+</div>
+
+{% stylesheet %}
+  /* ── 脱离主题 section grid ── */
+  .tooto-promo-banner__inner {
+    grid-column: 1 / -1;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  .section--page-width .tooto-promo-banner__inner {
+    grid-column: 2;
+  }
+
+  /* ── 背景图 ── */
+  .tooto-promo-banner__bg {
+    position: absolute;
+    inset: 0;
+  }
+
+  .tooto-promo-banner__bg-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .tooto-promo-banner__bg-image--placeholder {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ── 遮罩 ── */
+  .tooto-promo-banner__overlay {
+    position: absolute;
+    inset: 0;
+    background-color: #000;
+    pointer-events: none;
+  }
+
+  /* ── 内容层 ── */
+  .tooto-promo-banner__content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+    padding: 60px 24px;
+    max-width: 640px;
+    width: 100%;
+  }
+
+  /* ── 标题 ── */
+  .tooto-promo-banner__heading {
+    margin: 0;
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--color-background);
+    letter-spacing: -0.01em;
+  }
+
+  /* ── 描述 ── */
+  .tooto-promo-banner__description {
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    color: var(--color-background);
+    opacity: 0.85;
+    max-width: 480px;
+  }
+
+  /* ── CTA 按钮：白底黑字 ── */
+  .tooto-promo-banner__cta {
+    display: inline-block;
+    padding: 13px 36px;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+    white-space: nowrap;
+    margin-top: 4px;
+  }
+
+  .tooto-promo-banner__cta:hover {
+    opacity: 0.85;
+  }
+
+  /* ── 响应式 ── */
+  @media (max-width: 767px) {
+    .tooto-promo-banner__heading {
+      font-size: 2rem;
+    }
+
+    .tooto-promo-banner__content {
+      gap: 16px;
+      padding: 48px 20px;
+    }
+
+    .tooto-promo-banner__description {
+      font-size: 0.75rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Tooto Promo Banner",
+  "tag": "section",
+  "class": "tooto-promo-banner-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background Image"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay Opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "default": 45
+    },
+    {
+      "type": "range",
+      "id": "section_height",
+      "label": "Section Height (vh)",
+      "min": 30,
+      "max": 100,
+      "step": 5,
+      "unit": "vh",
+      "default": 55
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Personalised For\nYour Home"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "With Our Tailored To Fit Wool Rugs, You Can Personalise Your Rug By Choosing The Style, Colour, Size, Shape & Edging Best Suited To Your Home."
+    },
+    {
+      "type": "header",
+      "content": "CTA Button"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button Label",
+      "default": "Customize now"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        { "value": "page-width", "label": "Page width" },
+        { "value": "full-width", "label": "Full width" }
+      ],
+      "default": "full-width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tooto Promo Banner",
+      "settings": {
+        "heading": "Personalised For\nYour Home",
+        "description": "With Our Tailored To Fit Wool Rugs, You Can Personalise Your Rug By Choosing The Style, Colour, Size, Shape & Edging Best Suited To Your Home.",
+        "cta_label": "Customize now",
+        "overlay_opacity": 45,
+        "section_height": 55,
+        "section_width": "full-width",
+        "color_scheme": "scheme-1"
+      }
+    }
+  ]
+}
+{% endschema %}
