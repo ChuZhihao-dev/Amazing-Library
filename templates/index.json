@@ -299,6 +299,22 @@
         "padding-block-start": 64,
         "padding-block-end": 64
       }
+    },
+    "tooto_promo_banner_1": {
+      "type": "tooto-promo-banner",
+      "settings": {
+        "image": "",
+        "overlay_opacity": 45,
+        "section_height": 55,
+        "heading": "Personalised For\nYour Home",
+        "description": "With Our Tailored To Fit Wool Rugs, You Can Personalise Your Rug By Choosing The Style, Colour, Size, Shape & Edging Best Suited To Your Home.",
+        "cta_label": "Customize now",
+        "cta_url": "",
+        "section_width": "full-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
     }
   },
   "order": [
@@ -307,6 +323,7 @@
     "tooto_series_hero_cityofgems",
     "tooto_series_hero_pathof_shule",
     "tooto_product_showcase_1",
-    "tooto_product_grid_1"
+    "tooto_product_grid_1",
+    "tooto_promo_banner_1"
   ]
 }
