@@ -35,9 +35,9 @@
       {%- render 'theme-editor' -%}
     {% endif %}
 
-    {%- comment -%} Swiper.js — 全局加载一次，供所有 tooto- section 使用 {%- endcomment -%}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    {%- comment -%} Swiper.js — 本地版本（全局加载一次，供所有 tooto- section 使用） {%- endcomment -%}
+    {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'swiper-bundle.min.js' | asset_url }}" ></script>
 
     {{ content_for_header }}
   </head>

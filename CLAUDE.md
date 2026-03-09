@@ -226,28 +226,18 @@ Schema 中必须加入 `section_width` 配置项：
 </script>
 ```
 
-**✅ 正确写法：Swiper 已在 `layout/theme.liquid` 全局加载，Section 内直接使用即可：**
-```html
+**✅ 正确写法：Swiper 通过 `defer` 加载，Section 内联 script 必须包裹在 `DOMContentLoaded` 内，确保 Swiper 已就绪：**
 <script>
-  (function () {
-    const sectionEl = document.getElementById('tooto-xxx-{{ section.id }}');
-    if (!sectionEl) return;
+  document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', function () {
     new Swiper(sectionEl.querySelector('.swiper'), {
       // 配置...
     });
-  })();
+  });
 </script>
-```
-
-**✅ 每个使用 Swiper 的 Section，必须在 `{% stylesheet %}` 中显式声明以下核心布局 CSS**（Swiper bundle CSS 会被主题样式覆盖，必须在 Section 级别重新声明）：
+  });
 
 ```css
-.tooto-xxx__swiper {
-  overflow: hidden;
-  width: 100%;
-  min-width: 0;
-  position: relative;
-}
 
 .tooto-xxx__swiper > .swiper-wrapper {
   display: flex;

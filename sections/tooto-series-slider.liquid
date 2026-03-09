@@ -84,19 +84,37 @@
     const paginationEl = document.getElementById('tooto-series-pagination-{{ section.id }}');
     const swiperEl = sectionEl.querySelector('.tooto-series-slider__swiper');
 
-    new Swiper(swiperEl, {
+    function buildPagination(swiper) {
+      if (!paginationEl) return;
+      var total = swiper.snapGrid.length;
+      var current = swiper.snapIndex || 0;
+      var html = '';
+      for (var i = 0; i < total; i++) {
+        var activeClass = i === current ? ' tooto-series-slider__dot--active' : '';
+        html += '<button class="tooto-series-slider__dot' + activeClass + '" data-snap="' + i + '" aria-label="Go to page ' + (i + 1) + '"></button>';
+      }
+      paginationEl.innerHTML = html;
+      paginationEl.querySelectorAll('.tooto-series-slider__dot').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          swiper.slideTo(swiper.snapGrid[parseInt(this.dataset.snap)]);
+        });
+      });
+    }
+
+    function updatePagination(swiper) {
+      if (!paginationEl) return;
+      var current = swiper.snapIndex || 0;
+      paginationEl.querySelectorAll('.tooto-series-slider__dot').forEach(function (btn, i) {
+        btn.classList.toggle('tooto-series-slider__dot--active', i === current);
+      });
+    }
+
+    var swiper = new Swiper(swiperEl, {
       slidesPerView: 1,
       spaceBetween: 20,
       loop: false,
       slidesPerGroup: 1,
-
-      pagination: {
-        el: paginationEl,
-        clickable: true,
-        renderBullet: function (index, className) {
-          return '<button class="' + className + ' tooto-series-slider__dot" aria-label="Go to page ' + (index + 1) + '"></button>';
-        },
-      },
+      speed: 500,
 
       breakpoints: {
         768: {
@@ -108,6 +126,18 @@
           slidesPerView: 3,
           spaceBetween: 20,
           slidesPerGroup: 3,
+        },
+      },
+
+      on: {
+        init: function () {
+          buildPagination(this);
+        },
+        snapIndexChange: function () {
+          updatePagination(this);
+        },
+        breakpoint: function () {
+          buildPagination(this);
         },
       },
     });
@@ -267,7 +297,7 @@
     margin-top: 36px;
   }
 
-  .tooto-series-slider__pagination .tooto-series-slider__dot {
+  .tooto-series-slider__dot {
     width: 40px;
     height: 2px;
     border: none;
@@ -276,10 +306,11 @@
     opacity: 0.2;
     cursor: pointer;
     padding: 0;
+    flex-shrink: 0;
     transition: opacity 0.3s ease;
   }
 
-  .tooto-series-slider__pagination .swiper-pagination-bullet-active.tooto-series-slider__dot {
+  .tooto-series-slider__dot--active {
     opacity: 1;
   }
 
