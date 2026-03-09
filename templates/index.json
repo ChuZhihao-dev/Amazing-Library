@@ -88,6 +88,63 @@
         "padding-block-end": 72
       }
     },
+    "tooto_series_slider_1": {
+      "type": "tooto-series-slider",
+      "blocks": {
+        "card_1": {
+          "type": "card",
+          "settings": {
+            "badge": "Cloud Series",
+            "title": "Woo Carpet Series 1"
+          }
+        },
+        "card_2": {
+          "type": "card",
+          "settings": {
+            "badge": "CityofGems",
+            "title": "Woo Carpet Series 2"
+          }
+        },
+        "card_3": {
+          "type": "card",
+          "settings": {
+            "badge": "Pathof Style",
+            "title": "Woo Carpet Series 3"
+          }
+        },
+        "card_4": {
+          "type": "card",
+          "settings": {
+            "badge": "New Series",
+            "title": "Woo Carpet Series 4"
+          }
+        },
+        "card_5": {
+          "type": "card",
+          "settings": {
+            "badge": "New Series",
+            "title": "Woo Carpet Series 5"
+          }
+        },
+        "card_6": {
+          "type": "card",
+          "settings": {
+            "badge": "New Series",
+            "title": "Woo Carpet Series 6"
+          }
+        }
+      },
+      "block_order": ["card_1", "card_2", "card_3", "card_4", "card_5", "card_6"],
+      "settings": {
+        "heading": "Woo Cityofgems Slogn",
+        "description": "Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel. Their inherent elasticity reduces foot fatigue, making them ideal for bedrooms or children's rooms.",
+        "link_label": "See More",
+        "section_width": "page-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 60,
+        "padding-block-end": 60
+      }
+    },
     "product_list_fa6P9H": {
       "type": "product-list",
       "blocks": {
@@ -285,6 +342,7 @@
   },
   "order": [
     "hero_jVaWmY",
-    "product_list_fa6P9H"
+    "product_list_fa6P9H",
+    "tooto_series_slider_1"
   ]
 }

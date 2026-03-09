@@ -197,7 +197,7 @@ width: min(1200px, 100%);
 ```json
 "presets": [
   {
-    "name": "Woo Xxx",
+    "name": "Tooto Xxx",
     "settings": {
       "color_scheme": "scheme-1"
     }
@@ -558,7 +558,6 @@ Section 必须设置禁用组：
 
 - **Section JS 用 IIFE 包裹**：`(function() { ... })()` 避免污染全局作用域
 - **事件监听用事件委托**：不对每个卡片单独绑定事件，统一在父容器监听
-- **轮播 / 滑动组件不引入第三方库**：用原生 `scroll` + `IntersectionObserver` 实现，减少 JS 体积
 - **JS 只在 Section 存在时执行**：用 `document.getElementById` 判断节点存在再初始化
 
 ```javascript
