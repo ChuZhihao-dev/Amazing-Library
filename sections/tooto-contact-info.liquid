@@ -1,0 +1,272 @@
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div
+  id="tooto-contact-info-{{ section.id }}"
+  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} tooto-contact-info"
+  style="padding-block-start: {{ section.settings.padding-block-start }}px; padding-block-end: {{ section.settings.padding-block-end }}px;"
+>
+  <div class="tooto-contact-info__grid">
+    {%- for block in section.blocks -%}
+      <div class="tooto-contact-info__item{% unless forloop.last %} tooto-contact-info__item--bordered{% endunless %}" {{ block.shopify_attributes }}>
+
+        {%- comment -%} Icon {%- endcomment -%}
+        <div class="tooto-contact-info__icon">
+          {%- case block.settings.icon -%}
+            {%- when 'chat' -%}
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/>
+                <circle cx="8.5" cy="11" r="1.5"/>
+                <circle cx="12" cy="11" r="1.5"/>
+                <circle cx="15.5" cy="11" r="1.5"/>
+              </svg>
+            {%- when 'phone' -%}
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/>
+              </svg>
+            {%- when 'email' -%}
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+              </svg>
+          {%- endcase -%}
+        </div>
+
+        {%- comment -%} Title {%- endcomment -%}
+        {%- if block.settings.title != blank -%}
+          <h3 class="tooto-contact-info__title">{{ block.settings.title | escape }}</h3>
+        {%- endif -%}
+
+        {%- comment -%} Description {%- endcomment -%}
+        {%- if block.settings.description != blank -%}
+          <p class="tooto-contact-info__description">{{ block.settings.description }}</p>
+        {%- endif -%}
+
+        {%- comment -%} Button {%- endcomment -%}
+        {%- if block.settings.button_label != blank -%}
+          <a
+            href="{{ block.settings.button_url }}"
+            class="tooto-contact-info__button"
+          >
+            {{ block.settings.button_label | escape }}
+          </a>
+        {%- endif -%}
+
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .tooto-contact-info {
+    width: 100%;
+  }
+
+  .tooto-contact-info__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+
+  @media (max-width: 749px) {
+    .tooto-contact-info__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .tooto-contact-info__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 48px 40px;
+    gap: 12px;
+  }
+
+  .tooto-contact-info__item--bordered {
+    border-right: 1px solid #d0d0d0;
+  }
+
+  @media (max-width: 749px) {
+    .tooto-contact-info__item--bordered {
+      border-right: none;
+      border-bottom: 1px solid #d0d0d0;
+    }
+  }
+
+  .tooto-contact-info__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1a1a1a;
+    margin-bottom: 4px;
+  }
+
+  .tooto-contact-info__title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .tooto-contact-info__description {
+    font-size: 0.9375rem;
+    color: #555555;
+    margin: 0;
+    line-height: 1.6;
+    max-width: 220px;
+  }
+
+  .tooto-contact-info__button {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 12px 28px;
+    border: 1.5px solid #1a1a1a;
+    border-radius: 4px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    text-decoration: none;
+    background-color: transparent;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .tooto-contact-info__button:hover {
+    background-color: #1a1a1a;
+    color: #ffffff;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Tooto Contact Info",
+  "tag": "section",
+  "class": "tooto-contact-info-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        { "value": "page-width", "label": "Page width" },
+        { "value": "full-width", "label": "Full width" }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-3"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    }
+  ],
+  "blocks": [
+    {
+      "type": "contact_item",
+      "name": "Contact Item",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "chat",  "label": "Live Chat" },
+            { "value": "phone", "label": "Phone" },
+            { "value": "email", "label": "Email" }
+          ],
+          "default": "chat"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Live Chat"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Our support team is online and ready to assist—just click the chat bubble to get started.</p>"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button Label",
+          "default": "Start Chat"
+        },
+        {
+          "type": "url",
+          "id": "button_url",
+          "label": "Button URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tooto Contact Info",
+      "settings": {
+        "section_width": "page-width",
+        "color_scheme": "scheme-3",
+        "padding-block-start": 64,
+        "padding-block-end": 64
+      },
+      "blocks": [
+        {
+          "type": "contact_item",
+          "settings": {
+            "icon": "chat",
+            "title": "Live Chat",
+            "description": "<p>Our support team is online and ready to assist—just click the chat bubble to get started.</p>",
+            "button_label": "Start Chat",
+            "button_url": ""
+          }
+        },
+        {
+          "type": "contact_item",
+          "settings": {
+            "icon": "phone",
+            "title": "Call us",
+            "description": "<p>Prefer to talk? We'd love to hear from you. Available 9am–6pm PDT (Mon–Sun)</p>",
+            "button_label": "+1 61*******011",
+            "button_url": "tel:+1610000011"
+          }
+        },
+        {
+          "type": "contact_item",
+          "settings": {
+            "icon": "email",
+            "title": "Email us",
+            "description": "<p>We respond to all inquiries within 24 hours.<br>service@woocarpet.com</p>",
+            "button_label": "Send an Email",
+            "button_url": "mailto:service@woocarpet.com"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
