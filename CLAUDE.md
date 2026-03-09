@@ -16,8 +16,8 @@
 
 ## 一、文件命名规范
 
-- Section 文件统一前缀：`woo-`，例如 `sections/woo-hero-banner.liquid`
-- Snippet 文件统一前缀：`woo-`，例如 `snippets/woo-card.liquid`
+- Section 文件统一前缀：`tooto-`，例如 `sections/tooto-hero-banner.liquid`
+- Snippet 文件统一前缀：`tooto-`，例如 `snippets/tooto-card.liquid`
 - 文件名使用小写 + 连字符，不使用下划线或驼峰
 
 ---
@@ -266,7 +266,6 @@ Section 必须设置禁用组：
 
 每次生成新 Section 代码后，逐项检查：
 
-- [ ] 文件名以 `woo-` 开头
 - [ ] 顶部 `{%- liquid -%}` 块中声明了所有 `widths` / `sizes` 变量
 - [ ] `image_tag` 的 `widths` 和 `sizes` 使用变量，不使用字符串字面量
 - [ ] `alt` 参数不加 `| escape`
@@ -281,13 +280,349 @@ Section 必须设置禁用组：
 
 ---
 
-## 七、参考文件
+## 七、截图 → Section 还原规范
+
+> 每次接收截图并需要生成 Section 时，必须遵守本章节。跳过分析直接写代码会导致还原精度严重下降。
+
+### 7.1 五层拆解法（必须按顺序执行）
+
+拿到截图后，按以下顺序逐层分析，不能跳步：
+
+```
+第一层：Section 边界识别
+第二层：宏观布局骨架
+第三层：组件级结构
+第四层：元素级样式
+第五层：交互行为推断
+```
+
+**第一层：Section 边界识别**
+- 判断截图中有几个独立 Section（背景色切换、间距明显增大为分隔线）
+- 识别背景色：纯白 / 米白 / 深色 / 图片背景
+- 识别上下内边距（视觉感知，换算为 px）
+
+**第二层：宏观布局骨架**
+
+| 布局类型 | 判断特征 | 对应 CSS |
+|----------|----------|----------|
+| 单列全宽 | 内容横贯全屏，无左右分区 | `width: 100%` |
+| 两栏等分 | 左右各占 ~50% | `grid-cols-2` |
+| 两栏非等分 | 左右比例悬殊，如 40:60 | `grid-cols-[2fr_3fr]` |
+| 三栏等分 | 三组内容横向等宽 | `grid-cols-3` |
+| 四栏等分 | 产品网格常见 | `grid-cols-4` |
+| Bento Grid | 左侧大图跨行 + 右侧多小图 | `grid` + `row-span-2` |
+| 叠层（Stack） | 内容绝对定位叠在背景图上 | `relative` + `absolute` |
+
+识别要点：
+- 看内容「重心」→ 判断对齐方式（左对齐 / 居中 / 两端对齐）
+- 看列间距 → 判断 `gap` 大小
+- 看是否有最大宽度限制（正文区有 `max-width`，背景图通常没有）
+
+**第三层：组件级结构**
+
+| 组件类型 | 典型视觉特征 |
+|----------|--------------|
+| Hero Banner | 全宽背景图 + 文字叠加 |
+| 标题区（Header Block） | 大号标题 + 描述 + 可选 CTA |
+| 卡片组（Card Grid） | 多个等尺寸图文单元横向排列 |
+| 标签（Badge/Tag） | 叠加在图片角落的小型胶囊文字 |
+| 进度指示器 | 轮播页码，细横线或圆点 |
+| CTA 链接 | 带箭头「→」或下划线的文字按钮 |
+
+**第四层：元素级样式**
+
+文字类：
+- 字号：正文约 14-16px，大标题约 32-56px
+- 字重：细 300 / 常规 400 / 中等 500 / 粗 700-800
+- 行高：紧凑 1.1-1.2 / 舒适 1.5-1.7
+- 小标签通常带 `letter-spacing: 0.1em` + `text-transform: uppercase`
+
+图片类：
+- 宽高比：正方形 1:1 / 竖向 4:5 或 3:4 / 横向 4:3 或 16:9
+- 图片被裁切 → `object-fit: cover`
+- 圆角：无 / 小（4-8px）/ 大（16px+）
+
+常见间距参考：
+
+| 位置 | 常见值 |
+|------|--------|
+| Section 上下内边距 | 48-80px（桌面端）|
+| 卡片间距（gap） | 16-24px |
+| 标题与内容间距 | 24-40px |
+| 图片与文字间距 | 12-16px |
+
+**第五层：交互行为推断**
+
+| 视觉线索 | 推断的交互行为 |
+|----------|--------------|
+| 底部有细横线进度条（多段） | 轮播，每段代表一页 |
+| 底部有圆点 Dots | Carousel |
+| 图片超出容器边缘被截断 | 横向滚动（`overflow-x: scroll`）|
+| 箭头按钮（← →）在卡片组两侧 | 手动翻页轮播 |
+| "See More →" / "View All →" 文字 | 跳转链接，非按钮 |
+
+---
+
+### 7.2 截图分析报告模板（写代码前必须先输出）
+
+```
+### 截图分析报告
+1. Section 背景：[颜色描述]
+2. 布局骨架：[如「两栏：左40%标题 + 右60%描述」]
+3. 组件清单：[逐一列出]
+4. 元素样式：标题 ~Xpx 字重X / 图片比例 X:X / 卡片间距 ~Xpx
+5. 交互行为：[轮播/滑动/点击等]
+6. 响应式推断：Desktop [布局] / Mobile [布局]
+7. Schema 参数规划：[列出可配置项]
+```
+
+---
+
+### 7.3 常见 Section 模式识别
+
+**模式 A：两栏 Header + 卡片轮播**
+- 上半：左侧大标题（~40-50% 宽）+ 右侧描述文字和 CTA 链接
+- 下半：3 张等宽卡片横向排列
+- 底部：细横线进度条居中
+- 卡片结构：图片（竖向比例约 1:1.2）+ 左上角 Tag 标签 + 图片下方标题
+- 进度条段数 = 总页数，深色段 = 当前页
+
+**模式 B：全宽 Hero Banner**
+- `relative` 容器 + `absolute` 背景图 + `absolute` overlay + `relative` 文字层
+- overlay 透明度由 Schema `overlay_opacity` 控制，不硬编码
+
+**模式 C：产品网格（带标题行）**
+- 标题行：`flex justify-between items-baseline`（基线对齐）
+- 4列 → desktop: `grid-cols-4` / mobile: `grid-cols-2`
+- 3列 → desktop: `grid-cols-3` / mobile: `grid-cols-1`
+
+**模式 D：Bento Grid**
+- `grid-template-columns: repeat(2, 1fr)` + `grid-template-rows: repeat(2, 1fr)`
+- 大图：`grid-row: span 2`
+
+**模式 E：横向滚动展示**
+- 末尾图片被截断 = 设计意图是可滚动，必须实现 `overflow-x: auto` + `.scrollbar-hide`
+- 每张图 `flex-shrink: 0` 防止压缩
+
+---
+
+### 7.4 进度条 / 轮播指示器规范
+
+| 外观 | 类型 | 实现 |
+|------|------|------|
+| 多段细横线（矩形，~40px 宽） | 横线型 | `div` 列表，激活项加深色类 |
+| 多个圆点（~8px） | 圆点型 | `button` 列表，激活项加深色类 |
+
+横线型进度条 CSS 规范：
+```css
+.woo-slider__pagination {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 32px;
+}
+.woo-slider__dot {
+  width: 40px;
+  height: 2px;
+  background-color: var(--color-foreground);
+  opacity: 0.2;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+.woo-slider__dot--active {
+  opacity: 1;
+}
+```
+
+每页显示数量与进度段数关系：
+
+| 断点 | 每页卡片数 | 进度段数（共6张卡为例）|
+|------|-----------|------------------------|
+| Desktop ≥ 1024px | 3 | 2 段 |
+| Tablet 768-1023px | 2 | 3 段 |
+| Mobile < 768px | 1 | 6 段 |
+
+> ⚠️ 进度条必须实现 JS 联动，不能只写静态样式。
+
+---
+
+### 7.5 Badge 标签叠加图片规范
+
+```css
+/* 图片容器必须有 position: relative */
+.woo-card__badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  background-color: rgba(var(--color-foreground-rgb), 0.5);
+  color: var(--color-background);
+}
+```
+
+---
+
+### 7.6 还原精度自检清单
+
+生成代码后，对照截图逐项检查：
+
+- [ ] **整体比例**：Section 高度、内边距与设计稿视觉一致
+- [ ] **布局骨架**：列数、列宽比例正确
+- [ ] **图片比例**：`aspect-ratio` 与设计稿一致，不写死 `height`
+- [ ] **字号层级**：标题 >> 副标题 >> 正文 >> 标签，层级清晰
+- [ ] **间距节奏**：标题与内容、卡片、图文间距合理
+- [ ] **标签位置**：叠加在图片正确位置，父容器有 `position: relative`
+- [ ] **进度条**：段数正确、居中、有 JS 联动交互
+- [ ] **CTA 链接**：文字链接样式（非实心按钮），带箭头或下划线
+- [ ] **响应式**：移动端布局不错位，图片不变形
+- [ ] **空状态**：无图时有 `placeholder_svg_tag`，不白屏
+
+---
+
+### 7.7 典型还原错误
+
+- ❌ **图片比例写死高度**：用 `height: 300px` → 应改用 `aspect-ratio: 4/5`
+- ❌ **两栏用 flex 而非 grid**：有明确比例关系时优先用 `grid`，比例更可控
+- ❌ **Badge 父容器忘记 `position: relative`**：标签会跑到错误位置
+- ❌ **截断暗示被忽略**：图片被边缘截断 = 可滚动区域，必须实现横向滚动
+- ❌ **进度条只写样式不写交互**：进度条必须与轮播状态联动
+
+---
+
+## 八、性能规范
+
+### 8.1 Web Vitals 指标目标（75th percentile）
+
+| 指标 | 目标值 | 说明 |
+|------|--------|------|
+| LCP | ≤ 2.5s | Largest Contentful Paint（最大内容渲染）|
+| CLS | ≤ 0.1 | Cumulative Layout Shift（累计布局偏移）|
+| INP | ≤ 200ms | Interaction to Next Paint（交互响应）|
+
+> 每次新增 Section 上线后，必须在 Lighthouse 检测，确保整页分数**不下降超过 10 分**。
+
+---
+
+### 8.2 图片性能规范
+
+- **所有图片必须懒加载**：`image_tag` 统一加 `loading: 'lazy'`，首屏主图例外（用 `loading: 'eager'` + `fetchpriority: 'high'`）
+- **图片必须声明尺寸**：通过 `aspect-ratio` 或固定容器尺寸预留空间，防止 CLS
+- **禁止用 JS 动态插入首屏图片**：会阻塞 LCP
+- **响应式图片**：通过 `widths` + `sizes` 参数输出 `srcset`，让浏览器按视口选择最合适尺寸
+
+```liquid
+{%- liquid
+  assign img_widths = '750, 1100, 1500, 2000'
+  assign img_sizes = '100vw'
+-%}
+
+{{- section.settings.image
+  | image_url: width: 1500
+  | image_tag:
+    widths: img_widths,
+    sizes: img_sizes,
+    loading: 'eager',
+    fetchpriority: 'high',
+    alt: section.settings.image.alt
+-}}
+```
+
+---
+
+### 8.3 CLS（布局偏移）防护规范
+
+- **图片容器必须预留空间**：用 `aspect-ratio` 而非写死 `height`，确保图片加载前不占位为 0
+- **字体加载**：使用主题继承的字体变量，不额外引入第三方字体（避免 FOUT/FOIT）
+- **禁止在 DOMContentLoaded 后改变元素尺寸**：JS 初始化轮播、Tabs 等组件时，不能改变容器高度
+- **Skeleton 占位**：当内容依赖异步数据时，必须用等高占位元素（可用 `placeholder_svg_tag`）
+
+```css
+/* 正确：用 aspect-ratio 预留空间，防止 CLS */
+.woo-card__image-wrapper {
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
+
+/* 错误：不预留空间，图片加载时产生布局偏移 */
+.woo-card__image-wrapper {
+  /* 无尺寸声明 */
+}
+```
+
+---
+
+### 8.4 JavaScript 性能规范
+
+- **Section JS 用 IIFE 包裹**：`(function() { ... })()` 避免污染全局作用域
+- **事件监听用事件委托**：不对每个卡片单独绑定事件，统一在父容器监听
+- **轮播 / 滑动组件不引入第三方库**：用原生 `scroll` + `IntersectionObserver` 实现，减少 JS 体积
+- **JS 只在 Section 存在时执行**：用 `document.getElementById` 判断节点存在再初始化
+
+```javascript
+(function () {
+  const slider = document.getElementById('woo-slider-{{ section.id }}');
+  if (!slider) return; // Section 不存在则跳出，不报错
+
+  // 用 IntersectionObserver 替代 scroll 事件监听，性能更好
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // 进入视口才执行动画 / 加载
+      }
+    });
+  }, { threshold: 0.1 });
+
+  observer.observe(slider);
+})();
+```
+
+---
+
+### 8.5 CSS 性能规范
+
+- **用 `{% stylesheet %}` 块而非外链 CSS 文件**：Shopify 会自动合并，减少请求数
+- **不使用 `@import`**：会产生额外网络请求，阻塞渲染
+- **动画只操作 `transform` 和 `opacity`**：这两个属性不触发 Layout / Paint，只触发 Composite
+- **图片 hover 缩放用 `transform: scale()`**：不用改变 `width` / `height`
+
+```css
+/* 正确：只触发 Composite，不影响性能 */
+.woo-card__image {
+  transition: transform 0.5s ease;
+}
+.woo-card:hover .woo-card__image {
+  transform: scale(1.05);
+}
+
+/* 错误：触发 Layout，性能差 */
+.woo-card:hover .woo-card__image {
+  width: 110%;
+  height: 110%;
+}
+```
+
+---
+
+### 8.6 Storefront 请求性能目标
+
+| 场景 | 目标 |
+|------|------|
+| Checkout 请求响应时间 | p95 ≤ 500ms |
+| Checkout 失败率 | ≤ 0.1% |
+| Section 渲染（Liquid） | 不做额外同步 API 请求 |
+
+- **禁止在 Section Liquid 中发起同步外部请求**：会阻塞整页 TTFB
+- **动态内容用 Section Rendering API**：异步加载，不阻塞首屏
+
+---
+
+## 九、参考文件
 
 | 文件 | 用途 |
 |------|------|
-| `docs/section-prompts.md` | 设计稿分析、Section 布局 Prompt、Liquid 编码规范 |
+| `docs/section-prompts.md` | 各 Section 设计稿分析与布局 Prompt |
 | `assets/custom.scss` | 全局辅助样式（只写布局工具类）|
 | `templates/index.json` | 首页 Section 配置 |
-| `sections/woo-hero-banner.liquid` | 参考实现：Hero Banner |
-| `sections/woo-campaign.liquid` | 参考实现：多图卡片 |
-| `sections/woo-brand-story.liquid` | 参考实现：Bento Grid |
