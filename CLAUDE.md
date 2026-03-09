@@ -158,7 +158,9 @@ padding-inline: 20px;
 width: min(1200px, 100%);
 ```
 
-**✅ 正确做法**：根元素使用主题 `section--{{ section.settings.section_width }}` class，由主题 CSS 统一控制宽度：
+**✅ 正确做法**：根元素使用主题 `section--{{ section.settings.section_width }}` class，**所有内容必须包裹在一个 `__inner` 容器中**，并设置 `grid-column: 1 / -1`（full-width）脱离主题 grid 约束：
+
+> ⚠️ **关键原因**：主题的 `.section` 是 `display: grid`，且 `.section > * { grid-column: 2 }` 会强制所有直接子元素进入中央列，导致内部 flex/grid 布局被破坏（Swiper 高度爆炸、两栏布局失效等）。必须用 `__inner` 包裹并设置 `grid-column` 来脱离这个约束。
 
 ```liquid
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
@@ -167,8 +169,25 @@ width: min(1200px, 100%);
   class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} tooto-xxx"
   style="padding-block-start: {{ section.settings.padding-block-start }}px; padding-block-end: {{ section.settings.padding-block-end }}px;"
 >
-  ...
+  <div class="tooto-xxx__inner">
+    ...
+  </div>
 </div>
+```
+
+对应的 CSS 必须包含：
+
+```css
+/* full-width 时占满所有列，page-width 时只占中央列 */
+.tooto-xxx__inner {
+  grid-column: 1 / -1;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.section--page-width .tooto-xxx__inner {
+  grid-column: 2;
+}
 ```
 
 Schema 中必须加入 `section_width` 配置项：
@@ -220,15 +239,39 @@ Schema 中必须加入 `section_width` 配置项：
 </script>
 ```
 
-**✅ Section 内只需给 Swiper 容器加 `min-width: 0` 防止 grid 压缩：**
+**✅ 每个使用 Swiper 的 Section，必须在 `{% stylesheet %}` 中显式声明以下核心布局 CSS**（Swiper bundle CSS 会被主题样式覆盖，必须在 Section 级别重新声明）：
 
 ```css
 .tooto-xxx__swiper {
   overflow: hidden;
   width: 100%;
   min-width: 0;
+  position: relative;
+}
+
+.tooto-xxx__swiper > .swiper-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  box-sizing: content-box;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  will-change: transform;
+}
+
+.tooto-xxx__swiper > .swiper-wrapper > .swiper-slide {
+  flex-shrink: 0;
+  width: 100%;
+  height: auto;
+  position: relative;
+  display: block;
 }
 ```
+
+> ⚠️ 使用 `>` 直接子选择器而非空格，确保只作用于本 Section 的 Swiper，不污染其他 Section。
 
 **Swiper 标准配置模板（含横线型 pagination）：**
 ```javascript
@@ -368,6 +411,7 @@ Section 必须设置禁用组：
 - [ ] 无图时有 `placeholder_svg_tag` 占位
 - [ ] 颜色和字体不硬编码，通过 `color_scheme` 继承主题变量
 - [ ] 根元素使用 `section section--{{ section.settings.section_width }}` class 体系
+- [ ] 所有内容包裹在 `__inner` 容器中，CSS 设置 `grid-column: 1 / -1`（full-width）/ `grid-column: 2`（page-width）脱离主题 grid 约束
 - [ ] Schema 包含 `section_width` select 配置项，默认 `page-width`
 - [ ] Schema 包含 `color_scheme` / `padding-block-start` / `padding-block-end`
 - [ ] Schema 包含 `presets`

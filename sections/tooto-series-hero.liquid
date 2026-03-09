@@ -1,0 +1,311 @@
+{%- liquid
+  assign bg_widths = '750, 1100, 1500, 2000, 3000, 3840'
+  assign bg_sizes = '100vw'
+-%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div
+  id="tooto-series-hero-{{ section.id }}"
+  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} tooto-series-hero"
+  style="padding-block-start: {{ section.settings.padding-block-start }}px; padding-block-end: {{ section.settings.padding-block-end }}px;"
+>
+  <div
+    class="tooto-series-hero__inner"
+    style="min-height: {{ section.settings.section_height }}vh;"
+  >
+    {%- comment -%} 背景图 {%- endcomment -%}
+    <div class="tooto-series-hero__bg">
+      {%- if section.settings.image != blank -%}
+        {{
+          section.settings.image
+          | image_url: width: 2000
+          | image_tag:
+            widths: bg_widths,
+            sizes: bg_sizes,
+            alt: section.settings.image.alt,
+            loading: 'eager',
+            fetchpriority: 'high',
+            class: 'tooto-series-hero__bg-image'
+        }}
+      {%- else -%}
+        {{ 'hero-apparel-1' | placeholder_svg_tag: 'tooto-series-hero__bg-image tooto-series-hero__bg-image--placeholder' }}
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} 遮罩 {%- endcomment -%}
+    {%- if section.settings.overlay_opacity > 0 -%}
+      <div
+        class="tooto-series-hero__overlay"
+        style="opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};"
+      ></div>
+    {%- endif -%}
+
+    {%- comment -%} 内容层：左下角标题 + 右下角描述 {%- endcomment -%}
+    <div class="tooto-series-hero__content">
+      {%- comment -%} 左下：系列名 {%- endcomment -%}
+      <div class="tooto-series-hero__title-block">
+        <h2 class="tooto-series-hero__heading">
+          <span class="tooto-series-hero__heading-bold">{{ section.settings.heading_bold | escape }}</span>
+          <span class="tooto-series-hero__heading-light">{{ section.settings.heading_light | escape }}</span>
+        </h2>
+      </div>
+
+      {%- comment -%} 右下：描述 + CTA {%- endcomment -%}
+      <div class="tooto-series-hero__desc-block">
+        {%- if section.settings.description != blank -%}
+          <p class="tooto-series-hero__description">{{ section.settings.description }}</p>
+        {%- endif -%}
+        {%- if section.settings.link_label != blank and section.settings.link_url != blank -%}
+          <a class="tooto-series-hero__link" href="{{ section.settings.link_url }}">
+            {{ section.settings.link_label | escape }} &rarr;
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .tooto-series-hero__inner {
+    grid-column: 1 / -1;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    box-sizing: border-box;
+  }
+
+  .section--page-width .tooto-series-hero__inner {
+    grid-column: 2;
+  }
+
+  /* ── 背景图 ── */
+  .tooto-series-hero__bg {
+    position: absolute;
+    inset: 0;
+  }
+
+  .tooto-series-hero__bg-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .tooto-series-hero__bg-image--placeholder {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ── 遮罩 ── */
+  .tooto-series-hero__overlay {
+    position: absolute;
+    inset: 0;
+    background-color: #000;
+    pointer-events: none;
+  }
+
+  /* ── 内容层 ── */
+  .tooto-series-hero__content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px;
+    padding: 48px 60px;
+  }
+
+  /* ── 左下：系列名 ── */
+  .tooto-series-hero__heading {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.0;
+  }
+
+  .tooto-series-hero__heading-bold {
+    font-size: 3.75rem;
+    font-weight: 800;
+    color: var(--color-background);
+    display: block;
+  }
+
+  .tooto-series-hero__heading-light {
+    font-size: 3.75rem;
+    font-weight: 400;
+    color: var(--color-background);
+    display: block;
+  }
+
+  /* ── 右下：描述 + CTA ── */
+  .tooto-series-hero__desc-block {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 300px;
+    flex-shrink: 0;
+  }
+
+  .tooto-series-hero__description {
+    font-size: 0.875rem;
+    line-height: 1.65;
+    margin: 0;
+    color: var(--color-background);
+    opacity: 0.9;
+  }
+
+  .tooto-series-hero__link {
+    font-size: 0.8125rem;
+    color: var(--color-background);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: opacity 0.2s ease;
+    width: fit-content;
+  }
+
+  .tooto-series-hero__link:hover {
+    opacity: 0.7;
+  }
+
+  /* ── 响应式 ── */
+  @media (max-width: 767px) {
+    .tooto-series-hero__content {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 24px;
+      padding: 32px 24px;
+    }
+
+    .tooto-series-hero__heading-bold,
+    .tooto-series-hero__heading-light {
+      font-size: 2.5rem;
+    }
+
+    .tooto-series-hero__desc-block {
+      max-width: 100%;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Tooto Series Hero",
+  "tag": "section",
+  "class": "tooto-series-hero-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background Image"
+    },
+    {
+      "type": "text",
+      "id": "heading_bold",
+      "label": "Heading Bold Line",
+      "default": "CityofGems"
+    },
+    {
+      "type": "text",
+      "id": "heading_light",
+      "label": "Heading Light Line",
+      "default": "Series"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel. Their inherent elasticity reduces foot fatigue, making them ideal for bedrooms or children's rooms."
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Link Label",
+      "default": "Shop More"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link URL"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay Opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "section_height",
+      "label": "Section Height (vh)",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "vh",
+      "default": 75
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        { "value": "page-width", "label": "Page width" },
+        { "value": "full-width", "label": "Full width" }
+      ],
+      "default": "full-width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tooto Series Hero",
+      "settings": {
+        "heading_bold": "CityofGems",
+        "heading_light": "Series",
+        "link_label": "Shop More",
+        "overlay_opacity": 20,
+        "section_height": 75,
+        "section_width": "full-width",
+        "color_scheme": "scheme-1"
+      }
+    }
+  ]
+}
+{% endschema %}

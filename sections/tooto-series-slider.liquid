@@ -10,6 +10,7 @@
   style="padding-block-start: {{ section.settings.padding-block-start }}px; padding-block-end: {{ section.settings.padding-block-end }}px;"
 >
 
+  <div class="tooto-series-slider__inner">
   {%- comment -%} ── Header 区：两栏非等分 ── {%- endcomment -%}
   <div class="tooto-series-slider__header">
     <div class="tooto-series-slider__header-left">
@@ -72,6 +73,7 @@
   {%- comment -%} ── 横线型进度条（自定义 pagination） ── {%- endcomment -%}
   <div class="tooto-series-slider__pagination" id="tooto-series-pagination-{{ section.id }}"></div>
 
+  </div>{%- comment -%} /__inner {%- endcomment -%}
 </div>
 
 <script>
@@ -113,24 +115,46 @@
 </script>
 
 {% stylesheet %}
-  /* ── Swiper 核心布局（防止主题 CSS 覆盖）── */
+  /* ── 脱离主题 section grid，占满全部列 ── */
+  .tooto-series-slider__inner {
+    grid-column: 1 / -1;
+    width: 100%;
+    padding-inline: var(--page-margin, 20px);
+    box-sizing: border-box;
+  }
+
+  .section--page-width .tooto-series-slider__inner {
+    grid-column: 2;
+    padding-inline: 0;
+  }
+
+  /* ── Swiper 核心布局（显式声明，防止主题 CSS 覆盖）── */
   .tooto-series-slider__swiper {
     overflow: hidden;
     width: 100%;
+    min-width: 0;
+    position: relative;
   }
 
-  .tooto-series-slider__swiper .swiper-wrapper {
+  .tooto-series-slider__swiper > .swiper-wrapper {
     display: flex;
     flex-direction: row;
+    flex-wrap: nowrap;
     align-items: stretch;
     box-sizing: content-box;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    will-change: transform;
   }
 
-  .tooto-series-slider__swiper .swiper-slide {
+  .tooto-series-slider__swiper > .swiper-wrapper > .swiper-slide {
     flex-shrink: 0;
     width: 100%;
     height: auto;
     position: relative;
+    display: block;
   }
 
   /* ── Header 区 ── */
