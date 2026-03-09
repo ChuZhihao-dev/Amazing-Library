@@ -240,13 +240,14 @@
     "tooto_promo_banner_1": {
       "type": "tooto-promo-banner",
       "settings": {
+        "image": "shopify://shop_images/1211_2x_fb7e9105-cc53-4578-aa1f-c4aa429548ba.webp",
         "overlay_opacity": 45,
         "section_height": 55,
         "heading": "Personalised For\nYour Home",
         "description": "With Our Tailored To Fit Wool Rugs, You Can Personalise Your Rug By Choosing The Style, Colour, Size, Shape & Edging Best Suited To Your Home.",
         "cta_label": "Customize now",
         "cta_url": "",
-        "section_width": "full-width",
+        "section_width": "page-width",
         "color_scheme": "scheme-1",
         "padding-block-start": 0,
         "padding-block-end": 0
