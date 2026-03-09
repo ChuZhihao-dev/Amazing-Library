@@ -6,7 +6,8 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
     "hero_jVaWmY": {
       "type": "hero",
@@ -65,6 +66,7 @@
         "custom_mobile_media": false,
         "media_type_1_mobile": "image",
         "media_type_2_mobile": "image",
+        "link": "",
         "open_in_new_tab": false,
         "content_direction": "column",
         "vertical_on_mobile": true,
@@ -95,50 +97,64 @@
           "type": "card",
           "settings": {
             "badge": "Cloud Series",
-            "title": "Woo Carpet Series 1"
+            "title": "Woo Carpet Series 1",
+            "link": ""
           }
         },
         "card_2": {
           "type": "card",
           "settings": {
             "badge": "CityofGems",
-            "title": "Woo Carpet Series 2"
+            "title": "Woo Carpet Series 2",
+            "link": ""
           }
         },
         "card_3": {
           "type": "card",
           "settings": {
             "badge": "Pathof Style",
-            "title": "Woo Carpet Series 3"
+            "title": "Woo Carpet Series 3",
+            "link": ""
           }
         },
         "card_4": {
           "type": "card",
           "settings": {
             "badge": "New Series",
-            "title": "Woo Carpet Series 4"
+            "title": "Woo Carpet Series 4",
+            "link": ""
           }
         },
         "card_5": {
           "type": "card",
           "settings": {
             "badge": "New Series",
-            "title": "Woo Carpet Series 5"
+            "title": "Woo Carpet Series 5",
+            "link": ""
           }
         },
         "card_6": {
           "type": "card",
           "settings": {
             "badge": "New Series",
-            "title": "Woo Carpet Series 6"
+            "title": "Woo Carpet Series 6",
+            "link": ""
           }
         }
       },
-      "block_order": ["card_1", "card_2", "card_3", "card_4", "card_5", "card_6"],
+      "block_order": [
+        "card_1",
+        "card_2",
+        "card_3",
+        "card_4",
+        "card_5",
+        "card_6"
+      ],
       "settings": {
         "heading": "Woo Cityofgems Slogn",
         "description": "Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel. Their inherent elasticity reduces foot fatigue, making them ideal for bedrooms or children's rooms.",
         "link_label": "See More",
+        "link_url": "",
         "section_width": "page-width",
         "color_scheme": "scheme-1",
         "padding-block-start": 60,
@@ -151,32 +167,40 @@
         "variant_1": {
           "type": "variant",
           "settings": {
+            "product_image": "shopify://shop_images/4400_2x_2b377622-5199-4fe1-b7a3-c41d7b6c1c36.webp",
             "swatch_color": "#7B3F5E",
             "color_label": "Burgundy"
           }
         },
-        "variant_2": {
+        "variant_aimKpt": {
           "type": "variant",
           "settings": {
-            "swatch_color": "#C8BFB0",
-            "color_label": "Beige"
+            "product_image": "shopify://shop_images/4400_2x_2b377622-5199-4fe1-b7a3-c41d7b6c1c36.webp",
+            "swatch_color": "#7B3F5E",
+            "color_label": "Burgundy"
           }
         },
-        "variant_3": {
+        "variant_66xFgL": {
           "type": "variant",
           "settings": {
-            "swatch_color": "#2E5FA3",
-            "color_label": "Blue"
+            "product_image": "shopify://shop_images/4400_2x_2b377622-5199-4fe1-b7a3-c41d7b6c1c36.webp",
+            "swatch_color": "#7B3F5E",
+            "color_label": "Burgundy"
           }
         }
       },
-      "block_order": ["variant_1", "variant_2", "variant_3"],
+      "block_order": [
+        "variant_1",
+        "variant_aimKpt",
+        "variant_66xFgL"
+      ],
       "settings": {
         "series_label_bold": "Pathof",
         "series_label_light": "Shule",
         "link_label": "See More",
+        "link_url": "",
         "product_name_bold": "Cloud",
-        "product_name_light": " Scape",
+        "product_name_light": "Scape",
         "product_subtitle": "Woven Serenity Wool Rug  0981",
         "section_width": "full-width",
         "color_scheme": "scheme-1",
