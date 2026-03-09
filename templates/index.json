@@ -145,6 +145,45 @@
         "padding-block-end": 60
       }
     },
+    "tooto_product_showcase_1": {
+      "type": "tooto-product-showcase",
+      "blocks": {
+        "variant_1": {
+          "type": "variant",
+          "settings": {
+            "swatch_color": "#7B3F5E",
+            "color_label": "Burgundy"
+          }
+        },
+        "variant_2": {
+          "type": "variant",
+          "settings": {
+            "swatch_color": "#C8BFB0",
+            "color_label": "Beige"
+          }
+        },
+        "variant_3": {
+          "type": "variant",
+          "settings": {
+            "swatch_color": "#2E5FA3",
+            "color_label": "Blue"
+          }
+        }
+      },
+      "block_order": ["variant_1", "variant_2", "variant_3"],
+      "settings": {
+        "series_label_bold": "Pathof",
+        "series_label_light": "Shule",
+        "link_label": "See More",
+        "product_name_bold": "Cloud",
+        "product_name_light": " Scape",
+        "product_subtitle": "Woven Serenity Wool Rug  0981",
+        "section_width": "full-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
     "product_list_fa6P9H": {
       "type": "product-list",
       "blocks": {
@@ -342,7 +381,8 @@
   },
   "order": [
     "hero_jVaWmY",
-    "product_list_fa6P9H",
-    "tooto_series_slider_1"
+    "tooto_series_slider_1",
+    "tooto_product_showcase_1",
+    "product_list_fa6P9H"
   ]
 }

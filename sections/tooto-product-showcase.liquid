@@ -1,0 +1,574 @@
+{%- liquid
+  assign left_img_widths = '600, 900, 1200'
+  assign left_img_sizes = '(min-width: 768px) 50vw, 100vw'
+  assign product_img_widths = '400, 600, 900'
+  assign product_img_sizes = '(min-width: 768px) 40vw, 90vw'
+-%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div
+  id="tooto-product-showcase-{{ section.id }}"
+  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} tooto-product-showcase"
+  style="padding-block-start: {{ section.settings.padding-block-start }}px; padding-block-end: {{ section.settings.padding-block-end }}px;"
+>
+  <div class="tooto-product-showcase__grid">
+
+    {%- comment -%} ── 左栏：全高大图 + 文字叠加 ── {%- endcomment -%}
+    <div class="tooto-product-showcase__left">
+      <div class="tooto-product-showcase__left-image-wrapper">
+        {%- if section.settings.left_image != blank -%}
+          {{
+            section.settings.left_image
+            | image_url: width: 1200
+            | image_tag:
+              widths: left_img_widths,
+              sizes: left_img_sizes,
+              alt: section.settings.left_image.alt,
+              loading: 'lazy',
+              class: 'tooto-product-showcase__left-image'
+          }}
+        {%- else -%}
+          {{ 'collection-1' | placeholder_svg_tag: 'tooto-product-showcase__left-image tooto-product-showcase__left-image--placeholder' }}
+        {%- endif -%}
+
+        {%- comment -%} 左下角文字叠加 {%- endcomment -%}
+        <div class="tooto-product-showcase__left-content">
+          <h2 class="tooto-product-showcase__series-name">
+            <span class="tooto-product-showcase__series-bold">{{ section.settings.series_label_bold | escape }}</span>
+            <span class="tooto-product-showcase__series-light">{{ section.settings.series_label_light | escape }}</span>
+          </h2>
+          {%- if section.settings.link_label != blank and section.settings.link_url != blank -%}
+            <a class="tooto-product-showcase__see-more" href="{{ section.settings.link_url }}">
+              {{ section.settings.link_label | escape }}
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+
+    {%- comment -%} ── 右栏：产品图轮播 + 色板 + 产品信息 ── {%- endcomment -%}
+    <div class="tooto-product-showcase__right">
+
+      {%- comment -%} 箭头 + Swiper {%- endcomment -%}
+      <div class="tooto-product-showcase__swiper-area">
+        <button class="tooto-product-showcase__arrow tooto-product-showcase__arrow--prev" id="tooto-prev-{{ section.id }}" aria-label="Previous">&#8249;</button>
+
+        <div class="swiper tooto-product-showcase__swiper" id="tooto-swiper-{{ section.id }}">
+          <div class="swiper-wrapper">
+            {%- for block in section.blocks -%}
+              <div class="swiper-slide tooto-product-showcase__slide" {{ block.shopify_attributes }}>
+                <div class="tooto-product-showcase__product-image-wrapper">
+                  {%- if block.settings.product_image != blank -%}
+                    {{
+                      block.settings.product_image
+                      | image_url: width: 900
+                      | image_tag:
+                        widths: product_img_widths,
+                        sizes: product_img_sizes,
+                        alt: block.settings.product_image.alt,
+                        loading: 'lazy',
+                        class: 'tooto-product-showcase__product-image'
+                    }}
+                  {%- else -%}
+                    {{ 'product-1' | placeholder_svg_tag: 'tooto-product-showcase__product-image tooto-product-showcase__product-image--placeholder' }}
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+
+        <button class="tooto-product-showcase__arrow tooto-product-showcase__arrow--next" id="tooto-next-{{ section.id }}" aria-label="Next">&#8250;</button>
+      </div>
+
+      {%- comment -%} 色板选择器 {%- endcomment -%}
+      <div class="tooto-product-showcase__swatches" id="tooto-swatches-{{ section.id }}">
+        {%- for block in section.blocks -%}
+          <button
+            class="tooto-product-showcase__swatch{% if forloop.first %} tooto-product-showcase__swatch--active{% endif %}"
+            data-index="{{ forloop.index0 }}"
+            aria-label="{{ block.settings.color_label | escape }}"
+            style="background-color: {{ block.settings.swatch_color }};"
+          ></button>
+        {%- endfor -%}
+      </div>
+
+      {%- comment -%} 产品名 + 副标题 {%- endcomment -%}
+      <div class="tooto-product-showcase__product-info">
+        <p class="tooto-product-showcase__product-name">
+          <strong>{{ section.settings.product_name_bold | escape }}</strong>{{ section.settings.product_name_light | escape }}
+        </p>
+        {%- if section.settings.product_subtitle != blank -%}
+          <p class="tooto-product-showcase__product-subtitle">{{ section.settings.product_subtitle | escape }}</p>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} 横线型进度条 {%- endcomment -%}
+      <div class="tooto-product-showcase__pagination" id="tooto-pagination-{{ section.id }}"></div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const sectionEl = document.getElementById('tooto-product-showcase-{{ section.id }}');
+    if (!sectionEl) return;
+
+    const swiperEl = document.getElementById('tooto-swiper-{{ section.id }}');
+    const paginationEl = document.getElementById('tooto-pagination-{{ section.id }}');
+    const prevBtn = document.getElementById('tooto-prev-{{ section.id }}');
+    const nextBtn = document.getElementById('tooto-next-{{ section.id }}');
+    const swatchesEl = document.getElementById('tooto-swatches-{{ section.id }}');
+
+    const swiper = new Swiper(swiperEl, {
+      slidesPerView: 1,
+      spaceBetween: 0,
+      loop: false,
+      navigation: {
+        prevEl: prevBtn,
+        nextEl: nextBtn,
+      },
+      pagination: {
+        el: paginationEl,
+        clickable: true,
+        renderBullet: function (index, className) {
+          return '<button class="' + className + ' tooto-product-showcase__dot" aria-label="Go to slide ' + (index + 1) + '"></button>';
+        },
+      },
+      on: {
+        slideChange: function () {
+          updateSwatches(this.activeIndex);
+        },
+      },
+    });
+
+    // 色板点击 → 切换 Swiper
+    if (swatchesEl) {
+      swatchesEl.addEventListener('click', function (e) {
+        const btn = e.target.closest('[data-index]');
+        if (!btn) return;
+        const index = parseInt(btn.dataset.index, 10);
+        swiper.slideTo(index);
+        updateSwatches(index);
+      });
+    }
+
+    function updateSwatches(activeIndex) {
+      if (!swatchesEl) return;
+      swatchesEl.querySelectorAll('.tooto-product-showcase__swatch').forEach(function (swatch, i) {
+        swatch.classList.toggle('tooto-product-showcase__swatch--active', i === activeIndex);
+      });
+    }
+  })();
+</script>
+
+{% stylesheet %}
+  /* ── Swiper 布局容器 ── */
+  .tooto-product-showcase__swiper {
+    overflow: hidden;
+    width: 100%;
+    min-width: 0;
+  }
+
+  /* ── 两栏网格 ── */
+  .tooto-product-showcase__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 600px;
+  }
+
+  /* ── 左栏 ── */
+  .tooto-product-showcase__left {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tooto-product-showcase__left-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 600px;
+  }
+
+  .tooto-product-showcase__left-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .tooto-product-showcase__left-image--placeholder {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* 左下角文字叠加 */
+  .tooto-product-showcase__left-content {
+    position: absolute;
+    bottom: 40px;
+    left: 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .tooto-product-showcase__series-name {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+  }
+
+  .tooto-product-showcase__series-bold {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-background);
+  }
+
+  .tooto-product-showcase__series-light {
+    font-size: 2.5rem;
+    font-weight: 400;
+    color: var(--color-background);
+  }
+
+  .tooto-product-showcase__see-more {
+    font-size: 0.8125rem;
+    color: var(--color-background);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: opacity 0.2s ease;
+    width: fit-content;
+  }
+
+  .tooto-product-showcase__see-more:hover {
+    opacity: 0.7;
+  }
+
+  /* ── 右栏 ── */
+  .tooto-product-showcase__right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    padding: 48px 40px;
+  }
+
+  /* 箭头 + Swiper 区域 */
+  .tooto-product-showcase__swiper-area {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .tooto-product-showcase__arrow {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    font-size: 1.75rem;
+    cursor: pointer;
+    color: var(--color-foreground);
+    opacity: 0.5;
+    padding: 8px;
+    transition: opacity 0.2s ease;
+    line-height: 1;
+  }
+
+  .tooto-product-showcase__arrow:hover {
+    opacity: 1;
+  }
+
+  .tooto-product-showcase__arrow.swiper-button-disabled {
+    opacity: 0.2;
+    cursor: default;
+  }
+
+  /* 产品图 */
+  .tooto-product-showcase__product-image-wrapper {
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+
+  .tooto-product-showcase__product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  .tooto-product-showcase__product-image--placeholder {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ── 色板 ── */
+  .tooto-product-showcase__swatches {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .tooto-product-showcase__swatch {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    padding: 0;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+    outline: none;
+  }
+
+  .tooto-product-showcase__swatch--active {
+    border-color: var(--color-foreground);
+    transform: scale(1.2);
+  }
+
+  /* ── 产品信息 ── */
+  .tooto-product-showcase__product-info {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .tooto-product-showcase__product-name {
+    font-size: 1.25rem;
+    margin: 0;
+    color: var(--color-foreground-heading);
+  }
+
+  .tooto-product-showcase__product-subtitle {
+    font-size: 0.875rem;
+    margin: 0;
+    color: var(--color-foreground);
+    opacity: 0.7;
+  }
+
+  /* ── 横线型进度条 ── */
+  .tooto-product-showcase__pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .tooto-product-showcase__pagination .tooto-product-showcase__dot {
+    width: 40px;
+    height: 2px;
+    border: none;
+    border-radius: 2px;
+    background-color: var(--color-foreground);
+    opacity: 0.2;
+    cursor: pointer;
+    padding: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .tooto-product-showcase__pagination .swiper-pagination-bullet-active.tooto-product-showcase__dot {
+    opacity: 1;
+  }
+
+  /* ── 响应式 ── */
+  @media (max-width: 767px) {
+    .tooto-product-showcase__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .tooto-product-showcase__left-image-wrapper {
+      min-height: 400px;
+    }
+
+    .tooto-product-showcase__left-content {
+      bottom: 24px;
+      left: 20px;
+    }
+
+    .tooto-product-showcase__series-bold,
+    .tooto-product-showcase__series-light {
+      font-size: 1.75rem;
+    }
+
+    .tooto-product-showcase__right {
+      padding: 32px 20px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Tooto Product Showcase",
+  "tag": "section",
+  "class": "tooto-product-showcase-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Left Panel"
+    },
+    {
+      "type": "image_picker",
+      "id": "left_image",
+      "label": "Left Background Image"
+    },
+    {
+      "type": "text",
+      "id": "series_label_bold",
+      "label": "Series Name (Bold line)",
+      "default": "Pathof"
+    },
+    {
+      "type": "text",
+      "id": "series_label_light",
+      "label": "Series Name (Light line)",
+      "default": "Shule"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Link Label",
+      "default": "See More"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link URL"
+    },
+    {
+      "type": "header",
+      "content": "Right Panel"
+    },
+    {
+      "type": "text",
+      "id": "product_name_bold",
+      "label": "Product Name (Bold part)",
+      "default": "Cloud"
+    },
+    {
+      "type": "text",
+      "id": "product_name_light",
+      "label": "Product Name (Light part)",
+      "default": " Scape"
+    },
+    {
+      "type": "text",
+      "id": "product_subtitle",
+      "label": "Product Subtitle",
+      "default": "Woven Serenity Wool Rug  0981"
+    },
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        { "value": "page-width", "label": "Page width" },
+        { "value": "full-width", "label": "Full width" }
+      ],
+      "default": "full-width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "variant",
+      "name": "Product Variant",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "product_image",
+          "label": "Product Image"
+        },
+        {
+          "type": "text",
+          "id": "swatch_color",
+          "label": "Swatch Color (CSS color value)",
+          "default": "#8B3A3A",
+          "info": "e.g. #8B3A3A or rgb(139,58,58)"
+        },
+        {
+          "type": "text",
+          "id": "color_label",
+          "label": "Color Label (for accessibility)",
+          "default": "Burgundy"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tooto Product Showcase",
+      "settings": {
+        "series_label_bold": "Pathof",
+        "series_label_light": "Shule",
+        "link_label": "See More",
+        "product_name_bold": "Cloud",
+        "product_name_light": " Scape",
+        "product_subtitle": "Woven Serenity Wool Rug  0981",
+        "section_width": "full-width",
+        "color_scheme": "scheme-1"
+      },
+      "blocks": [
+        {
+          "type": "variant",
+          "settings": {
+            "swatch_color": "#7B3F5E",
+            "color_label": "Burgundy"
+          }
+        },
+        {
+          "type": "variant",
+          "settings": {
+            "swatch_color": "#C8BFB0",
+            "color_label": "Beige"
+          }
+        },
+        {
+          "type": "variant",
+          "settings": {
+            "swatch_color": "#2E5FA3",
+            "color_label": "Blue"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

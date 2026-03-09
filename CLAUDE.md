@@ -1,4 +1,4 @@
-# Woo Carpet — Claude 项目规范
+# tooto — Claude 项目规范
 
 > 本文件会在每次对话开始时自动读取。
 > 开发任何 Section / Snippet / 功能前，必须完整遵守以下规范。
@@ -43,12 +43,12 @@
   ```
 - Color Scheme 通过 class 继承：
   ```liquid
-  <section class="woo-xxx color-{{ section.settings.color_scheme }}">
+  <section class="tooto-xxx color-{{ section.settings.color_scheme }}">
   ```
 
 ### 2.3 custom.scss 只写布局辅助
 - 只允许写**布局工具类**，不写颜色、字体、具体组件样式
-- 当前已有工具类：`.scrollbar-hide` / `.woo-img-zoom` / `.line-clamp-2` / `.woo-container` / `.woo-bento-grid`
+- 当前已有工具类：`.scrollbar-hide` / `.tooto-img-zoom` / `.line-clamp-2` / `.tooto-container` / `.tooto-bento-grid`
 
 ---
 
@@ -146,16 +146,110 @@ alt: image.alt,
 常用 placeholder 名称：`hero-apparel-1` / `hero-apparel-2` / `product-1` ~ `product-6` / `collection-1` ~ `collection-6`
 
 
-### 3.6 Section 不能自行定义页面主宽度
+### 3.6 Section 宽度必须使用主题 section 体系
 
-所有新建 Section **禁止直接设置页面主宽度**，不能自己创建新的 container / max-width 布局体系。
+所有新建 Section **禁止自行定义页面主宽度**，不能自己创建新的 container / max-width 布局体系。
 
-**禁止写法包括但不限于：**
+**❌ 禁止写法：**
 ```css
 max-width: 1200px;
 margin-inline: auto;
 padding-inline: 20px;
 width: min(1200px, 100%);
+```
+
+**✅ 正确做法**：根元素使用主题 `section--{{ section.settings.section_width }}` class，由主题 CSS 统一控制宽度：
+
+```liquid
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div
+  id="tooto-xxx-{{ section.id }}"
+  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} tooto-xxx"
+  style="padding-block-start: {{ section.settings.padding-block-start }}px; padding-block-end: {{ section.settings.padding-block-end }}px;"
+>
+  ...
+</div>
+```
+
+Schema 中必须加入 `section_width` 配置项：
+
+```json
+{
+  "type": "select",
+  "id": "section_width",
+  "label": "Section Width",
+  "options": [
+    { "value": "page-width", "label": "Page width" },
+    { "value": "full-width", "label": "Full width" }
+  ],
+  "default": "page-width"
+}
+```
+
+主题 section 宽度 class 说明：
+
+| Class | 效果 |
+|-------|------|
+| `section--page-width` | 内容限制在页面宽度内（居中）|
+| `section--full-width` | 内容横跨全屏 |
+
+---
+
+### 3.7 ⚠️ Swiper.js 使用规范
+
+本项目轮播组件统一使用 **Swiper.js**，通过 CDN 引入。
+
+**❌ 错误写法（加 `defer` 导致内联 script 执行时 Swiper 未就绪，slides 垂直堆叠导致页面高度爆炸）：**
+```html
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+<script>
+  new Swiper(...); // 此时 Swiper 未定义，初始化失败
+</script>
+```
+
+**✅ 正确写法：Swiper 已在 `layout/theme.liquid` 全局加载，Section 内直接使用即可：**
+```html
+<script>
+  (function () {
+    const sectionEl = document.getElementById('tooto-xxx-{{ section.id }}');
+    if (!sectionEl) return;
+    new Swiper(sectionEl.querySelector('.swiper'), {
+      // 配置...
+    });
+  })();
+</script>
+```
+
+**✅ Section 内只需给 Swiper 容器加 `min-width: 0` 防止 grid 压缩：**
+
+```css
+.tooto-xxx__swiper {
+  overflow: hidden;
+  width: 100%;
+  min-width: 0;
+}
+```
+
+**Swiper 标准配置模板（含横线型 pagination）：**
+```javascript
+new Swiper(swiperEl, {
+  slidesPerView: 1,
+  spaceBetween: 20,
+  loop: false,
+  slidesPerGroup: 1,
+  pagination: {
+    el: paginationEl,
+    clickable: true,
+    renderBullet: function (index, className) {
+      return '<button class="' + className + ' tooto-xxx__dot" aria-label="Go to page ' + (index + 1) + '"></button>';
+    },
+  },
+  breakpoints: {
+    768: { slidesPerView: 2, spaceBetween: 20, slidesPerGroup: 2 },
+    1024: { slidesPerView: 3, spaceBetween: 20, slidesPerGroup: 3 },
+  },
+});
+```
 
 ---
 
@@ -228,8 +322,8 @@ Section 必须设置禁用组：
 
 {# 3. HTML 结构 #}
 <section
-  id="woo-xxx-{{ section.id }}"
-  class="woo-xxx color-{{ section.settings.color_scheme }}"
+  id="tooto-xxx-{{ section.id }}"
+  class="tooto-xxx color-{{ section.settings.color_scheme }}"
   style="padding-block-start: {{ section.settings.padding-block-start }}px; padding-block-end: {{ section.settings.padding-block-end }}px;"
 >
   ...
@@ -244,15 +338,15 @@ Section 必须设置禁用组：
 
 {# 5. 样式 #}
 {% stylesheet %}
-  .woo-xxx { ... }
+  .tooto-xxx { ... }
 {% endstylesheet %}
 
 {# 6. Schema #}
 {% schema %}
 {
-  "name": "Woo Xxx",
+  "name": "Tooto Xxx",
   "tag": "section",
-  "class": "woo-xxx-wrapper",
+  "class": "tooto-xxx-wrapper",
   "disabled_on": { "groups": ["header", "footer"] },
   "settings": [ ... ],
   "presets": [ ... ]
@@ -266,17 +360,22 @@ Section 必须设置禁用组：
 
 每次生成新 Section 代码后，逐项检查：
 
+- [ ] 文件名以 `tooto-` 开头
 - [ ] 顶部 `{%- liquid -%}` 块中声明了所有 `widths` / `sizes` 变量
 - [ ] `image_tag` 的 `widths` 和 `sizes` 使用变量，不使用字符串字面量
 - [ ] `alt` 参数不加 `| escape`
 - [ ] `style` 属性使用单行写法
 - [ ] 无图时有 `placeholder_svg_tag` 占位
 - [ ] 颜色和字体不硬编码，通过 `color_scheme` 继承主题变量
+- [ ] 根元素使用 `section section--{{ section.settings.section_width }}` class 体系
+- [ ] Schema 包含 `section_width` select 配置项，默认 `page-width`
 - [ ] Schema 包含 `color_scheme` / `padding-block-start` / `padding-block-end`
 - [ ] Schema 包含 `presets`
 - [ ] Schema 包含 `disabled_on: { groups: ["header", "footer"] }`
-- [ ] Section HTML 根元素带有 `id="woo-xxx-{{ section.id }}"`
-- [ ] CSS class 命名使用 BEM：`.woo-xxx__element--modifier`
+- [ ] Section HTML 根元素带有 `id="tooto-xxx-{{ section.id }}"`
+- [ ] CSS class 命名使用 BEM：`.tooto-xxx__element--modifier`
+- [ ] 使用 Swiper 时：**不在 Section 内引入 CDN**，Swiper 已在 `layout/theme.liquid` 全局加载
+- [ ] 使用 Swiper 时：Swiper 容器加 `min-width: 0` 防止外层 grid 压缩导致高度异常
 
 ---
 
@@ -415,13 +514,13 @@ Section 必须设置禁用组：
 
 横线型进度条 CSS 规范：
 ```css
-.woo-slider__pagination {
+.tooto-slider__pagination {
   display: flex;
   justify-content: center;
   gap: 6px;
   margin-top: 32px;
 }
-.woo-slider__dot {
+.tooto-slider__dot {
   width: 40px;
   height: 2px;
   background-color: var(--color-foreground);
@@ -429,7 +528,7 @@ Section 必须设置禁用组：
   cursor: pointer;
   transition: opacity 0.3s ease;
 }
-.woo-slider__dot--active {
+.tooto-slider__dot--active {
   opacity: 1;
 }
 ```
@@ -450,7 +549,7 @@ Section 必须设置禁用组：
 
 ```css
 /* 图片容器必须有 position: relative */
-.woo-card__badge {
+.tooto-card__badge {
   position: absolute;
   top: 12px;
   left: 12px;
@@ -541,13 +640,13 @@ Section 必须设置禁用组：
 
 ```css
 /* 正确：用 aspect-ratio 预留空间，防止 CLS */
-.woo-card__image-wrapper {
+.tooto-card__image-wrapper {
   aspect-ratio: 4 / 5;
   overflow: hidden;
 }
 
 /* 错误：不预留空间，图片加载时产生布局偏移 */
-.woo-card__image-wrapper {
+.tooto-card__image-wrapper {
   /* 无尺寸声明 */
 }
 ```
@@ -562,7 +661,7 @@ Section 必须设置禁用组：
 
 ```javascript
 (function () {
-  const slider = document.getElementById('woo-slider-{{ section.id }}');
+  const slider = document.getElementById('tooto-slider-{{ section.id }}');
   if (!slider) return; // Section 不存在则跳出，不报错
 
   // 用 IntersectionObserver 替代 scroll 事件监听，性能更好
@@ -589,15 +688,15 @@ Section 必须设置禁用组：
 
 ```css
 /* 正确：只触发 Composite，不影响性能 */
-.woo-card__image {
+.tooto-card__image {
   transition: transform 0.5s ease;
 }
-.woo-card:hover .woo-card__image {
+.tooto-card:hover .tooto-card__image {
   transform: scale(1.05);
 }
 
 /* 错误：触发 Layout，性能差 */
-.woo-card:hover .woo-card__image {
+.tooto-card:hover .tooto-card__image {
   width: 110%;
   height: 110%;
 }
