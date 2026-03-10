@@ -1,0 +1,135 @@
+{%- liquid
+  assign image = section.settings.image
+  assign title = section.settings.title
+  assign height = section.settings.height
+  assign color_scheme = section.settings.color_scheme
+  assign section_width = section.settings.section_width
+-%}
+
+<div
+  id="tooto-simple-banner-{{ section.id }}"
+  class="section section--{{ section_width }} color-{{ color_scheme }} tooto-simple-banner"
+  style="--banner-height: {{ height }}vw;"
+>
+  <div class="tooto-simple-banner__inner">
+    {%- if image != blank -%}
+      {%- liquid
+        assign img_widths = '400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000'
+        assign img_sizes = '(min-width: 990px) 100vw, 100vw'
+      -%}
+      {{ image | image_url: width: 2000 | image_tag: widths: img_widths, sizes: img_sizes, class: 'tooto-simple-banner__image' }}
+    {%- else -%}
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'tooto-simple-banner__image placeholder' }}
+    {%- endif -%}
+
+    {%- if title != blank -%}
+      <h2 class="tooto-simple-banner__title">{{ title }}</h2>
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .tooto-simple-banner {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tooto-simple-banner__inner {
+    grid-column: 1 / -1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--banner-height, 34vw);
+    overflow: hidden;
+  }
+
+  .tooto-simple-banner__image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+  }
+
+  .tooto-simple-banner__title {
+    position: relative;
+    z-index: 2;
+    font-size: 64px;
+    line-height: 72px;
+    font-weight: 700;
+    text-align: center;
+    color: var(--color-background);
+    margin: 0;
+    word-break: break-word;
+    max-width: 90%;
+  }
+
+  @media (max-width: 768px) {
+    .tooto-simple-banner__title {
+      font-size: 32px;
+      line-height: 40px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Tooto Simple Banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background Image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Size Guide"
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Height (vw)",
+      "min": 20,
+      "max": 100,
+      "step": 1,
+      "default": 34,
+      "unit": "vw"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        { "value": "page-width", "label": "Page width" },
+        { "value": "full-width", "label": "Full width" }
+      ],
+      "default": "full-width"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tooto Simple Banner",
+      "settings": {
+        "title": "Size Guide",
+        "height": 34,
+        "color_scheme": "scheme-1",
+        "section_width": "full-width"
+      }
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}
