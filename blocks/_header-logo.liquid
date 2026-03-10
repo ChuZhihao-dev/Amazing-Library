@@ -2,22 +2,11 @@
 
 {% liquid
   assign block_settings = block.settings
-  assign use_inverse_logo = false
-
-  if section.settings.enable_transparent_header_home and template.name == 'index' and section.settings.home_color_scheme == 'inverse'
-    assign use_inverse_logo = true
-  elsif section.settings.enable_transparent_header_product and template.name == 'product' and section.settings.product_color_scheme == 'inverse'
-    assign use_inverse_logo = true
-  elsif section.settings.enable_transparent_header_collection and template.name == 'collection' and section.settings.collection_color_scheme == 'inverse'
-    assign use_inverse_logo = true
-  endif
-
-  if use_inverse_logo
-    if settings.logo_inverse != blank
-      assign inverse_logo = settings.logo_inverse
-    else
-      assign inverse_logo = settings.logo
-    endif
+  # Always prepare inverse logo if it exists
+  if settings.logo_inverse != blank
+    assign inverse_logo = settings.logo_inverse
+  else
+    assign inverse_logo = settings.logo
   endif
 %}
 
@@ -62,20 +51,18 @@
     %}
   </span>
 
-  {% if use_inverse_logo %}
-    <span
-      class="header-logo__image-container header-logo__image-container--inverse"
-      data-testid="header-logo-inverse"
-    >
-      {% render 'image',
-        image: inverse_logo,
-        class: 'header-logo__image',
-        height: settings.logo_height,
-        text_fallback: shop.name,
-        style: inverse_logo_style
-      %}
-    </span>
-  {% endif %}
+  <span
+    class="header-logo__image-container header-logo__image-container--inverse"
+    data-testid="header-logo-inverse"
+  >
+    {% render 'image',
+      image: inverse_logo,
+      class: 'header-logo__image',
+      height: settings.logo_height,
+      text_fallback: shop.name,
+      style: inverse_logo_style
+    %}
+  </span>
 </a>
 
 {% stylesheet %}
@@ -130,12 +117,30 @@
     }
   }
 
-  .header-logo:has(.header-logo__image-container--inverse) .header-logo__image-container--original {
+  .header-logo__image-container--original {
     display: var(--header-logo-display, block);
   }
 
   .header-logo__image-container--inverse {
     display: var(--header-logo-inverse-display, none);
+  }
+
+  /* Transparent header states */
+  .header[transparent] .header-logo__image-container--original {
+    display: none;
+  }
+
+  .header[transparent] .header-logo__image-container--inverse {
+    display: block;
+  }
+
+  /* When transparent header becomes sticky, switch back to normal logo */
+  .header[transparent][data-sticky-state='active'] .header-logo__image-container--original {
+    display: block;
+  }
+
+  .header[transparent][data-sticky-state='active'] .header-logo__image-container--inverse {
+    display: none;
   }
 {% endstylesheet %}
 

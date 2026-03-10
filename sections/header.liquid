@@ -38,12 +38,11 @@
     assign transparent = 'not-sticky'
   endif
 
+  # Set color scheme for both transparent and non-transparent pages
   if transparent
-    if transparent_color_scheme == 'inverse'
-      assign transparent_color_scheme = 'color-' | append: section.settings.color_scheme_transparent
-    else
-      assign transparent_color_scheme = 'color-' | append: section.settings.color_scheme_top
-    endif
+    assign transparent_color_scheme = 'color-' | append: section.settings.color_scheme_transparent
+  else
+    assign transparent_color_scheme = 'color-' | append: section.settings.color_scheme_top
   endif
 
   capture logo
@@ -321,6 +320,13 @@
   style="
     --color-scheme-top-row: rgba({{ section.settings.color_scheme_top.settings.background.rgba }});
     --color-scheme-bottom-row: rgba({{ section.settings.color_scheme_bottom.settings.background.rgba }});
+    {% if transparent %}
+      --header-logo-display: none;
+      --header-logo-inverse-display: block;
+    {% else %}
+      --header-logo-display: block;
+      --header-logo-inverse-display: none;
+    {% endif %}
     {% if section.settings.actions_display_style == 'text' %}
       --header-actions-font-size: {{ section.settings.actions_font_size | default: '1rem' }};
       --header-actions-font-family: var(--font-{{ section.settings.actions_font | default: 'heading' }}--family);
@@ -469,6 +475,12 @@
     /* used to display the appropriate logo based on transparency state */
     --header-logo-display: none;
     --header-logo-inverse-display: block;
+
+    /* When sticky, switch back to normal logo */
+    &[data-sticky-state='active'] {
+      --header-logo-display: block;
+      --header-logo-inverse-display: none;
+    }
 
     position: absolute;
     top: 0;
