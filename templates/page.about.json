@@ -48,6 +48,7 @@
         "heading",
         "page-content"
       ],
+      "disabled": true,
       "settings": {
         "content_direction": "column",
         "gap": 32,
@@ -55,9 +56,40 @@
         "padding-block-start": 40,
         "padding-block-end": 80
       }
+    },
+    "tooto_hero_swiper_banner_9VY6M8": {
+      "type": "tooto-hero-swiper-banner",
+      "blocks": {
+        "slide_zGMJQY": {
+          "type": "slide",
+          "settings": {
+            "media_type": "image",
+            "image": "shopify://shop_images/2_2x_1.webp",
+            "heading_bold": "ABOUT WOO",
+            "heading_light": "",
+            "description": "",
+            "cta_label": "See More",
+            "cta_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_zGMJQY"
+      ],
+      "name": "Tooto Hero Swiper",
+      "settings": {
+        "content_position": "left",
+        "autoplay": true,
+        "section_height": 80,
+        "section_width": "full-width",
+        "color_scheme": "",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "tooto_hero_swiper_banner_9VY6M8"
   ]
 }
