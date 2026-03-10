@@ -149,12 +149,43 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
+    },
+    "tooto_factory_slider_HenALk": {
+      "type": "tooto-factory-slider",
+      "blocks": {
+        "slide_DTd4xG": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/235_2x_4c22c4f6-bcae-47f6-b567-58da76598d87.webp"
+          }
+        },
+        "slide_WFwKAf": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/236_2x_8c97049d-d6cc-40db-9801-235bc1c89587.webp"
+          }
+        }
+      },
+      "block_order": [
+        "slide_DTd4xG",
+        "slide_WFwKAf"
+      ],
+      "name": "Tooto Factory Slider",
+      "settings": {
+        "heading_bold": "Woo",
+        "heading_normal": "Own Factory",
+        "section_width": "page-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
     }
   },
   "order": [
     "main",
     "tooto_hero_swiper_banner_9VY6M8",
     "tooto_brand_concept_MQTbeJ",
-    "tooto_services_grid_jKniJE"
+    "tooto_services_grid_jKniJE",
+    "tooto_factory_slider_HenALk"
   ]
 }
