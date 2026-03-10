@@ -86,10 +86,75 @@
         "padding-block-start": 0,
         "padding-block-end": 0
       }
+    },
+    "tooto_brand_concept_MQTbeJ": {
+      "type": "tooto-brand-concept",
+      "name": "Tooto Brand Concept",
+      "settings": {
+        "heading": "Woo Brand Concept Slogn",
+        "description": "Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel. Their inherent elasticity reduces foot fatigue, making them ideal for bedrooms or children's rooms.",
+        "link_label": "See More",
+        "link_url": "",
+        "image": "shopify://shop_images/4553_2x_d7846758-791f-460d-93e4-6d3652b5fdaa.webp",
+        "section_width": "page-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 64,
+        "padding-block-end": 64
+      }
+    },
+    "tooto_services_grid_jKniJE": {
+      "type": "tooto-services-grid",
+      "blocks": {
+        "service_item_UwEnaA": {
+          "type": "service_item",
+          "settings": {
+            "image": "shopify://shop_images/2548_2x_1.webp",
+            "number": "01",
+            "title": "Carpet Fully Covered",
+            "description": "On-site Measurement"
+          }
+        },
+        "service_item_DtbikY": {
+          "type": "service_item",
+          "settings": {
+            "image": "shopify://shop_images/2550_2x_1.webp",
+            "number": "02",
+            "title": "Free Sample",
+            "description": "Product Selection Is More Intuitive"
+          }
+        },
+        "service_item_cQMq9F": {
+          "type": "service_item",
+          "settings": {
+            "image": "shopify://shop_images/2549_2x_1.webp",
+            "number": "03",
+            "title": "Cleaning Service",
+            "description": "On-site Cleaning"
+          }
+        }
+      },
+      "block_order": [
+        "service_item_UwEnaA",
+        "service_item_DtbikY",
+        "service_item_cQMq9F"
+      ],
+      "name": "Tooto Services Grid",
+      "settings": {
+        "heading_bold": "Woo",
+        "heading_normal": "Services",
+        "button_label": "Customize now",
+        "button_url": "",
+        "section_width": "page-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
     }
   },
   "order": [
     "main",
-    "tooto_hero_swiper_banner_9VY6M8"
+    "tooto_hero_swiper_banner_9VY6M8",
+    "tooto_brand_concept_MQTbeJ",
+    "tooto_services_grid_jKniJE"
   ]
 }
