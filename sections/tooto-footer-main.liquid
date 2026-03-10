@@ -9,13 +9,15 @@
   assign address_label = section.settings.contact_address_label
   assign address_value = section.settings.contact_address
   assign copyright_text = section.settings.copyright_text
+  assign section_width = section.settings.section_width | default: 'page-width'
 -%}
 
-<div class="tooto-footer-main color-{{ section.settings.color_scheme }}">
+<div class="tooto-footer-main section section--{{ section_width }} color-{{ section.settings.color_scheme }}">
+  <div class="tooto-footer-main__inner">
 
   {%- comment -%} ===== TOP SECTION: Logo + Contact + Subscribe ===== {%- endcomment -%}
   <div class="tooto-footer-main__top">
-    <div class="tooto-footer-main__top-inner section--page-width">
+    <div class="tooto-footer-main__top-inner">
 
       {%- comment -%} Left: Logo / Brand / Slogan {%- endcomment -%}
       <div class="tooto-footer-main__brand">
@@ -87,59 +89,39 @@
   </div>
 
   {%- comment -%} ===== DIVIDER ===== {%- endcomment -%}
-  <div class="tooto-footer-main__divider section--page-width">
+  <div class="tooto-footer-main__divider">
     <hr class="tooto-footer-main__hr">
   </div>
 
-  {%- comment -%} ===== MIDDLE SECTION: Nav Menus ===== {%- endcomment -%}
-  <div class="tooto-footer-main__nav section--page-width">
-    {%- for i in (1..6) -%}
-      {%- liquid
-        case i
-          when 1
-            assign menu_handle = section.settings.menu_1
-            assign menu_title = section.settings.menu_1_title
-          when 2
-            assign menu_handle = section.settings.menu_2
-            assign menu_title = section.settings.menu_2_title
-          when 3
-            assign menu_handle = section.settings.menu_3
-            assign menu_title = section.settings.menu_3_title
-          when 4
-            assign menu_handle = section.settings.menu_4
-            assign menu_title = section.settings.menu_4_title
-          when 5
-            assign menu_handle = section.settings.menu_5
-            assign menu_title = section.settings.menu_5_title
-          when 6
-            assign menu_handle = section.settings.menu_6
-            assign menu_title = section.settings.menu_6_title
-        endcase
-        assign nav_menu = linklists[menu_handle]
-      -%}
-      {%- if nav_menu != blank and nav_menu.links.size > 0 -%}
-        <div class="tooto-footer-main__nav-col">
-          <p class="tooto-footer-main__nav-title">
-            {%- if menu_title != blank -%}
-              {{ menu_title }}
-            {%- else -%}
-              {{ nav_menu.title }}
-            {%- endif -%}
-          </p>
-          <ul class="tooto-footer-main__nav-list">
-            {%- for link in nav_menu.links -%}
-              <li class="tooto-footer-main__nav-item">
-                <a href="{{ link.url }}" class="tooto-footer-main__nav-link">{{ link.title }}</a>
-              </li>
-            {%- endfor -%}
-          </ul>
-        </div>
+  {%- comment -%} ===== MIDDLE SECTION: Nav Menus (Blocks) ===== {%- endcomment -%}
+  <div class="tooto-footer-main__nav">
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'menu' -%}
+        {%- assign nav_menu = linklists[block.settings.menu] -%}
+        {%- if nav_menu != blank and nav_menu.links.size > 0 -%}
+          <div class="tooto-footer-main__nav-col">
+            <p class="tooto-footer-main__nav-title">
+              {%- if block.settings.menu_title != blank -%}
+                {{ block.settings.menu_title }}
+              {%- else -%}
+                {{ nav_menu.title }}
+              {%- endif -%}
+            </p>
+            <ul class="tooto-footer-main__nav-list">
+              {%- for link in nav_menu.links -%}
+                <li class="tooto-footer-main__nav-item">
+                  <a href="{{ link.url }}" class="tooto-footer-main__nav-link">{{ link.title }}</a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
       {%- endif -%}
     {%- endfor -%}
   </div>
 
   {%- comment -%} ===== BOTTOM SECTION: Copyright + Social ===== {%- endcomment -%}
-  <div class="tooto-footer-main__bottom section--page-width">
+  <div class="tooto-footer-main__bottom">
 
     {%- comment -%} Copyright {%- endcomment -%}
     <p class="tooto-footer-main__copyright">
@@ -203,21 +185,21 @@
 
   </div>
 
+  </div>
 </div>
 
 {% stylesheet %}
   /* ===== WRAPPER ===== */
   .tooto-footer-main {
     width: 100%;
-    box-sizing: border-box;
   }
 
-  /* ===== PAGE WIDTH HELPER ===== */
-  .tooto-footer-main .section--page-width {
-    max-width: var(--page-width, 1200px);
-    margin-inline: auto;
-    padding-inline: var(--page-width-padding, 20px);
-    box-sizing: border-box;
+  .tooto-footer-main__inner {
+    grid-column: 1 / -1;
+  }
+
+  .section--page-width .tooto-footer-main__inner {
+    grid-column: 2;
   }
 
   /* ===== TOP SECTION ===== */
@@ -354,7 +336,7 @@
 
   /* ===== DIVIDER ===== */
   .tooto-footer-main__divider {
-    padding-inline: var(--page-width-padding, 20px);
+    /* padding-inline: var(--page-width-padding, 20px); */
   }
 
   .tooto-footer-main__hr {
@@ -367,7 +349,7 @@
   /* ===== NAV MENUS ===== */
   .tooto-footer-main__nav {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 24px;
     padding-block: 40px;
   }
@@ -571,92 +553,7 @@
       "label": "Address",
       "default": "2407 Chico Ave, Unit A, Building 9, CCC 91733"
     },
-    {
-      "type": "header",
-      "content": "Navigation Menu 1"
-    },
-    {
-      "type": "text",
-      "id": "menu_1_title",
-      "label": "Menu 1 Title (overrides menu name)",
-      "info": "Leave blank to use the menu's own title"
-    },
-    {
-      "type": "link_list",
-      "id": "menu_1",
-      "label": "Menu 1",
-      "default": "footer"
-    },
-    {
-      "type": "header",
-      "content": "Navigation Menu 2"
-    },
-    {
-      "type": "text",
-      "id": "menu_2_title",
-      "label": "Menu 2 Title (overrides menu name)"
-    },
-    {
-      "type": "link_list",
-      "id": "menu_2",
-      "label": "Menu 2"
-    },
-    {
-      "type": "header",
-      "content": "Navigation Menu 3"
-    },
-    {
-      "type": "text",
-      "id": "menu_3_title",
-      "label": "Menu 3 Title (overrides menu name)"
-    },
-    {
-      "type": "link_list",
-      "id": "menu_3",
-      "label": "Menu 3"
-    },
-    {
-      "type": "header",
-      "content": "Navigation Menu 4"
-    },
-    {
-      "type": "text",
-      "id": "menu_4_title",
-      "label": "Menu 4 Title (overrides menu name)"
-    },
-    {
-      "type": "link_list",
-      "id": "menu_4",
-      "label": "Menu 4"
-    },
-    {
-      "type": "header",
-      "content": "Navigation Menu 5"
-    },
-    {
-      "type": "text",
-      "id": "menu_5_title",
-      "label": "Menu 5 Title (overrides menu name)"
-    },
-    {
-      "type": "link_list",
-      "id": "menu_5",
-      "label": "Menu 5"
-    },
-    {
-      "type": "header",
-      "content": "Navigation Menu 6"
-    },
-    {
-      "type": "text",
-      "id": "menu_6_title",
-      "label": "Menu 6 Title (overrides menu name)"
-    },
-    {
-      "type": "link_list",
-      "id": "menu_6",
-      "label": "Menu 6"
-    },
+
     {
       "type": "header",
       "content": "Bottom Bar"
@@ -706,16 +603,53 @@
       "content": "Appearance"
     },
     {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        { "value": "page-width", "label": "Page width" },
+        { "value": "full-width", "label": "Full width" }
+      ],
+      "default": "page-width"
+    },
+    {
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "Color Scheme",
       "default": "scheme-1"
     }
   ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_title",
+          "label": "Menu Title (overrides menu name)",
+          "info": "Leave blank to use the menu's own title"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
       "name": "Woo Footer Main",
-      "category": "Footer"
+      "category": "Footer",
+      "blocks": [
+        { "type": "menu", "settings": { "menu_title": "Products", "menu": "footer" } },
+        { "type": "menu", "settings": { "menu_title": "Styles", "menu": "footer" } },
+        { "type": "menu", "settings": { "menu_title": "Custom Size", "menu": "footer" } },
+        { "type": "menu", "settings": { "menu_title": "Inspiration", "menu": "footer" } },
+        { "type": "menu", "settings": { "menu_title": "Support", "menu": "footer" } },
+        { "type": "menu", "settings": { "menu_title": "About", "menu": "footer" } }
+      ]
     }
   ]
 }
