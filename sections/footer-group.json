@@ -59,7 +59,8 @@
     "footer_main_woo": {
       "type": "tooto-footer-main",
       "settings": {
-        "brand_name": "woo carpet",
+        "logo": "shopify://shop_images/54.svg",
+        "brand_name": "",
         "slogan": "Weave Inspiration, Unroll Your Story",
         "subscribe_placeholder": "Email Address",
         "subscribe_label": "SUBSCRIBE",
