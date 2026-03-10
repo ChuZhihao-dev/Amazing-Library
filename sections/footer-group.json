@@ -11,6 +11,34 @@
   "type": "footer",
   "name": "Footer",
   "sections": {
+    "trust_bar_xQpLmN": {
+      "type": "tooto-footer-trust-bar",
+      "blocks": {
+        "tb_return": {
+          "type": "trust_item",
+          "settings": { "icon": "return", "label": "Free Returns" }
+        },
+        "tb_guarantee": {
+          "type": "trust_item",
+          "settings": { "icon": "guarantee", "label": "Satisfaction Guaranteed" }
+        },
+        "tb_shipping": {
+          "type": "trust_item",
+          "settings": { "icon": "shipping", "label": "Free Shipping" }
+        },
+        "tb_secure": {
+          "type": "trust_item",
+          "settings": { "icon": "secure", "label": "Secure Payment" }
+        }
+      },
+      "block_order": ["tb_return", "tb_guarantee", "tb_shipping", "tb_secure"],
+      "settings": {
+        "section_width": "full-width",
+        "color_scheme": "scheme-3",
+        "padding-block-start": 18,
+        "padding-block-end": 18
+      }
+    },
     "footer_m9NzUG": {
       "type": "footer",
       "blocks": {
@@ -205,6 +233,7 @@
     }
   },
   "order": [
+    "trust_bar_xQpLmN",
     "footer_m9NzUG",
     "footer_utilities_jLGE8U"
   ]
