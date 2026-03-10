@@ -2,11 +2,28 @@
   assign img_widths = '400, 600, 900'
   assign img_sizes = '(min-width: 990px) 38vw, (min-width: 750px) 45vw, 100vw'
   assign current_tag = request.params.tag | default: ''
+  assign current_page = request.params.page | plus: 0
+  if current_page < 1
+    assign current_page = 1
+  endif
   if section.settings.blog != blank
     assign current_blog = blogs[section.settings.blog]
   else
     assign current_blog = blog
   endif
+  if current_tag != blank
+    assign all_articles = current_blog.articles | where: 'tags', current_tag
+  else
+    assign all_articles = current_blog.articles
+  endif
+  assign posts_per_page = section.settings.posts_per_page | plus: 0
+  assign total_articles = all_articles.size
+  assign total_pages = total_articles | divided_by: posts_per_page | ceil
+  if total_pages < 1
+    assign total_pages = 1
+  endif
+  assign offset = current_page | minus: 1 | times: posts_per_page
+  assign filtered_articles = all_articles | slice: offset, posts_per_page
 -%}
 
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
@@ -27,7 +44,7 @@
           {%- comment -%} All — 无 tag 时高亮 {%- endcomment -%}
           <li class="tooto-stories__tag-item">
             <a
-              href="{{ current_blog.url }}"
+              href="{{ page.url }}"
               class="tooto-stories__tag-link{% if current_tag == blank %} tooto-stories__tag-link--active{% endif %}"
             >All</a>
           </li>
@@ -37,7 +54,7 @@
           {%- for tag in all_tags -%}
             <li class="tooto-stories__tag-item">
               <a
-                href="{{ current_blog.url }}/tagged/{{ tag | handleize }}"
+                href="{{ page.url }}?tag={{ tag | handleize }}"
                 class="tooto-stories__tag-link{% if current_tag == tag %} tooto-stories__tag-link--active{% endif %}"
               >{{ tag }}</a>
             </li>
@@ -49,10 +66,8 @@
 
     {%- comment -%} 右侧：文章网格 {%- endcomment -%}
     <div class="tooto-stories__grid">
-      {%- paginate current_blog.articles by section.settings.posts_per_page -%}
-
-        {%- if current_blog.articles.size > 0 -%}
-          {%- for article in current_blog.articles -%}
+      {%- if filtered_articles.size > 0 -%}
+        {%- for article in filtered_articles -%}
             <article class="tooto-stories__card">
               <a href="{{ article.url }}" class="tooto-stories__card-link" aria-label="{{ article.title | escape }}">
 
@@ -94,31 +109,36 @@
 
               </a>
             </article>
+        {%- endfor -%}
+      {%- else -%}
+        <p class="tooto-stories__empty">No articles found{% if current_tag != blank %} for "{{ current_tag }}"{% endif %}.</p>
+      {%- endif -%}
+
+      {%- if total_pages > 1 -%}
+        {%- liquid
+          assign base_url = request.path
+          if current_tag != blank
+            assign base_url = base_url | append: '?tag=' | append: current_tag | append: '&page='
+          else
+            assign base_url = base_url | append: '?page='
+          endif
+        -%}
+        <div class="tooto-stories__pagination">
+          {%- if current_page > 1 -%}
+            <a href="{{ base_url }}{{ current_page | minus: 1 }}" class="tooto-stories__page-btn">← Previous</a>
+          {%- endif -%}
+          {%- for i in (1..total_pages) -%}
+            {%- if i == current_page -%}
+              <span class="tooto-stories__page-btn tooto-stories__page-btn--current">{{ i }}</span>
+            {%- else -%}
+              <a href="{{ base_url }}{{ i }}" class="tooto-stories__page-btn">{{ i }}</a>
+            {%- endif -%}
           {%- endfor -%}
-        {%- else -%}
-          <p class="tooto-stories__empty">No articles found.</p>
-        {%- endif -%}
-
-        {%- comment -%} 分页 {%- endcomment -%}
-        {%- if paginate.pages > 1 -%}
-          <div class="tooto-stories__pagination">
-            {%- if paginate.previous -%}
-              <a href="{{ paginate.previous.url }}" class="tooto-stories__page-btn">← Previous</a>
-            {%- endif -%}
-            {%- for part in paginate.parts -%}
-              {%- if part.is_link -%}
-                <a href="{{ part.url }}" class="tooto-stories__page-btn">{{ part.title }}</a>
-              {%- else -%}
-                <span class="tooto-stories__page-btn tooto-stories__page-btn--current">{{ part.title }}</span>
-              {%- endif -%}
-            {%- endfor -%}
-            {%- if paginate.next -%}
-              <a href="{{ paginate.next.url }}" class="tooto-stories__page-btn">Next →</a>
-            {%- endif -%}
-          </div>
-        {%- endif -%}
-
-      {%- endpaginate -%}
+          {%- if current_page < total_pages -%}
+            <a href="{{ base_url }}{{ current_page | plus: 1 }}" class="tooto-stories__page-btn">Next →</a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
     </div>
 
   </div>

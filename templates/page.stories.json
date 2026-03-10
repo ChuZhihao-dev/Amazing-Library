@@ -12,6 +12,7 @@
     "stories-section": {
       "type": "tooto-stories",
       "settings": {
+        "blog": "stories",
         "heading": "Stories",
         "posts_per_page": 12,
         "section_width": "page-width",

@@ -14,10 +14,13 @@
 >
   <div class="stories-layout__inner">
 
-    {%- comment -%} 左侧：标题 + 分类导航 {%- endcomment -%}
-    <aside class="stories-layout__sidebar">
+    {%- comment -%} 顶部：标题独占一行 {%- endcomment -%}
+    <div class="stories-layout__header">
       <h1 class="stories-layout__heading">{{ blog.title }}</h1>
+    </div>
 
+    {%- comment -%} 左侧：分类导航 {%- endcomment -%}
+    <aside class="stories-layout__sidebar">
       <nav class="stories-layout__tags" aria-label="Blog categories">
         <ul class="stories-layout__tag-list">
           <li class="stories-layout__tag-item">
@@ -100,16 +103,17 @@
   .stories-layout__inner {
     display: grid;
     grid-template-columns: 180px 1fr;
-    gap: 48px;
+    grid-template-rows: auto 1fr;
+    gap: 0 48px;
     align-items: start;
     width: 100%;
     box-sizing: border-box;
   }
 
-  /* ── 左侧侧边栏 ── */
-  .stories-layout__sidebar {
-    position: sticky;
-    top: calc(var(--header-height, 80px) + 24px);
+  /* 标题独占整行 */
+  .stories-layout__header {
+    grid-column: 1 / -1;
+    padding-bottom: 40px;
   }
 
   .stories-layout__heading {
@@ -118,7 +122,13 @@
     line-height: 1.05;
     letter-spacing: -0.02em;
     color: var(--color-foreground-heading);
-    margin: 0 0 32px 0;
+    margin: 0;
+  }
+
+  /* ── 左侧侧边栏 ── */
+  .stories-layout__sidebar {
+    position: sticky;
+    top: calc(var(--header-height, 80px) + 24px);
   }
 
   .stories-layout__tag-list {
@@ -150,17 +160,15 @@
     color: var(--color-foreground-heading);
   }
 
-  /* ── 右侧文章网格 ── */
+  /* ── 右侧文章网格（瀑布流）── */
   .stories-layout__grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 40px 24px;
-    align-items: start;
+    columns: 2;
+    column-gap: 24px;
   }
 
   .stories-layout__card {
-    display: flex;
-    flex-direction: column;
+    break-inside: avoid;
+    margin-bottom: 40px;
   }
 
   .stories-layout__card-link {
@@ -172,7 +180,6 @@
   }
 
   .stories-layout__card-image-wrapper {
-    aspect-ratio: 3 / 4;
     overflow: hidden;
     width: 100%;
   }
@@ -276,15 +283,16 @@
   @media (max-width: 749px) {
     .stories-layout__inner {
       grid-template-columns: 1fr;
-      gap: 24px;
+      gap: 0;
+    }
+
+    .stories-layout__header {
+      padding-bottom: 24px;
     }
 
     .stories-layout__sidebar {
       position: static;
-    }
-
-    .stories-layout__heading {
-      margin-bottom: 16px;
+      padding-bottom: 24px;
     }
 
     .stories-layout__tag-list {
@@ -294,8 +302,7 @@
     }
 
     .stories-layout__grid {
-      grid-template-columns: 1fr;
-      gap: 32px;
+      columns: 1;
     }
   }
 {% endstylesheet %}
