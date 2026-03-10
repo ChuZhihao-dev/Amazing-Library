@@ -2,6 +2,11 @@
   assign img_widths = '400, 600, 900'
   assign img_sizes = '(min-width: 990px) 38vw, (min-width: 750px) 45vw, 100vw'
   assign current_tag = request.params.tag | default: ''
+  if section.settings.blog != blank
+    assign current_blog = blogs[section.settings.blog]
+  else
+    assign current_blog = blog
+  endif
 -%}
 
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
@@ -14,7 +19,7 @@
 
     {%- comment -%} 左侧：标题 + 分类导航 {%- endcomment -%}
     <aside class="tooto-stories__sidebar">
-      <h1 class="tooto-stories__heading">{{ section.settings.heading | default: blog.title }}</h1>
+      <h1 class="tooto-stories__heading">{{ section.settings.heading | default: current_blog.title }}</h1>
 
       <nav class="tooto-stories__tags" aria-label="Blog categories">
         <ul class="tooto-stories__tag-list">
@@ -22,17 +27,17 @@
           {%- comment -%} All — 无 tag 时高亮 {%- endcomment -%}
           <li class="tooto-stories__tag-item">
             <a
-              href="{{ blog.url }}"
+              href="{{ current_blog.url }}"
               class="tooto-stories__tag-link{% if current_tag == blank %} tooto-stories__tag-link--active{% endif %}"
             >All</a>
           </li>
 
           {%- comment -%} 遍历所有文章 tag {%- endcomment -%}
-          {%- assign all_tags = blog.all_tags -%}
+          {%- assign all_tags = current_blog.all_tags -%}
           {%- for tag in all_tags -%}
             <li class="tooto-stories__tag-item">
               <a
-                href="{{ blog.url }}/tagged/{{ tag | handleize }}"
+                href="{{ current_blog.url }}/tagged/{{ tag | handleize }}"
                 class="tooto-stories__tag-link{% if current_tag == tag %} tooto-stories__tag-link--active{% endif %}"
               >{{ tag }}</a>
             </li>
@@ -44,10 +49,10 @@
 
     {%- comment -%} 右侧：文章网格 {%- endcomment -%}
     <div class="tooto-stories__grid">
-      {%- paginate blog.articles by section.settings.posts_per_page -%}
+      {%- paginate current_blog.articles by section.settings.posts_per_page -%}
 
-        {%- if blog.articles.size > 0 -%}
-          {%- for article in blog.articles -%}
+        {%- if current_blog.articles.size > 0 -%}
+          {%- for article in current_blog.articles -%}
             <article class="tooto-stories__card">
               <a href="{{ article.url }}" class="tooto-stories__card-link" aria-label="{{ article.title | escape }}">
 
@@ -344,6 +349,12 @@
     "templates": ["page", "blog"]
   },
   "settings": [
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog",
+      "info": "Select the blog to display (required on page templates)"
+    },
     {
       "type": "text",
       "id": "heading",
