@@ -12,6 +12,9 @@
     "stories-section": {
       "type": "tooto-stories",
       "settings": {
+        "blog": "",
+        "heading": "Stories",
+        "posts_per_page": 12,
         "section_width": "page-width",
         "color_scheme": "scheme-1",
         "padding-block-start": 48,
