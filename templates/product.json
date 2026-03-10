@@ -621,6 +621,7 @@
           "type": "image",
           "name": "t:names.image",
           "settings": {
+            "image": "{{ closest.product.metafields.custom.size_matching.value }}",
             "link": "",
             "image_ratio": "adapt",
             "width": "fill",
@@ -638,12 +639,27 @@
             "padding-inline-end": 0
           },
           "blocks": {}
+        },
+        "spacer_ihny8D": {
+          "type": "spacer",
+          "name": "t:names.spacer",
+          "settings": {
+            "size": "pixel",
+            "percent_size": 100,
+            "pixel_size": 212,
+            "custom_mobile_size": false,
+            "size_mobile": "percent",
+            "percent_size_mobile": 100,
+            "pixel_size_mobile": 120
+          },
+          "blocks": {}
         }
       },
       "block_order": [
         "text_V3kLK9",
         "text_c89FTN",
-        "image_AxTRVt"
+        "image_AxTRVt",
+        "spacer_ihny8D"
       ],
       "name": "t:names.custom_section",
       "settings": {
