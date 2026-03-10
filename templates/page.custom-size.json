@@ -9,55 +9,184 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "main-page",
+    "custom_size_hero_abc123": {
+      "type": "tooto-custom-size-hero",
+      "settings": {
+        "heading": "Custom Size",
+        "description": "With our tailored to fit wool rugs, you can personalise your rug by choosing the style, colour, size, shape & edging best suited to your home.",
+        "section_width": "page-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    },
+    "custom_size_steps_def456": {
+      "type": "tooto-custom-size-steps",
       "blocks": {
-        "heading": {
-          "type": "text",
-          "name": "Title",
+        "step_1_pick": {
+          "type": "step",
           "settings": {
-            "text": "<h1>{{ closest.page.title }}</h1>",
-            "width": "100%",
-            "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "h2",
-            "font": "var(--font-primary--family)",
-            "font_size": "",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
+            "icon": "pick",
+            "title": "Pick",
+            "description": "Browse our curated rug collection and choose the style that best fits your space and taste."
+          }
         },
-        "page-content": {
-          "type": "page-content",
-          "settings": {},
-          "blocks": {}
+        "step_2_feel": {
+          "type": "step",
+          "settings": {
+            "icon": "feel",
+            "title": "Feel",
+            "description": "Order a sample to feel the material and texture firsthand, ensuring it meets your expectations."
+          }
+        },
+        "step_3_measure": {
+          "type": "step",
+          "settings": {
+            "icon": "measure",
+            "title": "Measure",
+            "description": "Measure your space accurately to provide precise dimensions for your custom rug."
+          }
+        },
+        "step_4_order": {
+          "type": "step",
+          "settings": {
+            "icon": "order",
+            "title": "Order",
+            "description": "Confirm dimensions and style, then place your custom order to start production."
+          }
+        },
+        "step_5_enjoy": {
+          "type": "step",
+          "settings": {
+            "icon": "enjoy",
+            "title": "Enjoy",
+            "description": "Your custom rug is crafted and shipped within a week, ready to enhance your space."
+          }
         }
       },
       "block_order": [
-        "heading",
-        "page-content"
+        "step_1_pick",
+        "step_2_feel",
+        "step_3_measure",
+        "step_4_order",
+        "step_5_enjoy"
       ],
       "settings": {
-        "content_direction": "column",
-        "gap": 32,
-        "color_scheme": "",
-        "padding-block-start": 40,
-        "padding-block-end": 80
+        "heading": "How It Works",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 64,
+        "padding-block-end": 64
+      }
+    },
+    "custom_rug_options_ghi789": {
+      "type": "tooto-custom-rug-options",
+      "blocks": {
+        "option_1_measure": {
+          "type": "option",
+          "settings": {
+            "icon": "measure",
+            "title": "Made To Measure",
+            "description": "Custom rugs precisely made to fit your space dimensions for home and commercial use.",
+            "button_label": "Customize Now",
+            "button_style": "filled"
+          }
+        },
+        "option_2_wall": {
+          "type": "option",
+          "settings": {
+            "icon": "wall",
+            "title": "Wall To Wall",
+            "description": "Full-room carpet customization that delivers a seamless and harmonious new look.",
+            "button_label": "Customize Now",
+            "button_style": "filled"
+          }
+        },
+        "option_3_special": {
+          "type": "option",
+          "settings": {
+            "icon": "special",
+            "title": "Special Request",
+            "description": "For unique designs or special customization needs, please feel free to contact our team.",
+            "button_label": "Contact Us",
+            "button_style": "outline"
+          }
+        }
+      },
+      "block_order": [
+        "option_1_measure",
+        "option_2_wall",
+        "option_3_special"
+      ],
+      "settings": {
+        "heading": "Custom Rug Options",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 64,
+        "padding-block-end": 64
+      }
+    },
+    "custom_size_faq_jkl012": {
+      "type": "tooto-custom-size-faq",
+      "blocks": {
+        "faq_1": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How do I measure for a rug?",
+            "answer": "Measure the area where the rug will sit: width × length for rectangles/runners, or diameter for round rugs. If needed, leave clearance for doors and baseboards.",
+            "open_by_default": true
+          }
+        },
+        "faq_2": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How is the price calculated?",
+            "answer": "Pricing depends on size (area), material, and edge finish. Submit your request and we'll send a final quote for approval.",
+            "open_by_default": true
+          }
+        },
+        "faq_3": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What's the production time and shipping time?",
+            "answer": "Production typically takes 4-6 weeks depending on complexity. Shipping is handled after production completion.",
+            "open_by_default": false
+          }
+        },
+        "faq_4": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can I return or cancel a custom rug?",
+            "answer": "Custom rugs are made to order and typically cannot be returned or cancelled after production has started. Please review specifications carefully before ordering.",
+            "open_by_default": false
+          }
+        },
+        "faq_5": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What sizes can you make?",
+            "answer": "We can create custom rugs in virtually any size. Contact our team to discuss your specific requirements and available options.",
+            "open_by_default": false
+          }
+        }
+      },
+      "block_order": [
+        "faq_1",
+        "faq_2",
+        "faq_3",
+        "faq_4",
+        "faq_5"
+      ],
+      "settings": {
+        "heading": "FAQ",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 64,
+        "padding-block-end": 64
       }
     }
   },
   "order": [
-    "main"
+    "custom_size_hero_abc123",
+    "custom_size_steps_def456",
+    "custom_rug_options_ghi789",
+    "custom_size_faq_jkl012"
   ]
 }

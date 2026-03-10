@@ -1,0 +1,395 @@
+{%- liquid
+  assign heading = section.settings.heading
+  assign unique_id = section.id
+-%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div
+  class="section section--page-width color-{{ section.settings.color_scheme }}"
+  style="padding-block-start: {{ section.settings.padding-block-start }}px; padding-block-end: {{ section.settings.padding-block-end }}px;"
+>
+  <div class="tooto-custom-size-faq__inner">
+
+    <div class="tooto-custom-size-faq__header">
+      {%- if heading != blank -%}
+        <h2 class="tooto-custom-size-faq__heading">{{ heading }}</h2>
+      {%- endif -%}
+
+      {%- comment -%} Decorative Icon {%- endcomment -%}
+      <div class="tooto-custom-size-faq__decoration">
+        <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <circle cx="12" cy="12" r="11" fill="currentColor"/>
+          <path d="M12 4c4.41 0 8 3.59 8 8s-3.59 8-8 8-8-3.59-8-8 3.59-8 8-8zm0-2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm3 11h-2v2h-2v-2h-2v-2h2V9h2v2h2v2z" fill="white"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="tooto-custom-size-faq__list">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign faq_id = 'faq-' | append: unique_id | append: '-' | append: forloop.index
+          assign is_open = block.settings.open_by_default
+        -%}
+        <div class="tooto-custom-size-faq__item">
+          <button
+            type="button"
+            class="tooto-custom-size-faq__trigger"
+            aria-expanded="{{ is_open }}"
+            aria-controls="{{ faq_id }}"
+            {{ block.shopify_attributes }}
+          >
+            <span class="tooto-custom-size-faq__trigger-label">
+              <span class="tooto-custom-size-faq__question">{{ forloop.index }}. {{ block.settings.question }}</span>
+            </span>
+            <span class="tooto-custom-size-faq__toggle-icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="18 15 12 9 6 15"></polyline>
+              </svg>
+            </span>
+          </button>
+
+          <div
+            id="{{ faq_id }}"
+            class="tooto-custom-size-faq__content"
+            {%- if is_open %} style="display: block;" {%- endif -%}
+          >
+            <div class="tooto-custom-size-faq__answer">
+              {{ block.settings.answer }}
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+  </div>
+</div>
+
+<script>
+  (function() {
+    const triggers = document.querySelectorAll('.tooto-custom-size-faq__trigger');
+    triggers.forEach(trigger => {
+      trigger.addEventListener('click', function(e) {
+        e.preventDefault();
+        const contentId = this.getAttribute('aria-controls');
+        const content = document.getElementById(contentId);
+        const isOpen = this.getAttribute('aria-expanded') === 'true';
+        
+        this.setAttribute('aria-expanded', !isOpen);
+        
+        if (isOpen) {
+          content.style.display = 'none';
+        } else {
+          content.style.display = 'block';
+        }
+      });
+    });
+  })();
+</script>
+
+{% stylesheet %}
+  .tooto-custom-size-faq__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    grid-column: 2;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  {%- comment -%} HEADER {%- endcomment -%}
+  .tooto-custom-size-faq__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 32px;
+    position: relative;
+  }
+
+  .tooto-custom-size-faq__heading {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    color: var(--color-foreground);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    flex: 0 0 auto;
+  }
+
+  {%- comment -%} DECORATION {%- endcomment -%}
+  .tooto-custom-size-faq__decoration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+    color: var(--color-foreground);
+  }
+
+  .tooto-custom-size-faq__decoration svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  {%- comment -%} LIST {%- endcomment -%}
+  .tooto-custom-size-faq__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  {%- comment -%} ITEM {%- endcomment -%}
+  .tooto-custom-size-faq__item {
+    border-bottom: 1px solid var(--color-border);
+    padding-block: 20px;
+  }
+
+  .tooto-custom-size-faq__item:first-child {
+    border-top: 1px solid var(--color-border);
+  }
+
+  {%- comment -%} TRIGGER {%- endcomment -%}
+  .tooto-custom-size-faq__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-body--family, inherit);
+    text-align: left;
+    transition: all 0.2s ease;
+  }
+
+  .tooto-custom-size-faq__trigger:hover {
+    opacity: 0.8;
+  }
+
+  .tooto-custom-size-faq__trigger-label {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    gap: 12px;
+  }
+
+  {%- comment -%} QUESTION {%- endcomment -%}
+  .tooto-custom-size-faq__question {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-foreground);
+    line-height: 1.4;
+  }
+
+  {%- comment -%} TOGGLE ICON {%- endcomment -%}
+  .tooto-custom-size-faq__toggle-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    color: var(--color-foreground);
+    transition: transform 0.3s ease;
+  }
+
+  .tooto-custom-size-faq__trigger[aria-expanded="true"] .tooto-custom-size-faq__toggle-icon {
+    transform: rotate(180deg);
+  }
+
+  {%- comment -%} CONTENT {%- endcomment -%}
+  .tooto-custom-size-faq__content {
+    display: none;
+    overflow: hidden;
+    animation: slideDown 0.3s ease;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  {%- comment -%} ANSWER {%- endcomment -%}
+  .tooto-custom-size-faq__answer {
+    padding-block: 12px 0;
+    font-size: 0.9375rem;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--color-foreground);
+    opacity: 0.75;
+  }
+
+  {%- comment -%} RESPONSIVE {%- endcomment -%}
+  @media screen and (max-width: 989px) {
+    .tooto-custom-size-faq__inner {
+      gap: 40px;
+    }
+
+    .tooto-custom-size-faq__header {
+      gap: 24px;
+    }
+
+    .tooto-custom-size-faq__decoration {
+      width: 70px;
+      height: 70px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .tooto-custom-size-faq__inner {
+      gap: 32px;
+    }
+
+    .tooto-custom-size-faq__header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    .tooto-custom-size-faq__heading {
+      font-size: clamp(1.5rem, 5vw, 2rem);
+    }
+
+    .tooto-custom-size-faq__decoration {
+      width: 60px;
+      height: 60px;
+    }
+
+    .tooto-custom-size-faq__question {
+      font-size: 0.9375rem;
+    }
+
+    .tooto-custom-size-faq__answer {
+      font-size: 0.875rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Tooto Custom Size FAQ",
+  "tag": "section",
+  "class": "tooto-custom-size-faq-wrapper",
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "How do I measure for a rug?"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Answer",
+          "default": "Add your answer here."
+        },
+        {
+          "type": "checkbox",
+          "id": "open_by_default",
+          "label": "Open by default",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "FAQ"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tooto Custom Size FAQ",
+      "settings": {
+        "heading": "FAQ",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      },
+      "blocks": [
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "How do I measure for a rug?",
+            "answer": "Measure the area where the rug will sit: width × length for rectangles/runners, or diameter for round rugs. If needed, leave clearance for doors and baseboards.",
+            "open_by_default": true
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "How is the price calculated?",
+            "answer": "Pricing depends on size (area), material, and edge finish. Submit your request and we'll send a final quote for approval.",
+            "open_by_default": true
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What's the production time and shipping time?",
+            "answer": "Production typically takes 4-6 weeks depending on complexity. Shipping is handled after production completion.",
+            "open_by_default": false
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can I return or cancel a custom rug?",
+            "answer": "Custom rugs are made to order and typically cannot be returned or cancelled after production has started. Please review specifications carefully before ordering.",
+            "open_by_default": false
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What sizes can you make?",
+            "answer": "We can create custom rugs in virtually any size. Contact our team to discuss your specific requirements and available options.",
+            "open_by_default": false
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
