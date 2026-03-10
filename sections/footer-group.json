@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "footer",
   "name": "Footer",
@@ -7,24 +16,41 @@
       "blocks": {
         "tb_return": {
           "type": "trust_item",
-          "settings": { "icon": "return", "label": "Free Returns" }
+          "settings": {
+            "icon": "return",
+            "label": "Free Returns"
+          }
         },
         "tb_guarantee": {
           "type": "trust_item",
-          "settings": { "icon": "guarantee", "label": "Satisfaction Guaranteed" }
+          "settings": {
+            "icon": "guarantee",
+            "label": "Satisfaction Guaranteed"
+          }
         },
         "tb_shipping": {
           "type": "trust_item",
-          "settings": { "icon": "shipping", "label": "Free Shipping" }
+          "settings": {
+            "icon": "shipping",
+            "label": "Free Shipping"
+          }
         },
         "tb_secure": {
           "type": "trust_item",
-          "settings": { "icon": "secure", "label": "Secure Payment" }
+          "settings": {
+            "icon": "secure",
+            "label": "Secure Payment"
+          }
         }
       },
-      "block_order": ["tb_return", "tb_guarantee", "tb_shipping", "tb_secure"],
+      "block_order": [
+        "tb_return",
+        "tb_guarantee",
+        "tb_shipping",
+        "tb_secure"
+      ],
       "settings": {
-        "section_width": "full-width",
+        "section_width": "page-width",
         "color_scheme": "scheme-3",
         "padding-block-start": 18,
         "padding-block-end": 18
@@ -44,22 +70,24 @@
         "contact_address_label": "Address",
         "contact_address": "2407 Chico Ave, Unit A, Building 9, CCC 91733",
         "menu_1_title": "Shop by material",
-        "menu_1": "footer-shop-by-material",
+        "menu_1": "",
         "menu_2_title": "Shop by style",
-        "menu_2": "footer-shop-by-style",
+        "menu_2": "",
         "menu_3_title": "Custom Size",
-        "menu_3": "footer-custom-size",
+        "menu_3": "",
         "menu_4_title": "Inspiration",
-        "menu_4": "footer-inspiration",
+        "menu_4": "",
         "menu_5_title": "Support",
-        "menu_5": "footer-support",
+        "menu_5": "",
         "menu_6_title": "About",
-        "menu_6": "footer-about",
+        "menu_6": "",
         "copyright_text": "© 2026 woo carpet. All rights reserved. Designed and developed by toototech.",
         "facebook_url": "https://www.facebook.com/",
         "twitter_url": "https://x.com/",
         "instagram_url": "https://www.instagram.com/",
         "linkedin_url": "https://www.linkedin.com/",
+        "youtube_url": "",
+        "pinterest_url": "",
         "color_scheme": "scheme-1"
       }
     }
