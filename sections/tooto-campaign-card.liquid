@@ -1,0 +1,585 @@
+{%- liquid
+  assign img_widths = '750, 1100, 1500, 2000'
+  assign img_sizes = '100vw'
+  assign slide_img_widths = '750, 1100, 1500'
+  assign slide_img_sizes = '(min-width: 750px) 65vw, 100vw'
+-%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div
+  id="tooto-campaign-card-{{ section.id }}"
+  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} tooto-campaign-card"
+  style="padding-block-start: {{ section.settings.padding-block-start }}px; padding-block-end: {{ section.settings.padding-block-end }}px;"
+>
+  <div class="tooto-campaign-card__inner">
+
+    {%- comment -%} ── 媒体区 ── {%- endcomment -%}
+    <div class="tooto-campaign-card__media">
+
+      {%- if section.settings.media_type == 'video' -%}
+        {%- comment -%} 视频模式 {%- endcomment -%}
+        <div class="tooto-campaign-card__video-wrapper" id="video-wrapper-{{ section.id }}">
+          {%- comment -%} 封面图层 {%- endcomment -%}
+          <div class="tooto-campaign-card__video-cover" id="video-cover-{{ section.id }}">
+            {%- if section.settings.video_cover != blank -%}
+              {{
+                section.settings.video_cover
+                | image_url: width: 1500
+                | image_tag:
+                  widths: img_widths,
+                  sizes: img_sizes,
+                  alt: section.settings.video_cover.alt,
+                  loading: 'eager',
+                  class: 'tooto-campaign-card__video-cover-img'
+              }}
+            {%- else -%}
+              {{ 'hero-apparel-1' | placeholder_svg_tag: 'tooto-campaign-card__video-cover-img tooto-campaign-card__video-cover-img--placeholder' }}
+            {%- endif -%}
+            {%- comment -%} 播放按钮 {%- endcomment -%}
+            <button
+              class="tooto-campaign-card__play-btn"
+              aria-label="Play video"
+              data-video-id="{{ section.id }}"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                <circle cx="24" cy="24" r="23" stroke="white" stroke-width="1.5" fill="rgba(0,0,0,0.25)"/>
+                <polygon points="20,16 34,24 20,32" fill="white"/>
+              </svg>
+            </button>
+          </div>
+          {%- comment -%} 视频元素（隐藏，点击后显示） {%- endcomment -%}
+          {%- if section.settings.video != blank -%}
+            <div class="tooto-campaign-card__video-player" id="video-player-{{ section.id }}" style="display:none;">
+              {{
+                section.settings.video
+                | video_tag:
+                  autoplay: true,
+                  controls: true,
+                  loop: false,
+                  muted: false,
+                  class: 'tooto-campaign-card__video-el'
+              }}
+            </div>
+          {%- endif -%}
+        </div>
+
+      {%- elsif section.settings.media_type == 'slideshow' -%}
+        {%- comment -%} 轮播模式 {%- endcomment -%}
+        {%- if section.blocks.size > 0 -%}
+          <div class="tooto-campaign-card__slideshow swiper" id="slideshow-{{ section.id }}">
+            <div class="swiper-wrapper">
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'slide' -%}
+                  <div class="swiper-slide tooto-campaign-card__slide" {{ block.shopify_attributes }}>
+                    {%- if block.settings.image != blank -%}
+                      {{
+                        block.settings.image
+                        | image_url: width: 1500
+                        | image_tag:
+                          widths: slide_img_widths,
+                          sizes: slide_img_sizes,
+                          alt: block.settings.image.alt,
+                          loading: 'lazy',
+                          class: 'tooto-campaign-card__slide-img'
+                      }}
+                    {%- else -%}
+                      {{ 'hero-apparel-1' | placeholder_svg_tag: 'tooto-campaign-card__slide-img tooto-campaign-card__slide-img--placeholder' }}
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+            {%- comment -%} 左右箭头 {%- endcomment -%}
+            <button class="tooto-campaign-card__arrow tooto-campaign-card__arrow--prev" aria-label="Previous slide">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            <button class="tooto-campaign-card__arrow tooto-campaign-card__arrow--next" aria-label="Next slide">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </div>
+        {%- else -%}
+          <div class="tooto-campaign-card__media-placeholder">
+            {{ 'hero-apparel-1' | placeholder_svg_tag: 'tooto-campaign-card__placeholder-img' }}
+          </div>
+        {%- endif -%}
+
+      {%- else -%}
+        {%- comment -%} 单图模式（默认）{%- endcomment -%}
+        <div class="tooto-campaign-card__image-wrapper">
+          {%- if section.settings.image != blank -%}
+            {{
+              section.settings.image
+              | image_url: width: 1500
+              | image_tag:
+                widths: img_widths,
+                sizes: img_sizes,
+                alt: section.settings.image.alt,
+                loading: 'lazy',
+                class: 'tooto-campaign-card__image'
+            }}
+          {%- else -%}
+            {{ 'hero-apparel-1' | placeholder_svg_tag: 'tooto-campaign-card__image tooto-campaign-card__image--placeholder' }}
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+    </div>{%- comment -%} /.tooto-campaign-card__media {%- endcomment -%}
+
+    {%- comment -%} ── 文字区：左标题 + 右描述+链接 ── {%- endcomment -%}
+    <div class="tooto-campaign-card__body">
+      <div class="tooto-campaign-card__body-left">
+        {%- if section.settings.title != blank -%}
+          <h2 class="tooto-campaign-card__title">{{ section.settings.title | escape }}</h2>
+        {%- endif -%}
+      </div>
+      <div class="tooto-campaign-card__body-right">
+        {%- if section.settings.description != blank -%}
+          <p class="tooto-campaign-card__desc">{{ section.settings.description | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.link_url != blank -%}
+          <a class="tooto-campaign-card__link" href="{{ section.settings.link_url }}">
+            {{ section.settings.link_label | default: 'See More' | escape }}
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  (function () {
+    var sectionEl = document.getElementById('tooto-campaign-card-{{ section.id }}');
+    if (!sectionEl) return;
+
+    {%- if section.settings.media_type == 'video' -%}
+    // ── 视频播放逻辑 ──
+    var playBtn = sectionEl.querySelector('.tooto-campaign-card__play-btn');
+    var cover = document.getElementById('video-cover-{{ section.id }}');
+    var player = document.getElementById('video-player-{{ section.id }}');
+    if (playBtn && cover && player) {
+      playBtn.addEventListener('click', function () {
+        cover.style.display = 'none';
+        player.style.display = 'block';
+        var videoEl = player.querySelector('video');
+        if (videoEl) videoEl.play();
+      });
+    }
+    {%- endif -%}
+
+    {%- if section.settings.media_type == 'slideshow' -%}
+    // ── Swiper 轮播初始化 ──
+    document.addEventListener('DOMContentLoaded', function () {
+      var swiperEl = document.getElementById('slideshow-{{ section.id }}');
+      if (!swiperEl || typeof Swiper === 'undefined') return;
+      new Swiper(swiperEl, {
+        slidesPerView: 1,
+        spaceBetween: 0,
+        loop: true,
+        navigation: {
+          prevEl: swiperEl.parentElement.querySelector('.tooto-campaign-card__arrow--prev'),
+          nextEl: swiperEl.parentElement.querySelector('.tooto-campaign-card__arrow--next'),
+        },
+      });
+    });
+    {%- endif -%}
+  })();
+</script>
+
+{% stylesheet %}
+  /* ── 脱离主题 section grid ── */
+  .tooto-campaign-card__inner {
+    grid-column: 1 / -1;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .section--page-width .tooto-campaign-card__inner {
+    grid-column: 2;
+  }
+
+  /* ── 媒体区 ── */
+  .tooto-campaign-card__media {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    position: relative;
+    background-color: rgb(var(--color-foreground-rgb) / 0.06);
+  }
+
+  /* ── 单图 ── */
+  .tooto-campaign-card__image-wrapper {
+    width: 100%;
+    height: 100%;
+  }
+
+  .tooto-campaign-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .tooto-campaign-card__image--placeholder {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ── 视频封面 ── */
+  .tooto-campaign-card__video-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .tooto-campaign-card__video-cover {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .tooto-campaign-card__video-cover-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .tooto-campaign-card__video-cover-img--placeholder {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ── 播放按钮 ── */
+  .tooto-campaign-card__play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    z-index: 2;
+  }
+
+  .tooto-campaign-card__play-btn:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 0.9;
+  }
+
+  /* ── 视频播放器 ── */
+  .tooto-campaign-card__video-player {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .tooto-campaign-card__video-el {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ── 轮播 ── */
+  .tooto-campaign-card__slideshow {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .tooto-campaign-card__slideshow > .swiper-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    width: 100%;
+    height: 100%;
+  }
+
+  .tooto-campaign-card__slideshow > .swiper-wrapper > .swiper-slide {
+    flex-shrink: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .tooto-campaign-card__slide-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .tooto-campaign-card__slide-img--placeholder {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ── 轮播箭头 ── */
+  .tooto-campaign-card__arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.7);
+    background: rgba(0, 0, 0, 0.25);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+
+  .tooto-campaign-card__arrow:hover {
+    background: rgba(0, 0, 0, 0.5);
+    border-color: white;
+  }
+
+  .tooto-campaign-card__arrow--prev {
+    left: 20px;
+  }
+
+  .tooto-campaign-card__arrow--next {
+    right: 20px;
+  }
+
+  /* ── 媒体占位 ── */
+  .tooto-campaign-card__media-placeholder {
+    width: 100%;
+    height: 100%;
+  }
+
+  .tooto-campaign-card__placeholder-img {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ── 文字区 ── */
+  .tooto-campaign-card__body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px 48px;
+    padding-top: 24px;
+    align-items: start;
+  }
+
+  .tooto-campaign-card__title {
+    margin: 0;
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--color-foreground-heading);
+  }
+
+  .tooto-campaign-card__desc {
+    margin: 0 0 12px;
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--color-foreground);
+    opacity: 0.8;
+  }
+
+  .tooto-campaign-card__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-foreground);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+    transition: opacity 0.2s ease;
+  }
+
+  .tooto-campaign-card__link:hover {
+    opacity: 0.6;
+  }
+
+  /* ── 响应式 ── */
+  @media (max-width: 749px) {
+    .tooto-campaign-card__media {
+      aspect-ratio: 4 / 3;
+    }
+
+    .tooto-campaign-card__body {
+      grid-template-columns: 1fr;
+      gap: 16px;
+      padding-top: 20px;
+    }
+
+    .tooto-campaign-card__arrow {
+      width: 36px;
+      height: 36px;
+    }
+
+    .tooto-campaign-card__arrow--prev {
+      left: 12px;
+    }
+
+    .tooto-campaign-card__arrow--next {
+      right: 12px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Tooto Campaign Card",
+  "tag": "section",
+  "class": "tooto-campaign-card-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
+      "type": "select",
+      "id": "media_type",
+      "label": "Media Type",
+      "options": [
+        { "value": "image", "label": "Image" },
+        { "value": "video", "label": "Video" },
+        { "value": "slideshow", "label": "Slideshow" }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Used when Media Type = Image"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video",
+      "info": "Used when Media Type = Video"
+    },
+    {
+      "type": "image_picker",
+      "id": "video_cover",
+      "label": "Video Cover Image",
+      "info": "Shown before video plays"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "City of Gems"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel."
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Link Label",
+      "default": "See More"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link URL"
+    },
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        { "value": "page-width", "label": "Page width" },
+        { "value": "full-width", "label": "Full width" }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Slide Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tooto Campaign Card",
+      "settings": {
+        "media_type": "image",
+        "title": "City of Gems",
+        "description": "Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel.",
+        "link_label": "See More",
+        "section_width": "page-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    }
+  ]
+}
+{% endschema %}
