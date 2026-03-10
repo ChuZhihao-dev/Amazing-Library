@@ -39,7 +39,7 @@
           | image_tag:
             widths: img_widths,
             sizes: img_sizes,
-            alt: section.settings.image.alt,
+            alt: section.settings.image.alt | escape,
             loading: 'lazy',
             class: 'tooto-text-image-banner__img'
         }}
@@ -59,8 +59,6 @@
     grid-template-columns: 1fr 3fr;
     gap: 60px;
     align-items: center;
-    width: 100%;
-    box-sizing: border-box;
   }
 
   .section--page-width .tooto-text-image-banner__inner {
@@ -127,7 +125,6 @@
   .tooto-text-image-banner__image {
     width: 100%;
     overflow: hidden;
-    border-radius: 0;
   }
 
   .tooto-text-image-banner__img {
@@ -180,105 +177,104 @@
 
 {% schema %}
 {
-  \"name\": \"Tooto Text Image Banner\",
-  \"tag\": \"section\",
-  \"class\": \"tooto-text-image-banner-wrapper\",
-  \"disabled_on\": {
-    \"groups\": [\"header\", \"footer\"]
+  "name": "Tooto Text Image Banner",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
   },
-  \"settings\": [
+  "settings": [
     {
-      \"type\": \"header\",
-      \"content\": \"Content\"
+      "type": "header",
+      "content": "Content"
     },
     {
-      \"type\": \"textarea\",
-      \"id\": \"heading\",
-      \"label\": \"Heading\",
-      \"default\": \"A Shade For Every Room\"
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "A Shade For Every Room"
     },
     {
-      \"type\": \"textarea\",
-      \"id\": \"description\",
-      \"label\": \"Description\",
-      \"default\": \"Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel. Their inherent elasticity reduces foot fatigue, making them ideal for bedrooms or living spaces.\"
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel. Their inherent elasticity reduces foot fatigue, making them ideal for bedrooms or living spaces."
     },
     {
-      \"type\": \"header\",
-      \"content\": \"Image\"
+      "type": "header",
+      "content": "Image"
     },
     {
-      \"type\": \"image_picker\",
-      \"id\": \"image\",
-      \"label\": \"Image\"
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
     },
     {
-      \"type\": \"header\",
-      \"content\": \"CTA Button\"
+      "type": "header",
+      "content": "CTA Button"
     },
     {
-      \"type\": \"text\",
-      \"id\": \"cta_label\",
-      \"label\": \"Button Label\",
-      \"default\": \"Shop Now\"
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button Label",
+      "default": "Shop Now"
     },
     {
-      \"type\": \"url\",
-      \"id\": \"cta_url\",
-      \"label\": \"Button URL\"
+      "type": "url",
+      "id": "cta_url",
+      "label": "Button URL"
     },
     {
-      \"type\": \"header\",
-      \"content\": \"Section Settings\"
+      "type": "header",
+      "content": "Section Settings"
     },
     {
-      \"type\": \"select\",
-      \"id\": \"section_width\",
-      \"label\": \"Section Width\",
-      \"options\": [
-        { \"value\": \"page-width\", \"label\": \"Page width\" },
-        { \"value\": \"full-width\", \"label\": \"Full width\" }
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        { "value": "page-width", "label": "Page width" },
+        { "value": "full-width", "label": "Full width" }
       ],
-      \"default\": \"page-width\"
+      "default": "page-width"
     },
     {
-      \"type\": \"color_scheme\",
-      \"id\": \"color_scheme\",
-      \"label\": \"Color Scheme\",
-      \"default\": \"scheme-1\"
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
     },
     {
-      \"type\": \"range\",
-      \"id\": \"padding-block-start\",
-      \"label\": \"Top Padding\",
-      \"min\": 0,
-      \"max\": 100,
-      \"step\": 4,
-      \"unit\": \"px\",
-      \"default\": 60
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
     },
     {
-      \"type\": \"range\",
-      \"id\": \"padding-block-end\",
-      \"label\": \"Bottom Padding\",
-      \"min\": 0,
-      \"max\": 100,
-      \"step\": 4,
-      \"unit\": \"px\",
-      \"default\": 60
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
     }
   ],
-  \"presets\": [
+  "presets": [
     {
-      \"name\": \"Tooto Text Image Banner\",
-      \"settings\": {
-        \"heading\": \"A Shade For Every Room\",
-        \"description\": \"Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel. Their inherent elasticity reduces foot fatigue, making them ideal for bedrooms or living spaces.\",
-        \"cta_label\": \"Shop Now\",
-        \"section_width\": \"page-width\",
-        \"color_scheme\": \"scheme-1\",
-        \"padding-block-start\": 60,
-        \"padding-block-end\": 60
+      "name": "Tooto Text Image Banner",
+      "settings": {
+        "heading": "A Shade For Every Room",
+        "description": "Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel. Their inherent elasticity reduces foot fatigue, making them ideal for bedrooms or living spaces.",
+        "cta_label": "Shop Now",
+        "section_width": "page-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 60,
+        "padding-block-end": 60
       }
     }
   ]
