@@ -83,7 +83,7 @@
 
     {%- comment -%} ── 右侧 Related Reading 侧边栏 ── {%- endcomment -%}
     <aside class="blog-post-layout__sidebar">
-      {%- if related_articles != blank and related_articles.size > 0 -%}
+      {%- unless related_articles == blank -%}
         <div class="blog-post-related">
           <h2 class="blog-post-related__heading">Related reading</h2>
           <ul class="blog-post-related__list">
@@ -91,17 +91,21 @@
               <li class="blog-post-related__item">
                 <a href="{{ related.url }}" class="blog-post-related__link">
                   <strong class="blog-post-related__title">{{ related.title | escape }}</strong>
-                  {%- if related.excerpt != blank -%}
-                    <p class="blog-post-related__excerpt">{{ related.excerpt | strip_html | truncate: 80 }}</p>
-                  {%- elsif related.content != blank -%}
-                    <p class="blog-post-related__excerpt">{{ related.content | strip_html | truncate: 80 }}</p>
+                  {%- assign related_excerpt = related.excerpt | strip_html | strip -%}
+                  {%- assign related_content = related.content | strip_html | strip -%}
+                  {%- if related_excerpt != blank -%}
+                    <p class="blog-post-related__excerpt">{{ related_excerpt | truncate: 80 }}</p>
+                  {%- elsif related_content != blank -%}
+                    <p class="blog-post-related__excerpt">{{ related_content | truncate: 80 }}</p>
+                  {%- else -%}
+                    <p class="blog-post-related__excerpt">{{ related.published_at | date: '%B %d, %Y' }}</p>
                   {%- endif -%}
                 </a>
               </li>
             {%- endfor -%}
           </ul>
         </div>
-      {%- endif -%}
+      {%- endunless -%}
     </aside>
 
   </div>{%- comment -%} /.blog-post-layout__inner {%- endcomment -%}
