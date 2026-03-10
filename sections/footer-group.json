@@ -17,6 +17,7 @@
         "tb_return": {
           "type": "trust_item",
           "settings": {
+            "custom_icon": "shopify://shop_images/50.svg",
             "icon": "return",
             "label": "Free Returns"
           }
@@ -24,6 +25,7 @@
         "tb_guarantee": {
           "type": "trust_item",
           "settings": {
+            "custom_icon": "shopify://shop_images/3.svg",
             "icon": "guarantee",
             "label": "Satisfaction Guaranteed"
           }
@@ -31,6 +33,7 @@
         "tb_shipping": {
           "type": "trust_item",
           "settings": {
+            "custom_icon": "shopify://shop_images/51.svg",
             "icon": "shipping",
             "label": "Free Shipping"
           }
@@ -38,6 +41,7 @@
         "tb_secure": {
           "type": "trust_item",
           "settings": {
+            "custom_icon": "shopify://shop_images/50.svg",
             "icon": "secure",
             "label": "Secure Payment"
           }
@@ -51,7 +55,7 @@
       ],
       "settings": {
         "section_width": "page-width",
-        "color_scheme": "scheme-3",
+        "color_scheme": "scheme-4",
         "padding-block-start": 18,
         "padding-block-end": 18
       }
