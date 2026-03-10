@@ -23,6 +23,20 @@
     "section_MHNEUx": {
       "type": "section",
       "blocks": {
+        "spacer_Q3CPfG": {
+          "type": "spacer",
+          "name": "t:names.spacer",
+          "settings": {
+            "size": "pixel",
+            "percent_size": 100,
+            "pixel_size": 80,
+            "custom_mobile_size": false,
+            "size_mobile": "percent",
+            "percent_size_mobile": 100,
+            "pixel_size_mobile": 120
+          },
+          "blocks": {}
+        },
         "text_KmftCU": {
           "type": "text",
           "name": "t:names.text",
@@ -48,10 +62,26 @@
             "padding-inline-end": 0
           },
           "blocks": {}
+        },
+        "spacer_bxYpci": {
+          "type": "spacer",
+          "name": "t:names.spacer",
+          "settings": {
+            "size": "pixel",
+            "percent_size": 100,
+            "pixel_size": 160,
+            "custom_mobile_size": false,
+            "size_mobile": "percent",
+            "percent_size_mobile": 100,
+            "pixel_size_mobile": 120
+          },
+          "blocks": {}
         }
       },
       "block_order": [
-        "text_KmftCU"
+        "spacer_Q3CPfG",
+        "text_KmftCU",
+        "spacer_bxYpci"
       ],
       "name": "t:names.custom_section",
       "settings": {
@@ -62,7 +92,7 @@
         "align_baseline": false,
         "horizontal_alignment_flex_direction_column": "flex-start",
         "vertical_alignment_flex_direction_column": "center",
-        "gap": 12,
+        "gap": 0,
         "section_width": "page-width",
         "section_height": "small",
         "section_height_custom": 50,
