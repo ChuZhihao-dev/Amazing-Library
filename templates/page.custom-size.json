@@ -97,7 +97,7 @@
             "description": "Custom rugs precisely made to fit your space dimensions for home and commercial use.",
             "button_label": "Customize Now",
             "button_link": "shopify://collections/all",
-            "button_style": "filled"
+            "button_style": "outline"
           }
         },
         "option_2_wall": {
@@ -110,7 +110,7 @@
             "description": "Full-room carpet customization that delivers a seamless and harmonious new look.",
             "button_label": "Customize Now",
             "button_link": "shopify://collections",
-            "button_style": "filled"
+            "button_style": "outline"
           }
         },
         "option_3_special": {
