@@ -1,62 +1,110 @@
 
 
+{%- liquid
+  comment
+    Related Reading：从 article metafield 读取手动配置的关联文章列表
+    metafield 命名空间: custom，key: related_articles
+    类型: list.article_reference
+  endcomment
+  assign related_articles = article.metafields.custom.related_articles.value
+-%}
+
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
-<div class="section color-{{ section.settings.color_scheme }}">
-  <div
-    class="
-      spacing-style
-      layout-panel-flex
-      layout-panel-flex--column
-      section-content-wrapper
-      mobile-column
-    "
-    style="
-      {% render 'layout-panel-style', settings: section.settings %}
-      {% render 'spacing-style', settings: section.settings %}
-    "
-  >
-    <header>
-      {%- content_for 'block', id: 'blog-post-title', type: 'text' %}
-      {%- content_for 'block', id: 'blog-post-details', type: '_blog-post-info-text' %}
-    </header>
+<div
+  id="blog-post-{{ section.id }}"
+  class="section section--page-width color-{{ section.settings.color_scheme }} blog-post-layout"
+  style="padding-block-start: {{ section.settings.padding-block-start }}px; padding-block-end: {{ section.settings.padding-block-end }}px;"
+>
+  <div class="blog-post-layout__inner">
 
-    {%- if article.image -%}
-      {%- content_for 'block', id: 'blog-post-image', type: '_blog-post-featured-image' %}
-    {%- endif -%}
-    {%- content_for 'block', id: 'blog-post-content', type: '_blog-post-content' %}
+    {%- comment -%} ── 主内容列 ── {%- endcomment -%}
+    <div class="blog-post-layout__main">
 
-    {% comment %} Dynamic area for @app blocks only, at the bottom {% endcomment %}
-    {% content_for 'blocks' %}
+      {%- comment -%} 面包屑 {%- endcomment -%}
+      <nav class="blog-post-layout__breadcrumb" aria-label="Breadcrumb">
+        <a href="{{ blog.url }}" class="blog-post-layout__breadcrumb-link">
+          <svg class="blog-post-layout__breadcrumb-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+          Back
+        </a>
+        <span class="blog-post-layout__breadcrumb-sep" aria-hidden="true">/</span>
+        <a href="{{ blog.url }}" class="blog-post-layout__breadcrumb-link">{{ blog.title }}</a>
+      </nav>
 
-    {% if blog.comments_enabled? %}
-      <div class="blog-post-comments-container">
-        <h2 class="h3">{{- 'blogs.article.comments_heading' | t: count: article.comments_count -}}</h2>
+      {%- comment -%} 标题 + 日期 {%- endcomment -%}
+      <header class="blog-post-layout__header">
+        <h1 class="blog-post-layout__title">{{ article.title }}</h1>
+        <time class="blog-post-layout__date" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+          {{ article.published_at | date: '%B %d, %Y, %H:%M' }}
+        </time>
+        <hr class="blog-post-layout__divider">
+      </header>
 
-        <div class="blog-post-comments">
-          {% paginate article.comments by 10 %}
-            {% for comment in article.comments %}
-              <div class="blog-post-comment">
-                {{ comment.content }}
-                <div class="blog-post-comment__author">
-                  <span class="blog-post-comment__author-name">{{- comment.author -}}</span>
-                  <span>{{- 'blogs.article.comment_author_separator' | t -}}</span>
-                  <span class="blog-post-comment__date">
-                    {{- comment.created_at | time_tag: format: 'date' -}}
-                  </span>
-                </div>
-              </div>
-            {% endfor %}
+      {%- comment -%} 文章内容区（保持主题原有 block 体系，不动） {%- endcomment -%}
+      <div class="blog-post-layout__content">
+        {%- if article.image -%}
+          {%- content_for 'block', id: 'blog-post-image', type: '_blog-post-featured-image' %}
+        {%- endif -%}
+        {%- content_for 'block', id: 'blog-post-content', type: '_blog-post-content' %}
 
-            <div class="blog-post-comments-pagination">
-              {{- paginate | default_pagination -}}
-            </div>
-          {% endpaginate %}
-        </div>
-
-        {% render 'blog-comment-form', article: article, section_id: section.id %}
+        {% comment %} Dynamic area for @app blocks only, at the bottom {% endcomment %}
+        {% content_for 'blocks' %}
       </div>
-    {% endif %}
-  </div>
+
+      {%- comment -%} 评论区 {%- endcomment -%}
+      {% if blog.comments_enabled? %}
+        <div class="blog-post-comments-container">
+          <h2 class="h3">{{- 'blogs.article.comments_heading' | t: count: article.comments_count -}}</h2>
+          <div class="blog-post-comments">
+            {% paginate article.comments by 10 %}
+              {% for comment in article.comments %}
+                <div class="blog-post-comment">
+                  {{ comment.content }}
+                  <div class="blog-post-comment__author">
+                    <span class="blog-post-comment__author-name">{{- comment.author -}}</span>
+                    <span>{{- 'blogs.article.comment_author_separator' | t -}}</span>
+                    <span class="blog-post-comment__date">
+                      {{- comment.created_at | time_tag: format: 'date' -}}
+                    </span>
+                  </div>
+                </div>
+              {% endfor %}
+              <div class="blog-post-comments-pagination">
+                {{- paginate | default_pagination -}}
+              </div>
+            {% endpaginate %}
+          </div>
+          {% render 'blog-comment-form', article: article, section_id: section.id %}
+        </div>
+      {% endif %}
+
+    </div>{%- comment -%} /.blog-post-layout__main {%- endcomment -%}
+
+    {%- comment -%} ── 右侧 Related Reading 侧边栏 ── {%- endcomment -%}
+    <aside class="blog-post-layout__sidebar">
+      {%- if related_articles != blank and related_articles.size > 0 -%}
+        <div class="blog-post-related">
+          <h2 class="blog-post-related__heading">Related reading</h2>
+          <ul class="blog-post-related__list">
+            {%- for related in related_articles -%}
+              <li class="blog-post-related__item">
+                <a href="{{ related.url }}" class="blog-post-related__link">
+                  <strong class="blog-post-related__title">{{ related.title | escape }}</strong>
+                  {%- if related.excerpt != blank -%}
+                    <p class="blog-post-related__excerpt">{{ related.excerpt | strip_html | truncate: 80 }}</p>
+                  {%- elsif related.content != blank -%}
+                    <p class="blog-post-related__excerpt">{{ related.content | strip_html | truncate: 80 }}</p>
+                  {%- endif -%}
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+    </aside>
+
+  </div>{%- comment -%} /.blog-post-layout__inner {%- endcomment -%}
 </div>
 
 <script type="application/ld+json">
@@ -64,6 +112,170 @@
 </script>
 
 {% stylesheet %}
+  /* ── 两栏布局 ── */
+  .blog-post-layout__inner {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 0 64px;
+    align-items: start;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .section--page-width .blog-post-layout__inner {
+    grid-column: 2;
+  }
+
+  /* ── 主内容列 ── */
+  .blog-post-layout__main {
+    min-width: 0;
+  }
+
+  /* ── 面包屑 ── */
+  .blog-post-layout__breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 24px;
+    font-size: 0.875rem;
+    color: var(--color-foreground);
+    opacity: 0.7;
+  }
+
+  .blog-post-layout__breadcrumb-link {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    text-decoration: none;
+    color: inherit;
+    transition: opacity 0.2s ease;
+  }
+
+  .blog-post-layout__breadcrumb-link:hover {
+    opacity: 1;
+  }
+
+  .blog-post-layout__breadcrumb-sep {
+    opacity: 0.5;
+  }
+
+  .blog-post-layout__breadcrumb-icon {
+    flex-shrink: 0;
+  }
+
+  /* ── 标题区 ── */
+  .blog-post-layout__header {
+    margin-bottom: 32px;
+  }
+
+  .blog-post-layout__title {
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--color-foreground-heading);
+    margin: 0 0 12px;
+  }
+
+  .blog-post-layout__date {
+    display: block;
+    font-size: 0.8125rem;
+    color: var(--color-foreground);
+    opacity: 0.6;
+    margin-bottom: 20px;
+  }
+
+  .blog-post-layout__divider {
+    border: none;
+    border-top: 1px solid rgb(var(--color-border-rgb) / 0.3);
+    margin: 0;
+  }
+
+  /* ── 文章内容区 ── */
+  .blog-post-layout__content {
+    margin-top: 32px;
+  }
+
+  /* ── 右侧侧边栏（sticky）── */
+  .blog-post-layout__sidebar {
+    position: sticky;
+    top: calc(var(--header-height, 80px) + 24px);
+    min-width: 0;
+  }
+
+  /* ── Related Reading ── */
+  .blog-post-related__heading {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-foreground-heading);
+    margin: 0 0 16px;
+    padding-left: 12px;
+    border-left: 3px solid var(--color-foreground);
+  }
+
+  .blog-post-related__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .blog-post-related__item {
+    border-bottom: 1px solid rgb(var(--color-border-rgb) / 0.25);
+    padding: 16px 0;
+  }
+
+  .blog-post-related__item:first-child {
+    padding-top: 0;
+  }
+
+  .blog-post-related__item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .blog-post-related__link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .blog-post-related__link:hover .blog-post-related__title {
+    opacity: 0.7;
+  }
+
+  .blog-post-related__title {
+    display: block;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--color-foreground-heading);
+    line-height: 1.35;
+    margin-bottom: 6px;
+    transition: opacity 0.2s ease;
+  }
+
+  .blog-post-related__excerpt {
+    font-size: 0.8125rem;
+    color: var(--color-foreground);
+    opacity: 0.65;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* ── 响应式：平板及以下隐藏侧边栏到底部 ── */
+  @media (max-width: 989px) {
+    .blog-post-layout__inner {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+
+    .blog-post-layout__sidebar {
+      position: static;
+      border-top: 1px solid rgb(var(--color-border-rgb) / 0.25);
+      padding-top: 32px;
+    }
+  }
+
+  /* ── 评论区 ── */
   .blog-post-comments-container {
     width: 100%;
     max-width: var(--normal-content-width);
@@ -126,29 +338,6 @@
   "class": "section-wrapper",
   "settings": [
     {
-      "type": "select",
-      "id": "content_direction",
-      "label": "t:settings.direction",
-      "options": [
-        {
-          "value": "column",
-          "label": "t:options.vertical"
-        }
-      ],
-      "default": "column",
-      "visible_if": "{{ section.settings.gap < 0 }}"
-    },
-    {
-      "type": "range",
-      "id": "gap",
-      "label": "t:settings.gap",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 12
-    },
-    {
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "t:settings.color_scheme",
@@ -163,20 +352,20 @@
       "id": "padding-block-start",
       "label": "t:settings.top",
       "min": 0,
-      "max": 100,
-      "step": 1,
+      "max": 120,
+      "step": 4,
       "unit": "px",
-      "default": 0
+      "default": 48
     },
     {
       "type": "range",
       "id": "padding-block-end",
       "label": "t:settings.bottom",
       "min": 0,
-      "max": 100,
-      "step": 1,
+      "max": 120,
+      "step": 4,
       "unit": "px",
-      "default": 0
+      "default": 80
     }
   ],
   "presets": []
