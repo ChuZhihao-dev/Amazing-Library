@@ -132,6 +132,12 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .tooto-custom-rug-options__card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
   }
 
   {%- comment -%} IMAGE {%- endcomment -%}
@@ -221,7 +227,7 @@
   }
 
   .tooto-custom-rug-options__button--outline {
-    background-color: transparent;
+    background-color: var(--color-background);
     color: var(--color-foreground);
     border-color: var(--color-foreground);
   }
@@ -229,6 +235,18 @@
   .tooto-custom-rug-options__button--outline:hover {
     background-color: var(--color-foreground);
     color: var(--color-background);
+  }
+
+  .tooto-custom-rug-options__card:hover .tooto-custom-rug-options__button--filled {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    border-color: var(--color-foreground);
+  }
+
+  .tooto-custom-rug-options__card:hover .tooto-custom-rug-options__button--outline {
+    background-color: var(--color-foreground);
+    color: var(--color-background);
+    border-color: var(--color-foreground);
   }
 
   {%- comment -%} RESPONSIVE {%- endcomment -%}
