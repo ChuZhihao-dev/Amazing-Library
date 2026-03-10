@@ -72,10 +72,61 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
+    },
+    "tooto_campaign_card_PEMYMD": {
+      "type": "tooto-campaign-card",
+      "name": "Tooto Campaign Card",
+      "settings": {
+        "media_type": "image",
+        "image": "shopify://shop_images/2548_2x_3.webp",
+        "title": "City of Gems",
+        "description": "Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel.",
+        "link_label": "See More",
+        "link_url": "",
+        "section_width": "page-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    },
+    "tooto_campaign_card_YjmpmP": {
+      "type": "tooto-campaign-card",
+      "blocks": {
+        "slide_XjYbbb": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/2549_2x_2.webp"
+          }
+        },
+        "slide_cFETGd": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/2548_2x_3.webp"
+          }
+        }
+      },
+      "block_order": [
+        "slide_XjYbbb",
+        "slide_cFETGd"
+      ],
+      "name": "Tooto Campaign Card",
+      "settings": {
+        "media_type": "slideshow",
+        "title": "City of Gems",
+        "description": "Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel.",
+        "link_label": "See More",
+        "link_url": "",
+        "section_width": "page-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
     }
   },
   "order": [
     "main",
-    "tooto_campaign_card_kJ3FPF"
+    "tooto_campaign_card_kJ3FPF",
+    "tooto_campaign_card_PEMYMD",
+    "tooto_campaign_card_YjmpmP"
   ]
 }
