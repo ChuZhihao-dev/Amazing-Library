@@ -62,6 +62,50 @@
     },
     "footer_main_woo": {
       "type": "tooto-footer-main",
+      "blocks": {
+        "menu_7q4GE4": {
+          "type": "menu",
+          "settings": {
+            "menu_title": "",
+            "menu": "about"
+          }
+        },
+        "menu_A7kinM": {
+          "type": "menu",
+          "settings": {
+            "menu_title": "Support",
+            "menu": "support"
+          }
+        },
+        "menu_ML9PyW": {
+          "type": "menu",
+          "settings": {
+            "menu_title": "",
+            "menu": "about"
+          }
+        },
+        "menu_G9YK9V": {
+          "type": "menu",
+          "settings": {
+            "menu_title": "Inspiration",
+            "menu": "inspiration"
+          }
+        },
+        "menu_CAkMbr": {
+          "type": "menu",
+          "settings": {
+            "menu_title": "About Us",
+            "menu": "about"
+          }
+        }
+      },
+      "block_order": [
+        "menu_7q4GE4",
+        "menu_A7kinM",
+        "menu_ML9PyW",
+        "menu_G9YK9V",
+        "menu_CAkMbr"
+      ],
       "settings": {
         "logo": "shopify://shop_images/54.svg",
         "brand_name": "",
@@ -74,18 +118,6 @@
         "contact_tel": "+86 18355248224",
         "contact_address_label": "Address",
         "contact_address": "2407 Chico Ave, Unit A, Building 9, CCC 91733",
-        "menu_1_title": "Shop by material",
-        "menu_1": "about",
-        "menu_2_title": "Shop by style",
-        "menu_2": "about",
-        "menu_3_title": "Custom Size",
-        "menu_3": "about",
-        "menu_4_title": "Inspiration",
-        "menu_4": "inspiration",
-        "menu_5_title": "Support",
-        "menu_5": "support",
-        "menu_6_title": "About",
-        "menu_6": "about",
         "copyright_text": "© 2026 woo carpet. All rights reserved. Designed and developed by toototech.",
         "facebook_url": "https://www.facebook.com/",
         "twitter_url": "https://x.com/",
@@ -93,6 +125,7 @@
         "linkedin_url": "https://www.linkedin.com/",
         "youtube_url": "",
         "pinterest_url": "",
+        "section_width": "page-width",
         "color_scheme": "scheme-5"
       }
     }
