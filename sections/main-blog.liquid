@@ -1,196 +1,321 @@
 
 
-<script
-  src="{{ 'blog-posts-list.js' | asset_url }}"
-  type="module"
-  fetchpriority="low"
-></script>
+{%- liquid
+  assign img_widths = '400, 600, 900'
+  assign img_sizes = '(min-width: 990px) 38vw, (min-width: 750px) 45vw, 100vw'
+  assign current_tag = current_tags | first | default: ''
+-%}
 
-<blog-posts-list section-id="{{ section.id }}">
-  <div class="section-background color-{{ section.settings.color_scheme }}"></div>
-  <div
-    class="
-      section
-      color-{{ section.settings.color_scheme }}
-      blog-posts
-      spacing-style
-      size-style
-    "
-    data-testid="blog-posts"
-    style="{% render 'spacing-style', settings: section.settings %}"
-  >
-    {% content_for 'blocks' %}
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div
+  id="main-blog-{{ section.id }}"
+  class="section section--page-width color-{{ section.settings.color_scheme }} stories-layout"
+  style="padding-block-start: {{ section.settings.padding-block-start }}px; padding-block-end: {{ section.settings.padding-block-end }}px;"
+>
+  <div class="stories-layout__inner">
 
-    <div
-      ref="grid"
-      class="blog-posts-container"
-    >
-      {% liquid
-        assign items_on_page = blog.articles.size
-      %}
-      {% for article in blog.articles %}
-        {% liquid
-          # Defaults for compact layout
-          assign col_span = 2
-          assign scale = 0.6
-          assign is_horizontal = false
+    {%- comment -%} 左侧：标题 + 分类导航 {%- endcomment -%}
+    <aside class="stories-layout__sidebar">
+      <h1 class="stories-layout__heading">{{ blog.title }}</h1>
 
-          case items_on_page
-            when 1
-              # Single post: full width hero
-              assign col_span = 6
-              assign scale = 1
-              assign is_horizontal = true
-            when 2
-              # Two posts: both standard side by side
-              assign col_span = 3
-              assign scale = 0.8
-            when 3
-              # Three posts: hero + 2 standard
-              if forloop.index == 1
-                assign col_span = 6
-                assign scale = 1
-                assign is_horizontal = true
-              else
-                assign col_span = 3
-                assign scale = 0.8
-              endif
-            when 4
-              # Four posts: all standard in 2x2 grid
-              assign col_span = 3
-              assign scale = 0.8
-            when 5
-              # Five posts: hero + 4 standard
-              if forloop.index == 1
-                assign col_span = 6
-                assign scale = 1
-                assign is_horizontal = true
-              else
-                assign col_span = 3
-                assign scale = 0.8
-              endif
-            else
-              # 6+ posts: hero, 2 standard, rest compact
-              if forloop.index == 1
-                assign col_span = 6
-                assign scale = 1
-                assign is_horizontal = true
-              elsif forloop.index <= 3
-                assign col_span = 3
-                assign scale = 0.8
-              else
-                assign col_span = 2
-                assign scale = 0.6
-              endif
-          endcase
-        %}
-        {% style %}
-          [data-blog-index="{{ section.id }}-{{ forloop.index }}"] {
-            --col-span: {{ col_span }};
-            --blog-post-card-scale: {{ scale }};
-          }
+      <nav class="stories-layout__tags" aria-label="Blog categories">
+        <ul class="stories-layout__tag-list">
+          <li class="stories-layout__tag-item">
+            <a
+              href="{{ blog.url }}"
+              class="stories-layout__tag-link{% if current_tag == blank %} stories-layout__tag-link--active{% endif %}"
+            >All</a>
+          </li>
+          {%- for tag in blog.all_tags -%}
+            <li class="stories-layout__tag-item">
+              <a
+                href="{{ blog.url }}/tagged/{{ tag | handleize }}"
+                class="stories-layout__tag-link{% if current_tag == tag %} stories-layout__tag-link--active{% endif %}"
+              >{{ tag }}</a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+    </aside>
 
-          @media screen and (max-width: 749px) {
-            [data-blog-index="{{ section.id }}-{{ forloop.index }}"] {
-              --col-span: 6;
-              --blog-post-card-scale: 0.5;
-            }
-          }
-        {% endstyle %}
-        <div
-          class="blog-post-item{% if is_horizontal %} blog-post-item--horizontal{% endif %}"
-          data-testid="blog-post-item"
-          data-blog-index="{{ section.id }}-{{ forloop.index }}"
-        >
-          {% content_for 'block', id: 'static-blog-post-card', type: '_blog-post-card', article: article %}
-        </div>
-      {% endfor %}
+    {%- comment -%} 右侧：文章网格 {%- endcomment -%}
+    <div class="stories-layout__grid">
+      {%- paginate blog.articles by section.settings.posts_per_page -%}
+        {%- if blog.articles.size > 0 -%}
+          {%- for article in blog.articles -%}
+            <article class="stories-layout__card">
+              <a href="{{ article.url }}" class="stories-layout__card-link" aria-label="{{ article.title | escape }}">
+                <div class="stories-layout__card-image-wrapper">
+                  {%- if article.image != blank -%}
+                    {{- article.image | image_url: width: 900 | image_tag: widths: img_widths, sizes: img_sizes, alt: article.image.alt, loading: 'lazy', class: 'stories-layout__card-image' -}}
+                  {%- else -%}
+                    {{ 'hero-apparel-1' | placeholder_svg_tag: 'stories-layout__card-image stories-layout__card-image--placeholder' }}
+                  {%- endif -%}
+                </div>
+                <div class="stories-layout__card-body">
+                  <time class="stories-layout__card-date" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+                    {{ article.published_at | date: '%d.%m.%y' }}
+                  </time>
+                  <div class="stories-layout__card-footer">
+                    <h2 class="stories-layout__card-title">{{ article.title | escape }}</h2>
+                    <span class="stories-layout__card-arrow" aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+              </a>
+            </article>
+          {%- endfor -%}
+        {%- else -%}
+          <p class="stories-layout__empty">No articles found.</p>
+        {%- endif -%}
+
+        {%- if paginate.pages > 1 -%}
+          <div class="stories-layout__pagination">
+            {%- if paginate.previous -%}
+              <a href="{{ paginate.previous.url }}" class="stories-layout__page-btn">← Previous</a>
+            {%- endif -%}
+            {%- for part in paginate.parts -%}
+              {%- if part.is_link -%}
+                <a href="{{ part.url }}" class="stories-layout__page-btn">{{ part.title }}</a>
+              {%- else -%}
+                <span class="stories-layout__page-btn stories-layout__page-btn--current">{{ part.title }}</span>
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if paginate.next -%}
+              <a href="{{ paginate.next.url }}" class="stories-layout__page-btn">Next →</a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endpaginate -%}
     </div>
+
   </div>
-</blog-posts-list>
+</div>
 
 {% stylesheet %}
-  /**
-   * Blog posts page layout
-   */
-  .blog-posts {
-    --page-content-width: var(--narrow-page-width);
-    --page-width: calc(var(--page-content-width) + (var(--page-margin) * 2));
-    --columns-gap: 36px;
-    --rows-gap: 36px;
-  }
-
-  .blog-posts-container {
+  .stories-layout__inner {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 1rem;
+    grid-template-columns: 180px 1fr;
+    gap: 48px;
+    align-items: start;
     width: 100%;
-    column-gap: var(--columns-gap);
-    row-gap: var(--rows-gap);
+    box-sizing: border-box;
   }
 
-  /**
-   * Blog post item grid positioning and scaling.
-   * Layout is calculated in Liquid based on total article count.
-   * Mobile overrides are applied per-item in inline styles for proper specificity.
-   */
-  .blog-post-item {
-    grid-column: span var(--col-span);
+  /* ── 左侧侧边栏 ── */
+  .stories-layout__sidebar {
+    position: sticky;
+    top: calc(var(--header-height, 80px) + 24px);
   }
 
-  /**
-   * When there's no image, the blog post item has a border.
-   */
-  .blog-post-item {
-    border: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-20));
-    padding: 0 1rem 1rem;
+  .stories-layout__heading {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--color-foreground-heading);
+    margin: 0 0 32px 0;
   }
 
-  .blog-post-item:has(.blog-post-card__image-container) {
-    border: none;
+  .stories-layout__tag-list {
+    list-style: none;
+    margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .stories-layout__tag-link {
+    font-size: 0.9375rem;
+    color: var(--color-foreground);
+    text-decoration: none;
+    line-height: 1.5;
+    opacity: 0.5;
+    transition: opacity 0.2s ease;
+    display: block;
+  }
+
+  .stories-layout__tag-link:hover {
+    opacity: 1;
+  }
+
+  .stories-layout__tag-link--active {
+    font-weight: 700;
+    opacity: 1;
+    color: var(--color-foreground-heading);
+  }
+
+  /* ── 右侧文章网格 ── */
+  .stories-layout__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px 24px;
+    align-items: start;
+  }
+
+  .stories-layout__card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .stories-layout__card-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .stories-layout__card-image-wrapper {
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .stories-layout__card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+
+  .stories-layout__card:hover .stories-layout__card-image {
+    transform: scale(1.03);
+  }
+
+  .stories-layout__card-image--placeholder {
+    width: 100%;
+    height: 100%;
+  }
+
+  .stories-layout__card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .stories-layout__card-date {
+    font-size: 0.75rem;
+    color: var(--color-foreground);
+    opacity: 0.6;
+    display: block;
+  }
+
+  .stories-layout__card-footer {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .stories-layout__card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--color-foreground-heading);
+    margin: 0;
+  }
+
+  .stories-layout__card-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-foreground);
+    color: var(--color-foreground);
+    margin-top: 2px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .stories-layout__card-link:hover .stories-layout__card-arrow {
+    background-color: var(--color-foreground);
+    color: var(--color-background);
+  }
+
+  .stories-layout__empty {
+    grid-column: 1 / -1;
+    color: var(--color-foreground);
+    opacity: 0.6;
+    font-size: 0.9375rem;
+  }
+
+  /* ── 分页 ── */
+  .stories-layout__pagination {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-top: 24px;
+  }
+
+  .stories-layout__page-btn {
+    padding: 8px 16px;
+    border: 1px solid var(--color-foreground);
+    border-radius: 4px;
+    text-decoration: none;
+    color: var(--color-foreground);
+    font-size: 0.875rem;
+    transition: background-color 0.2s ease;
+  }
+
+  .stories-layout__page-btn--current {
+    background-color: var(--color-foreground);
+    color: var(--color-background);
+  }
+
+  /* ── 响应式 ── */
+  @media (max-width: 749px) {
+    .stories-layout__inner {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .stories-layout__sidebar {
+      position: static;
+    }
+
+    .stories-layout__heading {
+      margin-bottom: 16px;
+    }
+
+    .stories-layout__tag-list {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+    }
+
+    .stories-layout__grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
   }
 {% endstylesheet %}
 
 {% schema %}
 {
   "name": "t:names.blog_posts",
-  "blocks": [
-    {
-      "type": "@theme"
-    },
-    {
-      "type": "@app"
-    },
-    {
-      "type": "text"
-    },
-    {
-      "type": "icon"
-    },
-    {
-      "type": "image"
-    },
-    {
-      "type": "button"
-    },
-    {
-      "type": "video"
-    },
-    {
-      "type": "group"
-    },
-    {
-      "type": "spacer"
-    },
-    {
-      "type": "_divider"
-    }
-  ],
   "disabled_on": {
     "groups": ["header"]
   },
   "settings": [
+    {
+      "type": "range",
+      "id": "posts_per_page",
+      "label": "Posts per page",
+      "min": 2,
+      "max": 24,
+      "step": 2,
+      "default": 12
+    },
     {
       "type": "color_scheme",
       "id": "color_scheme",
@@ -206,20 +331,20 @@
       "id": "padding-block-start",
       "label": "t:settings.top",
       "min": 0,
-      "max": 100,
-      "step": 1,
+      "max": 120,
+      "step": 4,
       "unit": "px",
-      "default": 0
+      "default": 48
     },
     {
       "type": "range",
       "id": "padding-block-end",
       "label": "t:settings.bottom",
       "min": 0,
-      "max": 100,
-      "step": 1,
+      "max": 120,
+      "step": 4,
       "unit": "px",
-      "default": 0
+      "default": 48
     }
   ]
 }
