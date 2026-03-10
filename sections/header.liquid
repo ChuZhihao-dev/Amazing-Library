@@ -1,10 +1,10 @@
 
 
 {% liquid
-  assign order = 'logo,menu,menu_secondary,localization,search,drawer_search,actions'
+  assign order = 'menu_secondary,logo,menu,localization,search,drawer_search,actions'
 
   if shop.customer_accounts_enabled
-    assign order = 'drawer_search,logo,menu,menu_secondary,localization,search,actions'
+    assign order = 'drawer_search,menu_secondary,logo,menu,localization,search,actions'
   endif
 
   assign rows = 'top,bottom' | split: ','
@@ -82,23 +82,23 @@
   if section.settings.localization_position == 'left'
     if section.settings.search_position == 'left'
       if shop.customer_accounts_enabled
-        assign order = 'drawer_search,logo,search,localization,menu,menu_secondary,actions'
+        assign order = 'drawer_search,search,localization,menu_secondary,logo,menu,actions'
       else
-        assign order = 'logo,search,localization,menu,menu_secondary,drawer_search,actions'
+        assign order = 'search,localization,menu_secondary,logo,menu,drawer_search,actions'
       endif
     else
       if shop.customer_accounts_enabled
-        assign order = 'drawer_search,logo,localization,menu,menu_secondary,search,actions'
+        assign order = 'drawer_search,localization,menu_secondary,logo,menu,search,actions'
       else
-        assign order = 'logo,localization,menu,menu_secondary,search,drawer_search,actions'
+        assign order = 'localization,menu_secondary,logo,menu,search,drawer_search,actions'
       endif
     endif
   else
     if section.settings.search_position == 'left'
       if shop.customer_accounts_enabled
-        assign order = 'drawer_search,logo,search,menu,menu_secondary,localization,actions'
+        assign order = 'drawer_search,search,menu_secondary,logo,menu,localization,actions'
       else
-        assign order = 'logo,search,menu,menu_secondary,localization,drawer_search,actions'
+        assign order = 'search,menu_secondary,logo,menu,localization,drawer_search,actions'
       endif
     endif
   endif
@@ -500,6 +500,15 @@
       --color-primary-button-text: inherit;
     }
 
+    /* Menu text color on transparent header */
+    header-menu .menu-list__link {
+      color: inherit;
+    }
+
+    header-menu .menu-list__link:hover {
+      color: inherit;
+    }
+
     /* Multiple selectors for performance: each simple :has() check is faster than one complex selector with multiple conditions */
     &:has(.mega-menu__list:hover),
     &:has(.menu-list__link:is(:hover, [aria-expanded='true'])),
@@ -716,6 +725,7 @@
   .header__column--center {
     gap: var(--gap-xl);
     grid-area: left;
+    justify-content: space-between;
   }
 
   .header__column--center {
@@ -729,7 +739,7 @@
 
   .header__column--right {
     gap: var(--gap-xl);
-    justify-content: flex-end;
+    justify-content: space-between;
     grid-area: right;
 
     .overflow-menu::part(list) {
@@ -751,6 +761,13 @@
     grid-template-areas: 'left center right';
     grid-gap: var(--gap-xl);
     grid-template-columns: var(--header-template-columns);
+
+    /* When logo is centered, ensure it stays in center */
+    &:has(.header__column--center .header-logo) {
+      --header-center: auto;
+      --header-left: minmax(max-content, 1fr);
+      --header-right: minmax(max-content, 1fr);
+    }
 
     /* If menu is in center column */
     &:has(.header__column--center header-menu) {

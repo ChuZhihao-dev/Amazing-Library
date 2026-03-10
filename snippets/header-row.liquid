@@ -7,7 +7,8 @@
   @param {object} settings - Section settings object containing position and row settings for each item
   @param {string} [first] - Optional captured HTML for the first item (typically drawer menu for top row)
   @param {string} [logo] - Captured HTML for the logo element
-  @param {string} [menu] - Captured HTML for the menu navigation
+  @param {string} [menu] - Captured HTML for the primary menu navigation
+  @param {string} [menu_secondary] - Captured HTML for the secondary menu navigation
   @param {string} [actions] - Captured HTML for header actions (cart, account buttons, etc.)
   @param {string} [localization] - Captured HTML for language/country selector
   @param {string} [search] - Captured HTML for search input
@@ -33,6 +34,12 @@
     case item
       when 'actions'
         assign item_column = 'right'
+      when 'menu_secondary'
+        assign item_column = 'left'
+      when 'menu'
+        assign item_column = 'right'
+      when 'logo'
+        assign item_column = 'center'
     endcase
 
     if item_row == row
