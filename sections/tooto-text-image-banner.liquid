@@ -1,0 +1,287 @@
+"{%- liquid
+  assign img_widths = '300, 400, 600, 800, 1000, 1200'
+  assign img_sizes = '(min-width: 990px) 50vw, 100vw'
+-%}
+
+<div
+  id="tooto-text-image-banner-{{ section.id }}"
+  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} tooto-text-image-banner"
+  style="padding-block-start: {{ section.settings.padding-block-start }}px; padding-block-end: {{ section.settings.padding-block-end }}px;"
+>
+  <div class="tooto-text-image-banner__inner">
+
+    {%- comment -%} ── 左侧：文本内容 ── {%- endcomment -%}
+    <div class="tooto-text-image-banner__text">
+
+      {%- if section.settings.heading != blank -%}
+        <h2 class="tooto-text-image-banner__heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.description != blank -%}
+        <p class="tooto-text-image-banner__description">{{ section.settings.description }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.cta_label != blank and section.settings.cta_url != blank -%}
+        <a class="tooto-text-image-banner__cta" href="{{ section.settings.cta_url }}">
+          {{ section.settings.cta_label }}
+          <span class="tooto-text-image-banner__cta-arrow">→</span>
+        </a>
+      {%- endif -%}
+
+    </div>
+
+    {%- comment -%} ── 右侧：图片 ── {%- endcomment -%}
+    <div class="tooto-text-image-banner__image">
+      {%- if section.settings.image != blank -%}
+        {{
+          section.settings.image
+          | image_url: width: 1200
+          | image_tag:
+            widths: img_widths,
+            sizes: img_sizes,
+            alt: section.settings.image.alt,
+            loading: 'lazy',
+            class: 'tooto-text-image-banner__img'
+        }}
+      {%- else -%}
+        {{ 'image' | placeholder_svg_tag: 'tooto-text-image-banner__img tooto-text-image-banner__img--placeholder' }}
+      {%- endif -%}
+    </div>
+
+  </div>
+</div>
+
+{% stylesheet %}
+  /* ── 脱离主题 section grid ── */
+  .tooto-text-image-banner__inner {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 60px;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .section--page-width .tooto-text-image-banner__inner {
+    grid-column: 2;
+  }
+
+  /* ── 左侧文本 ── */
+  .tooto-text-image-banner__text {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  /* ── 标题 ── */
+  .tooto-text-image-banner__heading {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--color-foreground-heading);
+    letter-spacing: -0.01em;
+  }
+
+  /* ── 描述 ── */
+  .tooto-text-image-banner__description {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-foreground);
+    opacity: 0.9;
+  }
+
+  /* ── CTA 链接 ── */
+  .tooto-text-image-banner__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+    background: none;
+    border: none;
+    color: var(--color-foreground);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-decoration: underline;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    width: fit-content;
+  }
+
+  .tooto-text-image-banner__cta:hover {
+    opacity: 0.7;
+  }
+
+  .tooto-text-image-banner__cta-arrow {
+    display: inline-block;
+    transition: transform 0.2s ease;
+  }
+
+  .tooto-text-image-banner__cta:hover .tooto-text-image-banner__cta-arrow {
+    transform: translateX(4px);
+  }
+
+  /* ── 右侧图片 ── */
+  .tooto-text-image-banner__image {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 0;
+  }
+
+  .tooto-text-image-banner__img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+
+  .tooto-text-image-banner__img--placeholder {
+    width: 100%;
+    height: auto;
+  }
+
+  /* ── 响应式布局：平板和手机 ── */
+  @media (max-width: 989px) {
+    .tooto-text-image-banner__inner {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .tooto-text-image-banner__heading {
+      font-size: 1.75rem;
+    }
+
+    .tooto-text-image-banner__description {
+      font-size: 0.875rem;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .tooto-text-image-banner__inner {
+      gap: 24px;
+    }
+
+    .tooto-text-image-banner__heading {
+      font-size: 1.5rem;
+    }
+
+    .tooto-text-image-banner__text {
+      gap: 16px;
+    }
+
+    .tooto-text-image-banner__description {
+      font-size: 0.8125rem;
+      line-height: 1.5;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  \"name\": \"Tooto Text Image Banner\",
+  \"tag\": \"section\",
+  \"class\": \"tooto-text-image-banner-wrapper\",
+  \"disabled_on\": {
+    \"groups\": [\"header\", \"footer\"]
+  },
+  \"settings\": [
+    {
+      \"type\": \"header\",
+      \"content\": \"Content\"
+    },
+    {
+      \"type\": \"textarea\",
+      \"id\": \"heading\",
+      \"label\": \"Heading\",
+      \"default\": \"A Shade For Every Room\"
+    },
+    {
+      \"type\": \"textarea\",
+      \"id\": \"description\",
+      \"label\": \"Description\",
+      \"default\": \"Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel. Their inherent elasticity reduces foot fatigue, making them ideal for bedrooms or living spaces.\"
+    },
+    {
+      \"type\": \"header\",
+      \"content\": \"Image\"
+    },
+    {
+      \"type\": \"image_picker\",
+      \"id\": \"image\",
+      \"label\": \"Image\"
+    },
+    {
+      \"type\": \"header\",
+      \"content\": \"CTA Button\"
+    },
+    {
+      \"type\": \"text\",
+      \"id\": \"cta_label\",
+      \"label\": \"Button Label\",
+      \"default\": \"Shop Now\"
+    },
+    {
+      \"type\": \"url\",
+      \"id\": \"cta_url\",
+      \"label\": \"Button URL\"
+    },
+    {
+      \"type\": \"header\",
+      \"content\": \"Section Settings\"
+    },
+    {
+      \"type\": \"select\",
+      \"id\": \"section_width\",
+      \"label\": \"Section Width\",
+      \"options\": [
+        { \"value\": \"page-width\", \"label\": \"Page width\" },
+        { \"value\": \"full-width\", \"label\": \"Full width\" }
+      ],
+      \"default\": \"page-width\"
+    },
+    {
+      \"type\": \"color_scheme\",
+      \"id\": \"color_scheme\",
+      \"label\": \"Color Scheme\",
+      \"default\": \"scheme-1\"
+    },
+    {
+      \"type\": \"range\",
+      \"id\": \"padding-block-start\",
+      \"label\": \"Top Padding\",
+      \"min\": 0,
+      \"max\": 100,
+      \"step\": 4,
+      \"unit\": \"px\",
+      \"default\": 60
+    },
+    {
+      \"type\": \"range\",
+      \"id\": \"padding-block-end\",
+      \"label\": \"Bottom Padding\",
+      \"min\": 0,
+      \"max\": 100,
+      \"step\": 4,
+      \"unit\": \"px\",
+      \"default\": 60
+    }
+  ],
+  \"presets\": [
+    {
+      \"name\": \"Tooto Text Image Banner\",
+      \"settings\": {
+        \"heading\": \"A Shade For Every Room\",
+        \"description\": \"Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel. Their inherent elasticity reduces foot fatigue, making them ideal for bedrooms or living spaces.\",
+        \"cta_label\": \"Shop Now\",
+        \"section_width\": \"page-width\",
+        \"color_scheme\": \"scheme-1\",
+        \"padding-block-start\": 60,
+        \"padding-block-end\": 60
+      }
+    }
+  ]
+}
+{% endschema %}
+"
