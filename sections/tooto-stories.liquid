@@ -1,0 +1,415 @@
+{%- liquid
+  assign img_widths = '400, 600, 900'
+  assign img_sizes = '(min-width: 990px) 38vw, (min-width: 750px) 45vw, 100vw'
+  assign current_tag = request.params.tag | default: ''
+-%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div
+  id="tooto-stories-{{ section.id }}"
+  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} tooto-stories"
+  style="padding-block-start: {{ section.settings.padding-block-start }}px; padding-block-end: {{ section.settings.padding-block-end }}px;"
+>
+  <div class="tooto-stories__inner">
+
+    {%- comment -%} 左侧：标题 + 分类导航 {%- endcomment -%}
+    <aside class="tooto-stories__sidebar">
+      <h1 class="tooto-stories__heading">{{ section.settings.heading | default: blog.title }}</h1>
+
+      <nav class="tooto-stories__tags" aria-label="Blog categories">
+        <ul class="tooto-stories__tag-list">
+
+          {%- comment -%} All — 无 tag 时高亮 {%- endcomment -%}
+          <li class="tooto-stories__tag-item">
+            <a
+              href="{{ blog.url }}"
+              class="tooto-stories__tag-link{% if current_tag == blank %} tooto-stories__tag-link--active{% endif %}"
+            >All</a>
+          </li>
+
+          {%- comment -%} 遍历所有文章 tag {%- endcomment -%}
+          {%- assign all_tags = blog.all_tags -%}
+          {%- for tag in all_tags -%}
+            <li class="tooto-stories__tag-item">
+              <a
+                href="{{ blog.url }}/tagged/{{ tag | handleize }}"
+                class="tooto-stories__tag-link{% if current_tag == tag %} tooto-stories__tag-link--active{% endif %}"
+              >{{ tag }}</a>
+            </li>
+          {%- endfor -%}
+
+        </ul>
+      </nav>
+    </aside>
+
+    {%- comment -%} 右侧：文章网格 {%- endcomment -%}
+    <div class="tooto-stories__grid">
+      {%- paginate blog.articles by section.settings.posts_per_page -%}
+
+        {%- if blog.articles.size > 0 -%}
+          {%- for article in blog.articles -%}
+            <article class="tooto-stories__card">
+              <a href="{{ article.url }}" class="tooto-stories__card-link" aria-label="{{ article.title | escape }}">
+
+                {%- comment -%} 图片 {%- endcomment -%}
+                <div class="tooto-stories__card-image-wrapper">
+                  {%- if article.image != blank -%}
+                    {{
+                      article.image
+                      | image_url: width: 900
+                      | image_tag:
+                        widths: img_widths,
+                        sizes: img_sizes,
+                        alt: article.image.alt,
+                        loading: 'lazy',
+                        class: 'tooto-stories__card-image'
+                    }}
+                  {%- else -%}
+                    {{ 'hero-apparel-1' | placeholder_svg_tag: 'tooto-stories__card-image tooto-stories__card-image--placeholder' }}
+                  {%- endif -%}
+                </div>
+
+                {%- comment -%} 卡片底部信息 {%- endcomment -%}
+                <div class="tooto-stories__card-body">
+                  <div class="tooto-stories__card-meta">
+                    <time class="tooto-stories__card-date" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+                      {{ article.published_at | date: '%d.%m.%y' }}
+                    </time>
+                  </div>
+                  <div class="tooto-stories__card-footer">
+                    <h2 class="tooto-stories__card-title">{{ article.title | escape }}</h2>
+                    <span class="tooto-stories__card-arrow" aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+
+              </a>
+            </article>
+          {%- endfor -%}
+        {%- else -%}
+          <p class="tooto-stories__empty">No articles found.</p>
+        {%- endif -%}
+
+        {%- comment -%} 分页 {%- endcomment -%}
+        {%- if paginate.pages > 1 -%}
+          <div class="tooto-stories__pagination">
+            {%- if paginate.previous -%}
+              <a href="{{ paginate.previous.url }}" class="tooto-stories__page-btn">← Previous</a>
+            {%- endif -%}
+            {%- for part in paginate.parts -%}
+              {%- if part.is_link -%}
+                <a href="{{ part.url }}" class="tooto-stories__page-btn">{{ part.title }}</a>
+              {%- else -%}
+                <span class="tooto-stories__page-btn tooto-stories__page-btn--current">{{ part.title }}</span>
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if paginate.next -%}
+              <a href="{{ paginate.next.url }}" class="tooto-stories__page-btn">Next →</a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+      {%- endpaginate -%}
+    </div>
+
+  </div>
+</div>
+
+{% stylesheet %}
+  .tooto-stories__inner {
+    grid-column: 1 / -1;
+    width: 100%;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .section--page-width .tooto-stories__inner {
+    grid-column: 2;
+  }
+
+  /* ── 左侧侧边栏 ── */
+  .tooto-stories__sidebar {
+    position: sticky;
+    top: calc(var(--header-height, 0px) + 24px);
+  }
+
+  .tooto-stories__heading {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--color-foreground-heading);
+    margin: 0 0 32px 0;
+  }
+
+  /* ── 分类导航 ── */
+  .tooto-stories__tag-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .tooto-stories__tag-link {
+    font-size: 0.9375rem;
+    color: var(--color-foreground);
+    text-decoration: none;
+    line-height: 1.5;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+    display: block;
+  }
+
+  .tooto-stories__tag-link:hover {
+    opacity: 1;
+  }
+
+  .tooto-stories__tag-link--active {
+    font-weight: 700;
+    opacity: 1;
+    color: var(--color-foreground-heading);
+  }
+
+  /* ── 右侧文章网格 ── */
+  .tooto-stories__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px 24px;
+    align-items: start;
+  }
+
+  /* ── 文章卡片 ── */
+  .tooto-stories__card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tooto-stories__card-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  /* ── 图片 ── */
+  .tooto-stories__card-image-wrapper {
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .tooto-stories__card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+
+  .tooto-stories__card:hover .tooto-stories__card-image {
+    transform: scale(1.03);
+  }
+
+  .tooto-stories__card-image--placeholder {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ── 卡片信息区 ── */
+  .tooto-stories__card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .tooto-stories__card-date {
+    font-size: 0.75rem;
+    color: var(--color-foreground);
+    opacity: 0.6;
+    display: block;
+  }
+
+  /* ── 底部：标题 + 箭头 ── */
+  .tooto-stories__card-footer {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .tooto-stories__card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--color-foreground-heading);
+    margin: 0;
+  }
+
+  /* ── 圆形箭头按钮 ── */
+  .tooto-stories__card-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-foreground);
+    color: var(--color-foreground);
+    margin-top: 2px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .tooto-stories__card-link:hover .tooto-stories__card-arrow {
+    background-color: var(--color-foreground);
+    color: var(--color-background);
+  }
+
+  /* ── 空状态 ── */
+  .tooto-stories__empty {
+    grid-column: 1 / -1;
+    color: var(--color-foreground);
+    opacity: 0.6;
+    font-size: 0.9375rem;
+  }
+
+  /* ── 分页 ── */
+  .tooto-stories__pagination {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-top: 24px;
+  }
+
+  .tooto-stories__page-btn {
+    padding: 8px 16px;
+    border: 1px solid var(--color-foreground);
+    border-radius: 4px;
+    text-decoration: none;
+    color: var(--color-foreground);
+    font-size: 0.875rem;
+    transition: background-color 0.2s ease;
+  }
+
+  .tooto-stories__page-btn--current {
+    background-color: var(--color-foreground);
+    color: var(--color-background);
+  }
+
+  /* ── 响应式 ── */
+  @media (max-width: 749px) {
+    .tooto-stories__inner {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .tooto-stories__sidebar {
+      position: static;
+    }
+
+    .tooto-stories__heading {
+      margin-bottom: 16px;
+    }
+
+    .tooto-stories__tag-list {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+    }
+
+    .tooto-stories__grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Tooto Stories",
+  "tag": "section",
+  "class": "tooto-stories-wrapper",
+  "enabled_on": {
+    "templates": ["page", "blog"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Leave blank to use the blog title"
+    },
+    {
+      "type": "range",
+      "id": "posts_per_page",
+      "label": "Posts per page",
+      "min": 2,
+      "max": 24,
+      "step": 2,
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        { "value": "page-width", "label": "Page width" },
+        { "value": "full-width", "label": "Full width" }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tooto Stories",
+      "settings": {
+        "section_width": "page-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    }
+  ]
+}
+{% endschema %}

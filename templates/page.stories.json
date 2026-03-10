@@ -9,6 +9,15 @@
  */
 {
   "sections": {
+    "stories-section": {
+      "type": "tooto-stories",
+      "settings": {
+        "section_width": "page-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    },
     "main": {
       "type": "main-page",
       "blocks": {
@@ -59,6 +68,7 @@
     }
   },
   "order": [
+    "stories-section",
     "main"
   ]
 }
