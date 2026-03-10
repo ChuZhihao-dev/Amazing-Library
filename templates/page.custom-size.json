@@ -14,6 +14,7 @@
       "settings": {
         "heading": "Custom Size",
         "description": "With our tailored to fit wool rugs, you can personalise your rug by choosing the style, colour, size, shape & edging best suited to your home.",
+        "hero_image": "shopify://shop_images/2_2x_4.webp",
         "section_width": "page-width",
         "color_scheme": "scheme-1",
         "padding-block-start": 48,
@@ -26,6 +27,7 @@
         "step_1_pick": {
           "type": "step",
           "settings": {
+            "custom_icon": "shopify://shop_images/12.svg",
             "icon": "pick",
             "title": "Pick",
             "description": "Browse our curated rug collection and choose the style that best fits your space and taste."
@@ -34,6 +36,7 @@
         "step_2_feel": {
           "type": "step",
           "settings": {
+            "custom_icon": "shopify://shop_images/13.svg",
             "icon": "feel",
             "title": "Feel",
             "description": "Order a sample to feel the material and texture firsthand, ensuring it meets your expectations."
@@ -42,6 +45,7 @@
         "step_3_measure": {
           "type": "step",
           "settings": {
+            "custom_icon": "shopify://shop_images/14.svg",
             "icon": "measure",
             "title": "Measure",
             "description": "Measure your space accurately to provide precise dimensions for your custom rug."
@@ -50,6 +54,7 @@
         "step_4_order": {
           "type": "step",
           "settings": {
+            "custom_icon": "shopify://shop_images/15.svg",
             "icon": "order",
             "title": "Order",
             "description": "Confirm dimensions and style, then place your custom order to start production."
@@ -58,6 +63,7 @@
         "step_5_enjoy": {
           "type": "step",
           "settings": {
+            "custom_icon": "shopify://shop_images/16.svg",
             "icon": "enjoy",
             "title": "Enjoy",
             "description": "Your custom rug is crafted and shipped within a week, ready to enhance your space."
@@ -84,30 +90,39 @@
         "option_1_measure": {
           "type": "option",
           "settings": {
+            "image": "shopify://shop_images/79_2x_27ade766-0336-43f1-8611-72501adbcc1f.webp",
+            "custom_icon": "shopify://shop_images/4571.svg",
             "icon": "measure",
             "title": "Made To Measure",
             "description": "Custom rugs precisely made to fit your space dimensions for home and commercial use.",
             "button_label": "Customize Now",
+            "button_link": "",
             "button_style": "filled"
           }
         },
         "option_2_wall": {
           "type": "option",
           "settings": {
+            "image": "shopify://shop_images/80_2x_5f8a0fdc-7b51-424e-88fa-03cc97ea2090.webp",
+            "custom_icon": "shopify://shop_images/4598.svg",
             "icon": "wall",
             "title": "Wall To Wall",
             "description": "Full-room carpet customization that delivers a seamless and harmonious new look.",
             "button_label": "Customize Now",
+            "button_link": "",
             "button_style": "filled"
           }
         },
         "option_3_special": {
           "type": "option",
           "settings": {
+            "image": "shopify://shop_images/81_2x_e6a5779f-acb4-42a7-8274-e0972b576073.webp",
+            "custom_icon": "shopify://shop_images/4599.svg",
             "icon": "special",
             "title": "Special Request",
             "description": "For unique designs or special customization needs, please feel free to contact our team.",
             "button_label": "Contact Us",
+            "button_link": "",
             "button_style": "outline"
           }
         }
