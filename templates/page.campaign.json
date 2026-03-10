@@ -56,9 +56,26 @@
         "padding-block-start": 40,
         "padding-block-end": 80
       }
+    },
+    "tooto_campaign_card_kJ3FPF": {
+      "type": "tooto-campaign-card",
+      "name": "Tooto Campaign Card",
+      "settings": {
+        "media_type": "video",
+        "video_cover": "shopify://shop_images/2_2x_3.webp",
+        "title": "City of Gems",
+        "description": "Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel.",
+        "link_label": "See More",
+        "link_url": "",
+        "section_width": "page-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "tooto_campaign_card_kJ3FPF"
   ]
 }
