@@ -1,0 +1,383 @@
+{%- liquid
+  assign img_widths = '400, 600, 900'
+  assign img_sizes = '(min-width: 990px) 33vw, (min-width: 750px) 50vw, 100vw'
+-%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div
+  id="tooto-services-grid-{{ section.id }}"
+  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} tooto-services-grid"
+  style="padding-block-start: {{ section.settings.padding-block-start }}px; padding-block-end: {{ section.settings.padding-block-end }}px;"
+>
+  <div class="tooto-services-grid__inner">
+
+    {%- comment -%} 顶部标题行 {%- endcomment -%}
+    <div class="tooto-services-grid__header">
+      <h2 class="tooto-services-grid__heading">
+        {%- if section.settings.heading_bold != blank -%}
+          <strong>{{ section.settings.heading_bold }}</strong>
+        {%- endif -%}
+        {%- if section.settings.heading_normal != blank -%}
+          <span class="tooto-services-grid__heading-light"> {{ section.settings.heading_normal }}</span>
+        {%- endif -%}
+      </h2>
+      {%- if section.settings.button_label != blank -%}
+        <a
+          href="{{ section.settings.button_url }}"
+          class="tooto-services-grid__button"
+        >
+          {{ section.settings.button_label }}
+        </a>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} 卡片网格 {%- endcomment -%}
+    {%- if section.blocks.size > 0 -%}
+      <div class="tooto-services-grid__grid">
+        {%- for block in section.blocks -%}
+          <div class="tooto-services-grid__item" {{ block.shopify_attributes }}>
+
+            {%- comment -%} 图片容器（编号 + 标题叠加其上）{%- endcomment -%}
+            <div class="tooto-services-grid__image-wrapper">
+              {%- if block.settings.image != blank -%}
+                {{
+                  block.settings.image
+                  | image_url: width: 900
+                  | image_tag:
+                    widths: img_widths,
+                    sizes: img_sizes,
+                    alt: block.settings.image.alt,
+                    loading: 'lazy',
+                    class: 'tooto-services-grid__image'
+                }}
+              {%- else -%}
+                {{ 'collection-1' | placeholder_svg_tag: 'tooto-services-grid__image tooto-services-grid__image--placeholder' }}
+              {%- endif -%}
+
+              {%- comment -%} 左上角编号 {%- endcomment -%}
+              {%- if block.settings.number != blank -%}
+                <span class="tooto-services-grid__number">{{ block.settings.number }}</span>
+              {%- endif -%}
+
+              {%- comment -%} 左下角服务标题 {%- endcomment -%}
+              {%- if block.settings.title != blank -%}
+                <h3 class="tooto-services-grid__title">{{ block.settings.title }}</h3>
+              {%- endif -%}
+
+              {%- comment -%} 底部渐变遮罩 {%- endcomment -%}
+              <div class="tooto-services-grid__overlay" aria-hidden="true"></div>
+            </div>
+
+            {%- comment -%} 图片下方描述 {%- endcomment -%}
+            {%- if block.settings.description != blank -%}
+              <p class="tooto-services-grid__description">{{ block.settings.description }}</p>
+            {%- endif -%}
+
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+  </div>
+</div>
+
+{% stylesheet %}
+  .tooto-services-grid__inner {
+    grid-column: 1 / -1;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .section--page-width .tooto-services-grid__inner {
+    grid-column: 2;
+  }
+
+  /* ── 顶部标题行 ── */
+  .tooto-services-grid__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .tooto-services-grid__heading {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    line-height: 1.2;
+    margin: 0;
+    color: var(--color-foreground-heading);
+  }
+
+  .tooto-services-grid__heading strong {
+    font-weight: 800;
+  }
+
+  .tooto-services-grid__heading-light {
+    font-weight: 300;
+    color: var(--color-foreground);
+  }
+
+  /* ── 顶部按钮 ── */
+  .tooto-services-grid__button {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    padding: 12px 24px;
+    background-color: var(--color-foreground);
+    color: var(--color-background);
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .tooto-services-grid__button:hover {
+    opacity: 0.8;
+  }
+
+  /* ── 卡片网格 ── */
+  .tooto-services-grid__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  @media (max-width: 749px) {
+    .tooto-services-grid__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ── 卡片 ── */
+  .tooto-services-grid__item {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* ── 图片容器 ── */
+  .tooto-services-grid__image-wrapper {
+    position: relative;
+    aspect-ratio: 1 / 1.05;
+    overflow: hidden;
+    border-radius: 4px;
+  }
+
+  .tooto-services-grid__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+
+  .tooto-services-grid__item:hover .tooto-services-grid__image {
+    transform: scale(1.04);
+  }
+
+  .tooto-services-grid__image--placeholder {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* ── 渐变遮罩 ── */
+  .tooto-services-grid__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.15) 0%,
+      rgba(0, 0, 0, 0) 40%,
+      rgba(0, 0, 0, 0.5) 100%
+    );
+    pointer-events: none;
+  }
+
+  /* ── 左上角编号 ── */
+  .tooto-services-grid__number {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    font-size: 1.75rem;
+    font-weight: 300;
+    color: #ffffff;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    z-index: 2;
+  }
+
+  /* ── 左下角标题 ── */
+  .tooto-services-grid__title {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.25;
+    margin: 0;
+    z-index: 2;
+  }
+
+  /* ── 图片下方描述 ── */
+  .tooto-services-grid__description {
+    font-size: 0.8125rem;
+    color: var(--color-foreground);
+    margin: 0;
+    line-height: 1.5;
+    opacity: 0.7;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Tooto Services Grid",
+  "tag": "section",
+  "class": "tooto-services-grid-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading_bold",
+      "label": "Heading (Bold part)",
+      "default": "Woo"
+    },
+    {
+      "type": "text",
+      "id": "heading_normal",
+      "label": "Heading (Light part)",
+      "default": "Services"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Customize now"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        { "value": "page-width", "label": "Page width" },
+        { "value": "full-width", "label": "Full width" }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "service_item",
+      "name": "Service Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Number",
+          "default": "01"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Service Title",
+          "default": "Carpet Fully Covered"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description",
+          "default": "On-site Measurement"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tooto Services Grid",
+      "settings": {
+        "heading_bold": "Woo",
+        "heading_normal": "Services",
+        "button_label": "Customize now",
+        "section_width": "page-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      },
+      "blocks": [
+        {
+          "type": "service_item",
+          "settings": {
+            "number": "01",
+            "title": "Carpet Fully Covered",
+            "description": "On-site Measurement"
+          }
+        },
+        {
+          "type": "service_item",
+          "settings": {
+            "number": "02",
+            "title": "Free Sample",
+            "description": "Product Selection Is More Intuitive"
+          }
+        },
+        {
+          "type": "service_item",
+          "settings": {
+            "number": "03",
+            "title": "Cleaning Service",
+            "description": "On-site Cleaning"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
