@@ -176,7 +176,6 @@
             },
             "variant_picker_R3rGDr": {
               "type": "variant-picker",
-              "disabled": true,
               "settings": {
                 "variant_style": "buttons",
                 "show_swatches": true,
@@ -187,10 +186,6 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
-            },
-            "infinite_options_app_block_FhckBn": {
-              "type": "shopify://apps/infinite-options/blocks/app-block/7e73b6f9-82b0-45f5-9b9b-04f446ba1a9b",
-              "settings": {}
             },
             "buy_buttons_eYQEYi": {
               "type": "buy-buttons",
@@ -416,7 +411,6 @@
             "group_icgrde",
             "divider_VJhene",
             "variant_picker_R3rGDr",
-            "infinite_options_app_block_FhckBn",
             "buy_buttons_eYQEYi",
             "accordion_qg3cFG"
           ]
