@@ -1,0 +1,313 @@
+{%- liquid
+  assign left_image = section.settings.left_image
+  assign right_image = section.settings.right_image
+  assign label = section.settings.label
+  assign heading_line1 = section.settings.heading_line1
+  assign heading_line2 = section.settings.heading_line2
+  assign cta_text = section.settings.cta_text
+  assign cta_url = section.settings.cta_url
+  assign right_bg_color = section.settings.right_bg_color
+-%}
+
+<section
+  id="tooto-split-hero-{{ section.id }}"
+  class="tooto-split-hero"
+  style="padding-block-start: {{ section.settings.padding-block-start }}px; padding-block-end: {{ section.settings.padding-block-end }}px;"
+>
+  <!-- 左图：带文字叠加 -->
+  <div class="tooto-split-hero__left">
+    {%- if left_image != blank -%}
+      {%- liquid
+        assign left_img_widths = '400, 720, 1000'
+        assign left_img_sizes = '(min-width: 990px) 50vw, 100vw'
+      -%}
+      {{ left_image | image_url: width: 1000 | image_tag:
+        class: 'tooto-split-hero__img',
+        widths: left_img_widths,
+        sizes: left_img_sizes,
+        alt: left_image.alt
+      }}
+    {%- else -%}
+      {{ 'hero-apparel-2' | placeholder_svg_tag: 'tooto-split-hero__img tooto-split-hero__img--placeholder' }}
+    {%- endif -%}
+
+    <div class="tooto-split-hero__left-content">
+      {%- if label != blank -%}
+        <div class="tooto-split-hero__label">{{ label }}</div>
+      {%- endif -%}
+
+      <h2 class="tooto-split-hero__heading">
+        <span class="tooto-split-hero__heading-medium">{{ heading_line1 }}</span>
+        <span class="tooto-split-hero__heading-light">{{ heading_line2 }}</span>
+      </h2>
+
+      {%- if cta_text != blank -%}
+        <a href="{{ cta_url }}" class="tooto-split-hero__cta">
+          <span>{{ cta_text }}</span>
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
+            <path d="M1 5H13M13 5L9 1M13 5L9 9" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+          </svg>
+        </a>
+      {%- endif -%}
+    </div>
+
+    <!-- 底部分页指示 -->
+    <div class="tooto-split-hero__pagination">
+      <div class="tooto-split-hero__pagination-track">
+        <div class="tooto-split-hero__pagination-fill"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 右图 -->
+  <div class="tooto-split-hero__right" style="background-color: {{ right_bg_color }};">
+    {%- if right_image != blank -%}
+      {%- liquid
+        assign right_img_widths = '400, 720, 1000'
+        assign right_img_sizes = '(min-width: 990px) 50vw, 100vw'
+      -%}
+      {{ right_image | image_url: width: 1000 | image_tag:
+        class: 'tooto-split-hero__img',
+        widths: right_img_widths,
+        sizes: right_img_sizes,
+        alt: right_image.alt
+      }}
+    {%- else -%}
+      {{ 'hero-apparel-3' | placeholder_svg_tag: 'tooto-split-hero__img tooto-split-hero__img--placeholder' }}
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+.tooto-split-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  min-height: 866px;
+  overflow: hidden;
+}
+
+/* ── 左侧 ── */
+.tooto-split-hero__left {
+  position: relative;
+  overflow: hidden;
+}
+
+.tooto-split-hero__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.tooto-split-hero__img--placeholder {
+  background: #2a2a2a;
+  min-height: 500px;
+}
+
+.tooto-split-hero__left-content {
+  position: absolute;
+  bottom: 120px;
+  left: 80px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tooto-split-hero__label {
+  font-family: "Poppins", Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #ffffff;
+  letter-spacing: 0;
+  line-height: 24px;
+  text-align: center;
+}
+
+.tooto-split-hero__heading {
+  font-family: "Poppins", Helvetica, sans-serif;
+  font-size: 48px;
+  line-height: 48px;
+  color: #ffffff;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.tooto-split-hero__heading-medium {
+  font-weight: 500;
+}
+
+.tooto-split-hero__heading-light {
+  font-weight: 200;
+  font-style: italic;
+}
+
+.tooto-split-hero__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 0.5px solid #ffffff;
+  border-radius: 100px;
+  padding: 10px 32px;
+  color: #ffffff;
+  font-family: "Poppins", Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.3s ease;
+  align-self: center;
+}
+
+.tooto-split-hero__cta:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+/* 底部分页 */
+.tooto-split-hero__pagination {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  width: 156px;
+}
+
+.tooto-split-hero__pagination-track {
+  width: 100%;
+  height: 2px;
+  background: rgba(27,30,38,0.2);
+  position: relative;
+}
+
+.tooto-split-hero__pagination-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 53px;
+  height: 2px;
+  background: #1b1e26;
+}
+
+/* ── 右侧 ── */
+.tooto-split-hero__right {
+  position: relative;
+  overflow: hidden;
+}
+
+@media (max-width: 989px) {
+  .tooto-split-hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .tooto-split-hero__left {
+    min-height: 480px;
+  }
+
+  .tooto-split-hero__right {
+    min-height: 400px;
+  }
+
+  .tooto-split-hero__left-content {
+    bottom: 80px;
+    left: 24px;
+  }
+
+  .tooto-split-hero__heading {
+    font-size: 32px;
+    line-height: 40px;
+  }
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Tooto Split Hero",
+  "tag": "section",
+  "class": "tooto-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "left_image",
+      "label": "Left Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "right_image",
+      "label": "Right Image"
+    },
+    {
+      "type": "color",
+      "id": "right_bg_color",
+      "label": "Right Background Color",
+      "default": "#faedd9"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label (above heading)",
+      "default": "CityofGems"
+    },
+    {
+      "type": "text",
+      "id": "heading_line1",
+      "label": "Heading Line 1 (Medium)",
+      "default": "Cloud"
+    },
+    {
+      "type": "text",
+      "id": "heading_line2",
+      "label": "Heading Line 2 (Light)",
+      "default": "Scape"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Text",
+      "default": "see more"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA URL"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tooto Split Hero",
+      "settings": {
+        "label": "CityofGems",
+        "heading_line1": "Cloud",
+        "heading_line2": "Scape",
+        "cta_text": "see more"
+      }
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

@@ -1,0 +1,251 @@
+{%- liquid
+  assign section_title = section.settings.section_title
+  assign cta_text = section.settings.cta_text
+  assign cta_url = section.settings.cta_url
+-%}
+
+<section
+  id="tooto-test-story-{{ section.id }}"
+  class="tooto-test-story"
+  style="padding-block-start: {{ section.settings.padding-block-start }}px; padding-block-end: {{ section.settings.padding-block-end }}px;"
+>
+  {%- if section_title != blank -%}
+    <div class="tooto-test-story__header">
+      <h2 class="tooto-test-story__title">{{ section_title }}</h2>
+    </div>
+  {%- endif -%}
+
+  <div class="tooto-test-story__grid">
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign story_img_widths = '300, 456, 600, 912'
+        assign story_img_sizes = '(min-width: 990px) 31vw, 90vw'
+      -%}
+      <div class="tooto-test-story__card" {{ block.shopify_attributes }}>
+        <div class="tooto-test-story__card-image">
+          {%- if block.settings.image != blank -%}
+            {{ block.settings.image | image_url: width: 912 | image_tag:
+              widths: story_img_widths,
+              sizes: story_img_sizes,
+              alt: block.settings.image.alt
+            }}
+          {%- else -%}
+            {{ 'hero-apparel-3' | placeholder_svg_tag: 'tooto-test-story__placeholder' }}
+          {%- endif -%}
+          <div class="tooto-test-story__card-caption">{{ block.settings.caption }}</div>
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+
+  {%- if cta_text != blank -%}
+    <div class="tooto-test-story__footer">
+      <a href="{{ cta_url }}" class="tooto-test-story__cta">{{ cta_text }}</a>
+    </div>
+  {%- endif -%}
+</section>
+
+{% stylesheet %}
+.tooto-test-story {
+  width: 100%;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+/* ── Section 标题 ── */
+.tooto-test-story__header {
+  padding: 0 80px 40px 80px;
+}
+
+.tooto-test-story__title {
+  font-family: "Poppins", Helvetica, sans-serif;
+  font-size: 56px;
+  font-weight: 700;
+  color: #1b1e26;
+  line-height: 64px;
+  margin: 0;
+}
+
+/* ── 三列图片网格 ── */
+.tooto-test-story__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding: 0 80px;
+}
+
+.tooto-test-story__card {
+  display: flex;
+  flex-direction: column;
+}
+
+.tooto-test-story__card-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 456 / 628;
+  overflow: hidden;
+  background: #f0ede8;
+}
+
+.tooto-test-story__card-image img,
+.tooto-test-story__placeholder {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.tooto-test-story__card:hover .tooto-test-story__card-image img {
+  transform: scale(1.03);
+}
+
+/* 图片下方说明文字（叠加在底部） */
+.tooto-test-story__card-caption {
+  position: absolute;
+  bottom: 42px;
+  left: 0;
+  right: 0;
+  padding: 0 24px;
+  font-family: "Poppins", Helvetica, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #ffffff;
+  line-height: 24px;
+  text-align: left;
+}
+
+/* ── 底部 CTA ── */
+.tooto-test-story__footer {
+  display: flex;
+  justify-content: center;
+  padding: 40px 80px 0 80px;
+}
+
+.tooto-test-story__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 218px;
+  height: 48px;
+  border: 1px solid rgba(115, 102, 88, 0.37);
+  font-family: "Manrope", Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #736658;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+.tooto-test-story__cta:hover {
+  background: rgba(115, 102, 88, 0.08);
+}
+
+@media (max-width: 989px) {
+  .tooto-test-story__header {
+    padding: 0 24px 32px 24px;
+  }
+
+  .tooto-test-story__title {
+    font-size: 36px;
+    line-height: 44px;
+  }
+
+  .tooto-test-story__grid {
+    grid-template-columns: 1fr;
+    padding: 0 24px;
+    gap: 16px;
+  }
+
+  .tooto-test-story__card-image {
+    aspect-ratio: 4 / 3;
+  }
+
+  .tooto-test-story__footer {
+    padding: 32px 24px 0 24px;
+  }
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Tooto Test Story",
+  "tag": "section",
+  "class": "tooto-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "woo story"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Text",
+      "default": "More story"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA URL"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    }
+  ],
+  "blocks": [
+    {
+      "type": "story_card",
+      "name": "Story Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption",
+          "default": "Suitable for cream style"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tooto Test Story",
+      "settings": {
+        "section_title": "woo story",
+        "cta_text": "More story"
+      },
+      "blocks": [
+        { "type": "story_card", "settings": { "caption": "Suitable for cream style" } },
+        { "type": "story_card", "settings": { "caption": "Suitable for modern minimalist style" } },
+        { "type": "story_card", "settings": { "caption": "Suitable for a medieval style" } }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

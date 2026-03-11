@@ -1,0 +1,315 @@
+{%- liquid
+  assign heading_line1 = section.settings.heading_line1
+  assign heading_line2 = section.settings.heading_line2
+  assign description = section.settings.description
+  assign cta_text = section.settings.cta_text
+  assign cta_url = section.settings.cta_url
+  assign bg_color = section.settings.bg_color
+-%}
+
+<section
+  id="tooto-series-intro-{{ section.id }}"
+  class="tooto-series-intro"
+  style="background-color: {{ bg_color }}; padding-block-start: {{ section.settings.padding-block-start }}px; padding-block-end: {{ section.settings.padding-block-end }}px;"
+>
+  <div class="tooto-series-intro__header">
+    <h2 class="tooto-series-intro__heading">
+      <span class="tooto-series-intro__heading-bold">{{ heading_line1 }}</span>
+      <span class="tooto-series-intro__heading-light">{{ heading_line2 }}</span>
+    </h2>
+    <div class="tooto-series-intro__header-right">
+      <p class="tooto-series-intro__desc">{{ description }}</p>
+      {%- if cta_text != blank -%}
+        <a href="{{ cta_url }}" class="tooto-series-intro__cta">
+          <span>{{ cta_text }}</span>
+          <svg width="10" height="16" viewBox="0 0 10 16" fill="none">
+            <path d="M1 1L9 8L1 15" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+          </svg>
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="tooto-series-intro__grid">
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign card_img_widths = '300, 413, 600, 828'
+        assign card_img_sizes = '(min-width: 990px) 29vw, 90vw'
+      -%}
+      <div class="tooto-series-intro__card" {{ block.shopify_attributes }}>
+        <div class="tooto-series-intro__card-image">
+          {%- if block.settings.image != blank -%}
+            {{ block.settings.image | image_url: width: 828 | image_tag:
+              widths: card_img_widths,
+              sizes: card_img_sizes,
+              alt: block.settings.image.alt
+            }}
+          {%- else -%}
+            {{ 'product-apparel-2' | placeholder_svg_tag: 'tooto-series-intro__placeholder' }}
+          {%- endif -%}
+        </div>
+        <div class="tooto-series-intro__card-name">{{ block.settings.name }}</div>
+      </div>
+    {%- endfor -%}
+  </div>
+
+  <div class="tooto-series-intro__divider">
+    <div class="tooto-series-intro__divider-fill"></div>
+  </div>
+</section>
+
+{% stylesheet %}
+.tooto-series-intro {
+  width: 100%;
+  overflow: hidden;
+}
+
+/* ── Header 区域：左标题 + 右内容 ── */
+.tooto-series-intro__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 80px 80px 48px 80px;
+  gap: 40px;
+}
+
+.tooto-series-intro__heading {
+  font-family: "Poppins", Helvetica, sans-serif;
+  font-size: 56px;
+  line-height: 64px;
+  color: #000000;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  max-width: 500px;
+}
+
+.tooto-series-intro__heading-bold {
+  font-weight: 700;
+}
+
+.tooto-series-intro__heading-light {
+  font-weight: 400;
+  font-style: normal;
+}
+
+.tooto-series-intro__header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  max-width: 543px;
+  padding-top: 8px;
+  gap: 24px;
+}
+
+.tooto-series-intro__desc {
+  font-family: "Poppins", Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 28px;
+  color: #000000;
+  margin: 0;
+}
+
+.tooto-series-intro__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Poppins", Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #000000;
+  text-decoration: none;
+  line-height: 20px;
+}
+
+.tooto-series-intro__cta:hover {
+  opacity: 0.7;
+}
+
+/* ── 三列产品图 ── */
+.tooto-series-intro__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  padding: 0 80px;
+}
+
+.tooto-series-intro__card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tooto-series-intro__card-image {
+  width: 100%;
+  aspect-ratio: 413 / 586;
+  overflow: hidden;
+}
+
+.tooto-series-intro__card-image img,
+.tooto-series-intro__placeholder {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.tooto-series-intro__card-name {
+  font-family: "Poppins", Helvetica, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 28px;
+  color: #000000;
+  padding-bottom: 48px;
+}
+
+/* ── 底部分隔线 ── */
+.tooto-series-intro__divider {
+  width: 213px;
+  height: 2px;
+  margin: 0 auto 0 auto;
+  background: rgba(0,0,0,0.2);
+  position: relative;
+  margin-bottom: 0;
+}
+
+.tooto-series-intro__divider-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 72px;
+  height: 2px;
+  background: #000000;
+}
+
+@media (max-width: 989px) {
+  .tooto-series-intro__header {
+    flex-direction: column;
+    padding: 48px 24px 32px 24px;
+    gap: 24px;
+  }
+
+  .tooto-series-intro__heading {
+    font-size: 36px;
+    line-height: 44px;
+  }
+
+  .tooto-series-intro__header-right {
+    max-width: 100%;
+  }
+
+  .tooto-series-intro__grid {
+    grid-template-columns: 1fr;
+    padding: 0 24px;
+    gap: 24px;
+  }
+
+  .tooto-series-intro__card-image {
+    aspect-ratio: 4 / 3;
+  }
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Tooto Series Intro",
+  "tag": "section",
+  "class": "tooto-section",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#fffbf5"
+    },
+    {
+      "type": "text",
+      "id": "heading_line1",
+      "label": "Heading Line 1 (Bold)",
+      "default": "WOO CityofGems"
+    },
+    {
+      "type": "text",
+      "id": "heading_line2",
+      "label": "Heading Line 2",
+      "default": "SLOGN"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel. Their inherent elasticity reduces foot fatigue, making them ideal for bedrooms or children's rooms."
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Text",
+      "default": "SEE MORE"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA URL"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product_card",
+      "name": "Product Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Product Image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Series Name",
+          "default": "Woo Carpet Series 1"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tooto Series Intro",
+      "settings": {
+        "heading_line1": "WOO CityofGems",
+        "heading_line2": "SLOGN"
+      },
+      "blocks": [
+        { "type": "product_card", "settings": { "name": "Woo Carpet Series 1" } },
+        { "type": "product_card", "settings": { "name": "Woo Carpet Series 2" } },
+        { "type": "product_card", "settings": { "name": "Woo Carpet Series 3" } }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

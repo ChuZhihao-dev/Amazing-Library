@@ -1,0 +1,249 @@
+{%- liquid
+  assign bg_image = section.settings.bg_image
+  assign heading_line1 = section.settings.heading_line1
+  assign heading_line2 = section.settings.heading_line2
+  assign description = section.settings.description
+  assign cta_text = section.settings.cta_text
+  assign cta_url = section.settings.cta_url
+-%}
+
+<section
+  id="tooto-fullwidth-series-hero-{{ section.id }}"
+  class="tooto-fullwidth-series-hero"
+  style="padding-block-start: {{ section.settings.padding-block-start }}px; padding-block-end: {{ section.settings.padding-block-end }}px;"
+>
+  <div class="tooto-fullwidth-series-hero__inner">
+    {%- if bg_image != blank -%}
+      {%- liquid
+        assign bg_img_widths = '750, 1100, 1440, 1920'
+        assign bg_img_sizes = '100vw'
+      -%}
+      {{ bg_image | image_url: width: 1920 | image_tag:
+        class: 'tooto-fullwidth-series-hero__bg',
+        widths: bg_img_widths,
+        sizes: bg_img_sizes,
+        alt: bg_image.alt
+      }}
+    {%- else -%}
+      {{ 'hero-apparel-1' | placeholder_svg_tag: 'tooto-fullwidth-series-hero__bg tooto-fullwidth-series-hero__bg--placeholder' }}
+    {%- endif -%}
+
+    <div class="tooto-fullwidth-series-hero__content">
+      <div class="tooto-fullwidth-series-hero__left">
+        <h2 class="tooto-fullwidth-series-hero__heading">
+          <span class="tooto-fullwidth-series-hero__heading-bold">{{ heading_line1 }}</span>
+          <span class="tooto-fullwidth-series-hero__heading-light">{{ heading_line2 }}</span>
+        </h2>
+        <a href="{{ cta_url }}" class="tooto-fullwidth-series-hero__cta">
+          <span>{{ cta_text }}</span>
+          <svg class="tooto-fullwidth-series-hero__cta-icon" width="10" height="16" viewBox="0 0 10 16" fill="none">
+            <path d="M1 1L9 8L1 15" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="tooto-fullwidth-series-hero__right">
+        <p class="tooto-fullwidth-series-hero__desc">{{ description }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+.tooto-fullwidth-series-hero {
+  width: 100%;
+  overflow: hidden;
+}
+
+.tooto-fullwidth-series-hero__inner {
+  position: relative;
+  width: 100%;
+  height: 800px;
+}
+
+.tooto-fullwidth-series-hero__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.tooto-fullwidth-series-hero__bg--placeholder {
+  background: #2a2a2a;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.tooto-fullwidth-series-hero__content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 80px;
+  gap: 40px;
+}
+
+/* ── 左侧：大标题 + CTA ── */
+.tooto-fullwidth-series-hero__left {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  flex-shrink: 0;
+}
+
+.tooto-fullwidth-series-hero__heading {
+  font-family: "Manrope", "Poppins", Helvetica, sans-serif;
+  font-size: 56px;
+  line-height: 64px;
+  color: #ffffff;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  max-width: 486px;
+}
+
+.tooto-fullwidth-series-hero__heading-bold {
+  font-weight: 800;
+}
+
+.tooto-fullwidth-series-hero__heading-light {
+  font-weight: 300;
+  font-family: "Poppins", Helvetica, sans-serif;
+}
+
+.tooto-fullwidth-series-hero__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Poppins", Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #ffffff;
+  text-decoration: none;
+  line-height: 20px;
+}
+
+.tooto-fullwidth-series-hero__cta:hover {
+  opacity: 0.75;
+}
+
+/* ── 右侧：描述文字 ── */
+.tooto-fullwidth-series-hero__right {
+  max-width: 490px;
+}
+
+.tooto-fullwidth-series-hero__desc {
+  font-family: "Montserrat", Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  color: #ffffff;
+  margin: 0;
+}
+
+@media (max-width: 989px) {
+  .tooto-fullwidth-series-hero__inner {
+    height: auto;
+    min-height: 560px;
+  }
+
+  .tooto-fullwidth-series-hero__content {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: 40px 24px;
+    gap: 24px;
+  }
+
+  .tooto-fullwidth-series-hero__heading {
+    font-size: 36px;
+    line-height: 44px;
+  }
+
+  .tooto-fullwidth-series-hero__right {
+    max-width: 100%;
+  }
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Tooto Fullwidth Hero",
+  "tag": "section",
+  "class": "tooto-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "text",
+      "id": "heading_line1",
+      "label": "Heading Line 1 (Bold)",
+      "default": "CityofGems"
+    },
+    {
+      "type": "text",
+      "id": "heading_line2",
+      "label": "Heading Line 2 (Light)",
+      "default": "Series"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel. Their inherent elasticity reduces foot fatigue, making them ideal for bedrooms or children's rooms."
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Text",
+      "default": "SHOP MORE"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA URL"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tooto Fullwidth Series Hero",
+      "settings": {
+        "heading_line1": "CityofGems",
+        "heading_line2": "Series",
+        "cta_text": "SHOP MORE"
+      }
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

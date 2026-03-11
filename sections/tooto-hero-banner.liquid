@@ -1,0 +1,266 @@
+{%- liquid
+  assign hero_image = section.settings.hero_image
+  assign heading_line1 = section.settings.heading_line1
+  assign heading_line2 = section.settings.heading_line2
+  assign cta_text = section.settings.cta_text
+  assign cta_url = section.settings.cta_url
+-%}
+
+<section
+  id="tooto-hero-banner-{{ section.id }}"
+  class="tooto-hero-banner"
+  style="padding-block-start: 0; padding-block-end: 0;"
+>
+  <div class="tooto-hero-banner__inner">
+    {%- if hero_image != blank -%}
+      {%- liquid
+        assign img_widths = '750, 1100, 1440, 1920'
+        assign img_sizes = '100vw'
+      -%}
+      {{ hero_image | image_url: width: 1920 | image_tag:
+        class: 'tooto-hero-banner__bg',
+        widths: img_widths,
+        sizes: img_sizes,
+        alt: hero_image.alt
+      }}
+    {%- else -%}
+      {{ 'hero-apparel-1' | placeholder_svg_tag: 'tooto-hero-banner__bg tooto-hero-banner__bg--placeholder' }}
+    {%- endif -%}
+
+    <div class="tooto-hero-banner__overlay"></div>
+    <div class="tooto-hero-banner__overlay-side"></div>
+
+    <div class="tooto-hero-banner__content">
+      <h1 class="tooto-hero-banner__heading">
+        <span class="tooto-hero-banner__heading-bold">{{ heading_line1 }}</span>
+        <span class="tooto-hero-banner__heading-light">{{ heading_line2 }}</span>
+      </h1>
+
+      {%- if cta_text != blank -%}
+        <a href="{{ cta_url }}" class="tooto-hero-banner__cta">
+          <span>{{ cta_text }}</span>
+          <svg class="tooto-hero-banner__cta-icon" width="14" height="10" viewBox="0 0 14 10" fill="none">
+            <path d="M1 5H13M13 5L9 1M13 5L9 9" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+          </svg>
+        </a>
+      {%- endif -%}
+    </div>
+
+    <div class="tooto-hero-banner__pagination">
+      <div class="tooto-hero-banner__pagination-track">
+        <div class="tooto-hero-banner__pagination-fill"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+.tooto-hero-banner {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  min-height: 600px;
+  max-height: 900px;
+  overflow: hidden;
+}
+
+.tooto-hero-banner__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.tooto-hero-banner__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.tooto-hero-banner__bg--placeholder {
+  background: #1a1a1a;
+}
+
+/* 底部渐变遮罩 */
+.tooto-hero-banner__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(178deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%);
+  pointer-events: none;
+}
+
+/* 左侧渐变遮罩 */
+.tooto-hero-banner__overlay-side {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(91deg, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0.16) 48%, rgba(0,0,0,0) 100%);
+  pointer-events: none;
+}
+
+.tooto-hero-banner__content {
+  position: absolute;
+  bottom: 220px;
+  left: 80px;
+  z-index: 2;
+}
+
+.tooto-hero-banner__heading {
+  font-family: "Poppins", Helvetica, sans-serif;
+  font-size: 64px;
+  line-height: 80px;
+  color: #ffffff;
+  margin: 0 0 32px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.tooto-hero-banner__heading-bold {
+  font-weight: 700;
+}
+
+.tooto-hero-banner__heading-light {
+  font-weight: 200;
+  font-style: italic;
+}
+
+.tooto-hero-banner__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 0.5px solid #ffffff;
+  border-radius: 100px;
+  padding: 10px 32px;
+  color: #ffffff;
+  font-family: "Poppins", Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+.tooto-hero-banner__cta:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+.tooto-hero-banner__cta-icon {
+  flex-shrink: 0;
+}
+
+/* 底部分页指示器 */
+.tooto-hero-banner__pagination {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  width: 130px;
+}
+
+.tooto-hero-banner__pagination-track {
+  width: 100%;
+  height: 2px;
+  background: rgba(255,255,255,0.2);
+  position: relative;
+}
+
+.tooto-hero-banner__pagination-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 44px;
+  height: 2px;
+  background: #ffffff;
+}
+
+@media (max-width: 989px) {
+  .tooto-hero-banner {
+    max-height: 667px;
+  }
+
+  .tooto-hero-banner__content {
+    bottom: 120px;
+    left: 24px;
+    right: 24px;
+  }
+
+  .tooto-hero-banner__heading {
+    font-size: 40px;
+    line-height: 52px;
+  }
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Tooto Hero Banner",
+  "tag": "section",
+  "class": "tooto-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "text",
+      "id": "heading_line1",
+      "label": "Heading Line 1 (Bold)",
+      "default": "Weave Inspiration"
+    },
+    {
+      "type": "text",
+      "id": "heading_line2",
+      "label": "Heading Line 2 (Light)",
+      "default": "Unroll Your Story"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Button Text",
+      "default": "see more"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA Button URL"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tooto Hero Banner",
+      "settings": {
+        "heading_line1": "Weave Inspiration",
+        "heading_line2": "Unroll Your Story",
+        "cta_text": "see more"
+      }
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}
