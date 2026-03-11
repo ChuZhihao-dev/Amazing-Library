@@ -1,0 +1,292 @@
+{%- liquid
+  assign img_widths = '300, 400, 600, 800'
+  assign img_sizes = '(min-width: 990px) 25vw, 100vw'
+-%}
+
+<div
+  id="tooto-carousel-showcase-{{ section.id }}"
+  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} tooto-carousel-showcase"
+  style="padding-block-start: {{ section.settings.padding-block-start }}px; padding-block-end: {{ section.settings.padding-block-end }}px;"
+>
+  <div class="tooto-carousel-showcase__inner">
+
+    {%- if section.settings.title != blank -%}
+      <h2 class="tooto-carousel-showcase__title">{{ section.settings.title }}</h2>
+    {%- endif -%}
+
+    <div class="tooto-carousel-showcase__swiper swiper">
+      <div class="swiper-wrapper">
+
+        {%- for block in section.blocks -%}
+          <div class="swiper-slide tooto-carousel-showcase__slide">
+            <div class="tooto-carousel-showcase__slide-image">
+              {%- if block.settings.image != blank -%}
+                {{
+                  block.settings.image
+                  | image_url: width: 800
+                  | image_tag:
+                    widths: img_widths,
+                    sizes: img_sizes,
+                    alt: block.settings.image.alt | escape,
+                    loading: 'lazy',
+                    class: 'tooto-carousel-showcase__img'
+                }}
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag: 'tooto-carousel-showcase__img tooto-carousel-showcase__img--placeholder' }}
+              {%- endif -%}
+            </div>
+            {%- if block.settings.caption != blank -%}
+              <div class="tooto-carousel-showcase__slide-caption">
+                {{ block.settings.caption }}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% stylesheet %}
+  .tooto-carousel-showcase__inner {
+    grid-column: 1 / -1;
+  }
+
+  .section--page-width .tooto-carousel-showcase__inner {
+    grid-column: 2;
+  }
+
+  .tooto-carousel-showcase__title {
+    margin: 0 0 40px;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-foreground-heading);
+    text-align: center;
+  }
+
+  /* Swiper 核心 CSS */
+  .tooto-carousel-showcase__swiper {
+    overflow: hidden;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .tooto-carousel-showcase__swiper > .swiper-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    will-change: transform;
+  }
+
+  .tooto-carousel-showcase__swiper > .swiper-wrapper > .swiper-slide {
+    flex-shrink: 0;
+    width: 100%;
+    height: auto;
+  }
+
+  .tooto-carousel-showcase__slide {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .tooto-carousel-showcase__slide-image {
+    width: 100%;
+    overflow: hidden;
+    aspect-ratio: 1;
+  }
+
+  .tooto-carousel-showcase__img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+
+  .tooto-carousel-showcase__img--placeholder {
+    width: 100%;
+    height: 100%;
+  }
+
+  .tooto-carousel-showcase__slide-caption {
+    font-size: 0.875rem;
+    color: var(--color-foreground);
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  /* 响应式：桌面 4 列 */
+  @media (min-width: 990px) {
+    .tooto-carousel-showcase__swiper > .swiper-wrapper > .swiper-slide {
+      width: calc(25% - 15px);
+    }
+  }
+
+  /* 响应式：平板 2 列 */
+  @media (min-width: 768px) and (max-width: 989px) {
+    .tooto-carousel-showcase__swiper > .swiper-wrapper > .swiper-slide {
+      width: calc(50% - 15px);
+    }
+  }
+
+  /* 响应式：手机 1 列 */
+  @media (max-width: 767px) {
+    .tooto-carousel-showcase__title {
+      font-size: 1.5rem;
+      margin-bottom: 24px;
+    }
+
+    .tooto-carousel-showcase__swiper > .swiper-wrapper > .swiper-slide {
+      width: 100%;
+    }
+  }
+{% endstylesheet %}
+
+<script>
+  (function () {
+    const sectionEl = document.getElementById('tooto-carousel-showcase-{{ section.id }}');
+    if (!sectionEl) return;
+
+    const swiper = new Swiper(sectionEl.querySelector('.tooto-carousel-showcase__swiper'), {
+      loop: true,
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false
+      },
+      slidesPerView: 4,
+      spaceBetween: 20,
+      speed: 500,
+      breakpoints: {
+        0: {
+          slidesPerView: 1,
+          spaceBetween: 16
+        },
+        768: {
+          slidesPerView: 2,
+          spaceBetween: 20
+        },
+        990: {
+          slidesPerView: 4,
+          spaceBetween: 20
+        }
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Tooto Carousel Showcase",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Our Collections"
+    },
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        { "value": "page-width", "label": "Page width" },
+        { "value": "full-width", "label": "Full width" }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption",
+          "default": "Woven Serenity Wool Rug 192001"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tooto Carousel Showcase",
+      "settings": {
+        "title": "Our Collections"
+      },
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "caption": "Woven Serenity Wool Rug 192001"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "caption": "Woven Serenity Wool Rug 192001"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "caption": "Woven Serenity Wool Rug 192001"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "caption": "Woven Serenity Wool Rug 192001"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

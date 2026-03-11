@@ -39,19 +39,35 @@
 
     </div>
 
-    {%- comment -%} 下半：全宽大图 {%- endcomment -%}
+    {%- comment -%} 下半：全宽大图或视频 {%- endcomment -%}
     <div class="tooto-brand-concept__image-wrapper">
-      {%- if section.settings.image != blank -%}
-        {{
-          section.settings.image
-          | image_url: width: 2000
-          | image_tag:
-            widths: img_widths,
-            sizes: img_sizes,
-            alt: section.settings.image.alt,
-            loading: 'lazy',
-            class: 'tooto-brand-concept__image'
-        }}
+      {%- if section.settings.media_type == 'image' -%}
+        {%- if section.settings.image != blank -%}
+          {{
+            section.settings.image
+            | image_url: width: 2000
+            | image_tag:
+              widths: img_widths,
+              sizes: img_sizes,
+              alt: section.settings.image.alt,
+              loading: 'lazy',
+              class: 'tooto-brand-concept__image'
+          }}
+        {%- else -%}
+          {{ 'hero-apparel-1' | placeholder_svg_tag: 'tooto-brand-concept__image tooto-brand-concept__image--placeholder' }}
+        {%- endif -%}
+      {%- elsif section.settings.media_type == 'video' and section.settings.video != blank -%}
+        <video
+          class="tooto-brand-concept__video"
+          width="1600"
+          height="900"
+          controls
+          playsinline
+          preload="metadata"
+        >
+          <source src="{{ section.settings.video.sources[0].url }}" type="{{ section.settings.video.sources[0].format }}">
+          Your browser does not support the video tag.
+        </video>
       {%- else -%}
         {{ 'hero-apparel-1' | placeholder_svg_tag: 'tooto-brand-concept__image tooto-brand-concept__image--placeholder' }}
       {%- endif -%}
@@ -161,6 +177,15 @@
     object-fit: cover;
   }
 
+  /* ── 视频 ── */
+  .tooto-brand-concept__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    background: var(--color-background);
+  }
+
   @media (max-width: 749px) {
     .tooto-brand-concept__image-wrapper {
       aspect-ratio: 4 / 3;
@@ -201,9 +226,24 @@
       "label": "Link URL"
     },
     {
+      "type": "select",
+      "id": "media_type",
+      "label": "Media Type",
+      "options": [
+        { "value": "image", "label": "Image" },
+        { "value": "video", "label": "Video" }
+      ],
+      "default": "image"
+    },
+    {
       "type": "image_picker",
       "id": "image",
       "label": "Image"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video"
     },
     {
       "type": "header",
