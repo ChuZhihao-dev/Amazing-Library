@@ -80,9 +80,19 @@
     "variant_button_width": "equal-width-buttons",
     "content_for_index": [],
     "blocks": {
-      "7916451724185839711": {
-        "type": "shopify://apps/avis-product-options/blocks/avisplus-product-options/e076618e-4c9c-447f-ad6d-4f1577799c29",
-        "disabled": true,
+      "17920835415960095625": {
+        "type": "shopify://apps/swatch-king/blocks/variant-swatch-king/0850b1e4-ba30-4a0d-a8f4-f9a939276d7d",
+        "disabled": false,
+        "settings": {
+          "alignment": "left",
+          "swatch_location": "After image",
+          "switch_on_hover": true,
+          "preselect_variant": false
+        }
+      },
+      "3720565183479497137": {
+        "type": "shopify://apps/globo-product-options/blocks/app-embed-block/fdc9fad5-1a0f-4bd4-9c8a-1af6a6eef6b8",
+        "disabled": false,
         "settings": {}
       }
     },
@@ -349,6 +359,45 @@
           "variant_background_color": "#ffffff",
           "variant_text_color": "#000000",
           "variant_border_color": "#e6e6e6",
+          "variant_hover_background_color": "#f5f5f5",
+          "variant_hover_text_color": "#000000",
+          "variant_hover_border_color": "#e6e6e6",
+          "selected_variant_background_color": "#000000",
+          "selected_variant_text_color": "#ffffff",
+          "selected_variant_border_color": "#000000",
+          "selected_variant_hover_background_color": "#1a1a1a",
+          "selected_variant_hover_text_color": "#ffffff",
+          "selected_variant_hover_border_color": "#1a1a1a"
+        }
+      },
+      "scheme-497cfa6d-34bd-4263-89f1-12eaaaa2ae47": {
+        "settings": {
+          "background": "#f4e8d4",
+          "foreground_heading": "#000000",
+          "foreground": "#000000cf",
+          "primary": "#000000cf",
+          "primary_hover": "#000000",
+          "border": "#0000000f",
+          "shadow": "#000000",
+          "primary_button_background": "#000000",
+          "primary_button_text": "#ffffff",
+          "primary_button_border": "#000000",
+          "primary_button_hover_background": "#333333",
+          "primary_button_hover_text": "#ffffff",
+          "primary_button_hover_border": "#000000",
+          "secondary_button_background": "rgba(0,0,0,0)",
+          "secondary_button_text": "#000000",
+          "secondary_button_border": "#000000",
+          "secondary_button_hover_background": "#fafafa",
+          "secondary_button_hover_text": "#333333",
+          "secondary_button_hover_border": "#333333",
+          "input_background": "#ffffffc7",
+          "input_text_color": "#333333",
+          "input_border_color": "#dfdfdf",
+          "input_hover_background": "#00000003",
+          "variant_background_color": "#ffffff",
+          "variant_text_color": "#000000",
+          "variant_border_color": "#00000021",
           "variant_hover_background_color": "#f5f5f5",
           "variant_hover_text_color": "#000000",
           "variant_hover_border_color": "#e6e6e6",
