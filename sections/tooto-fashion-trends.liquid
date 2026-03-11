@@ -34,10 +34,10 @@
                 {%- else -%}
                   {{ 'image' | placeholder_svg_tag: 'tooto-fashion-trends__image tooto-fashion-trends__image--placeholder' }}
                 {%- endif -%}
+                {%- if block.settings.caption != blank -%}
+                  <p class="tooto-fashion-trends__slide-caption">{{ block.settings.caption }}</p>
+                {%- endif -%}
               </div>
-              {%- if block.settings.caption != blank -%}
-                <p class="tooto-fashion-trends__slide-caption">{{ block.settings.caption }}</p>
-              {%- endif -%}
             </div>
           {%- endfor -%}
         </div>
@@ -48,9 +48,21 @@
         id="tooto-fashion-trends-prev-{{ section.id }}" 
         aria-label="Previous slide"
       >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="15 18 9 12 15 6"></polyline>
-        </svg>
+        {%- if section.settings.arrow_prev_image != blank -%}
+          {{
+            section.settings.arrow_prev_image
+            | image_url: width: 80
+            | image_tag:
+              width: 40,
+              height: 40,
+              alt: 'Previous',
+              class: 'tooto-fashion-trends__arrow-icon'
+          }}
+        {%- else -%}
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        {%- endif -%}
       </button>
 
       <button 
@@ -58,9 +70,21 @@
         id="tooto-fashion-trends-next-{{ section.id }}" 
         aria-label="Next slide"
       >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="9 18 15 12 9 6"></polyline>
-        </svg>
+        {%- if section.settings.arrow_next_image != blank -%}
+          {{
+            section.settings.arrow_next_image
+            | image_url: width: 80
+            | image_tag:
+              width: 40,
+              height: 40,
+              alt: 'Next',
+              class: 'tooto-fashion-trends__arrow-icon'
+          }}
+        {%- else -%}
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        {%- endif -%}
       </button>
     </div>
 
@@ -77,7 +101,7 @@
     const nextBtn = document.getElementById('tooto-fashion-trends-next-{{ section.id }}');
 
     const swiper = new Swiper(swiperEl, {
-      slidesPerView: 3,
+      slidesPerView: 2.3,
       spaceBetween: 24,
       speed: 500,
       loop: true,
@@ -91,11 +115,11 @@
           spaceBetween: 16,
         },
         768: {
-          slidesPerView: 2,
+          slidesPerView: 1.8,
           spaceBetween: 20,
         },
         990: {
-          slidesPerView: 3,
+          slidesPerView: 2.6,
           spaceBetween: 24,
         },
       },
@@ -155,12 +179,12 @@
   .tooto-fashion-trends__slide {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 0;
   }
 
   .tooto-fashion-trends__slide-image {
     width: 100%;
-    aspect-ratio: 1;
+    aspect-ratio: 495 / 628;
     overflow: hidden;
     border-radius: 4px;
     position: relative;
@@ -178,17 +202,20 @@
     height: 100%;
   }
 
-  /* ── 图片文本 ── */
+  /* ── 图片文本（覆盖在图片底部） ── */
   .tooto-fashion-trends__slide-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
     margin: 0;
+    padding: 20px 16px;
     font-size: 0.9375rem;
     line-height: 1.5;
-    color: var(--color-foreground);
+    color: rgba(255, 255, 255, 0.95);
     text-align: center;
-    min-height: 2.25rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   }
 
   /* ── 箭头按钮 ── */
@@ -226,9 +253,15 @@
   }
 
   .tooto-fashion-trends__arrow svg {
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
     stroke: currentColor;
+  }
+
+  .tooto-fashion-trends__arrow-icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
   }
 
   /* ── 响应式 ── */
@@ -267,6 +300,20 @@
       "id": "title",
       "label": "Section Title",
       "default": "Fashion Trends"
+    },
+    {
+      "type": "header",
+      "content": "Navigation Arrows"
+    },
+    {
+      "type": "image_picker",
+      "id": "arrow_prev_image",
+      "label": "Previous Arrow Icon (optional)"
+    },
+    {
+      "type": "image_picker",
+      "id": "arrow_next_image",
+      "label": "Next Arrow Icon (optional)"
     },
     {
       "type": "header",
