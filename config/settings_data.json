@@ -80,11 +80,6 @@
     "variant_button_width": "equal-width-buttons",
     "content_for_index": [],
     "blocks": {
-      "3720565183479497137": {
-        "type": "shopify://apps/globo-product-options/blocks/app-embed-block/fdc9fad5-1a0f-4bd4-9c8a-1af6a6eef6b8",
-        "disabled": false,
-        "settings": {}
-      },
       "17920835415960095625": {
         "type": "shopify://apps/swatch-king/blocks/variant-swatch-king/0850b1e4-ba30-4a0d-a8f4-f9a939276d7d",
         "disabled": false,
@@ -94,6 +89,11 @@
           "switch_on_hover": true,
           "preselect_variant": false
         }
+      },
+      "3720565183479497137": {
+        "type": "shopify://apps/globo-product-options/blocks/app-embed-block/fdc9fad5-1a0f-4bd4-9c8a-1af6a6eef6b8",
+        "disabled": true,
+        "settings": {}
       }
     },
     "color_schemes": {
