@@ -61,11 +61,14 @@
           class="tooto-brand-concept__video"
           width="1600"
           height="900"
-          controls
+          {% if section.settings.show_video_controls %}controls{% endif %}
           playsinline
           preload="metadata"
+          muted
+          loop
+          autoplay
         >
-          <source src="{{ section.settings.video.sources[0].url }}" type="{{ section.settings.video.sources[0].format }}">
+          <source src="{{ section.settings.video | video_tag | strip_html }}" type="video/mp4">
           Your browser does not support the video tag.
         </video>
       {%- else -%}
@@ -244,6 +247,12 @@
       "type": "video",
       "id": "video",
       "label": "Video"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_video_controls",
+      "label": "Show Video Controls",
+      "default": false
     },
     {
       "type": "header",
