@@ -462,10 +462,58 @@
         "link_url": "",
         "media_type": "video",
         "video": "shopify://files/videos/compressO-3月11日.mov",
+        "show_video_controls": false,
         "section_width": "page-width",
         "color_scheme": "scheme-1",
         "padding-block-start": 64,
         "padding-block-end": 64
+      }
+    },
+    "tooto_fashion_trends_EMGbp7": {
+      "type": "tooto-fashion-trends",
+      "blocks": {
+        "slide_XFRi6p": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/2135_2x_1.webp",
+            "caption": "Suitable for a medieval style"
+          }
+        },
+        "slide_hBfFkg": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/2134_2x_1.webp",
+            "caption": "Suitable for cream style"
+          }
+        },
+        "slide_drJxpa": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/2130_2x_1.webp",
+            "caption": "Suitable for modern minimalist style"
+          }
+        },
+        "slide_F6QJU7": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/2135_2x_1.webp",
+            "caption": "Suitable for a medieval style"
+          }
+        }
+      },
+      "block_order": [
+        "slide_XFRi6p",
+        "slide_hBfFkg",
+        "slide_drJxpa",
+        "slide_F6QJU7"
+      ],
+      "name": "Tooto Fashion Trends",
+      "settings": {
+        "title": "Fashion Trends",
+        "section_width": "page-width",
+        "color_scheme": "",
+        "padding-block-start": 48,
+        "padding-block-end": 48
       }
     }
   },
@@ -476,6 +524,7 @@
     "product_list_UCeTdb",
     "section_64MhNt",
     "section_aQ3EEJ",
-    "tooto_brand_concept_r3B7Bh"
+    "tooto_brand_concept_r3B7Bh",
+    "tooto_fashion_trends_EMGbp7"
   ]
 }
