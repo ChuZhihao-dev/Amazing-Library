@@ -18,6 +18,9 @@
       <div class="swiper-wrapper">
 
         {%- for block in section.blocks -%}
+          {%- liquid
+            assign block_img_alt = block.settings.image.alt | escape
+          -%}
           <div class="swiper-slide tooto-carousel-showcase__slide">
             <div class="tooto-carousel-showcase__slide-image">
               {%- if block.settings.image != blank -%}
@@ -27,7 +30,7 @@
                   | image_tag:
                     widths: img_widths,
                     sizes: img_sizes,
-                    alt: block.settings.image.alt | escape,
+                    alt: block_img_alt,
                     loading: 'lazy',
                     class: 'tooto-carousel-showcase__img'
                 }}

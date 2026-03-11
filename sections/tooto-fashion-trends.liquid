@@ -1,0 +1,360 @@
+{%- liquid
+  assign img_widths = '500, 750, 1000, 1200, 1600'
+  assign img_sizes = '(min-width: 990px) 50vw, 100vw'
+-%}
+
+<div
+  id="tooto-fashion-trends-{{ section.id }}"
+  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} tooto-fashion-trends"
+  style="padding-block-start: {{ section.settings.padding-block-start }}px; padding-block-end: {{ section.settings.padding-block-end }}px;"
+>
+  <div class="tooto-fashion-trends__inner">
+
+    {%- if section.settings.title != blank -%}
+      <h2 class="tooto-fashion-trends__title">{{ section.settings.title }}</h2>
+    {%- endif -%}
+
+    <div class="tooto-fashion-trends__swiper-container">
+      <div class="swiper tooto-fashion-trends__swiper">
+        <div class="swiper-wrapper">
+          {%- for block in section.blocks -%}
+            <div class="swiper-slide tooto-fashion-trends__slide">
+              <div class="tooto-fashion-trends__slide-image">
+                {%- if block.settings.image != blank -%}
+                  {{
+                    block.settings.image
+                    | image_url: width: 1200
+                    | image_tag:
+                      widths: img_widths,
+                      sizes: img_sizes,
+                      alt: block.settings.image.alt,
+                      loading: 'lazy',
+                      class: 'tooto-fashion-trends__image'
+                  }}
+                {%- else -%}
+                  {{ 'image' | placeholder_svg_tag: 'tooto-fashion-trends__image tooto-fashion-trends__image--placeholder' }}
+                {%- endif -%}
+              </div>
+              {%- if block.settings.caption != blank -%}
+                <p class="tooto-fashion-trends__slide-caption">{{ block.settings.caption }}</p>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <button 
+        class="tooto-fashion-trends__arrow tooto-fashion-trends__arrow--prev" 
+        id="tooto-fashion-trends-prev-{{ section.id }}" 
+        aria-label="Previous slide"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+
+      <button 
+        class="tooto-fashion-trends__arrow tooto-fashion-trends__arrow--next" 
+        id="tooto-fashion-trends-next-{{ section.id }}" 
+        aria-label="Next slide"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  (function () {
+    const sectionEl = document.getElementById('tooto-fashion-trends-{{ section.id }}');
+    if (!sectionEl) return;
+
+    const swiperEl = sectionEl.querySelector('.tooto-fashion-trends__swiper');
+    const prevBtn = document.getElementById('tooto-fashion-trends-prev-{{ section.id }}');
+    const nextBtn = document.getElementById('tooto-fashion-trends-next-{{ section.id }}');
+
+    const swiper = new Swiper(swiperEl, {
+      slidesPerView: 3,
+      spaceBetween: 24,
+      speed: 500,
+      loop: true,
+      navigation: {
+        prevEl: prevBtn,
+        nextEl: nextBtn,
+      },
+      breakpoints: {
+        0: {
+          slidesPerView: 1,
+          spaceBetween: 16,
+        },
+        768: {
+          slidesPerView: 2,
+          spaceBetween: 20,
+        },
+        990: {
+          slidesPerView: 3,
+          spaceBetween: 24,
+        },
+      },
+    });
+  })();
+</script>
+
+{% stylesheet %}
+  .tooto-fashion-trends__inner {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .section--page-width .tooto-fashion-trends__inner {
+    grid-column: 2;
+  }
+
+  /* ── 标题 ── */
+  .tooto-fashion-trends__title {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--color-foreground-heading);
+    letter-spacing: -0.01em;
+  }
+
+  /* ── Swiper 容器 ── */
+  .tooto-fashion-trends__swiper-container {
+    position: relative;
+    width: 100%;
+  }
+
+  /* ── Swiper 基础结构 ── */
+  .tooto-fashion-trends__swiper {
+    overflow: hidden;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .tooto-fashion-trends__swiper > .swiper-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    will-change: transform;
+  }
+
+  .tooto-fashion-trends__swiper > .swiper-wrapper > .swiper-slide {
+    flex-shrink: 0;
+    width: 100%;
+    height: auto;
+  }
+
+  /* ── 幻灯片 ── */
+  .tooto-fashion-trends__slide {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .tooto-fashion-trends__slide-image {
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 4px;
+    position: relative;
+  }
+
+  .tooto-fashion-trends__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .tooto-fashion-trends__image--placeholder {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ── 图片文本 ── */
+  .tooto-fashion-trends__slide-caption {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--color-foreground);
+    text-align: center;
+    min-height: 2.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ── 箭头按钮 ── */
+  .tooto-fashion-trends__arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    color: var(--color-foreground);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tooto-fashion-trends__arrow--prev {
+    left: -60px;
+  }
+
+  .tooto-fashion-trends__arrow--next {
+    right: -60px;
+  }
+
+  .tooto-fashion-trends__swiper-container:hover .tooto-fashion-trends__arrow {
+    opacity: 1;
+  }
+
+  .tooto-fashion-trends__arrow:hover {
+    opacity: 0.65 !important;
+  }
+
+  .tooto-fashion-trends__arrow svg {
+    width: 24px;
+    height: 24px;
+    stroke: currentColor;
+  }
+
+  /* ── 响应式 ── */
+  @media (max-width: 1199px) {
+    .tooto-fashion-trends__arrow--prev {
+      left: 8px;
+    }
+
+    .tooto-fashion-trends__arrow--next {
+      right: 8px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .tooto-fashion-trends__title {
+      font-size: 1.75rem;
+    }
+
+    .tooto-fashion-trends__slide-caption {
+      font-size: 0.875rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Tooto Fashion Trends",
+  "tag": "section",
+  "class": "tooto-fashion-trends-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Fashion Trends"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        { "value": "page-width", "label": "Page width" },
+        { "value": "full-width", "label": "Full width" }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption",
+          "default": "Suitable for a medieval style"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tooto Fashion Trends",
+      "settings": {
+        "title": "Fashion Trends"
+      },
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "caption": "Suitable for a medieval style"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "caption": "Suitable for cream style"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "caption": "Suitable for modern minimalist style"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

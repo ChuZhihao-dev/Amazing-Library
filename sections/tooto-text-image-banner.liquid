@@ -1,6 +1,7 @@
 "{%- liquid
   assign img_widths = '300, 400, 600, 800, 1000, 1200'
   assign img_sizes = '(min-width: 990px) 50vw, 100vw'
+  assign img_alt = section.settings.image.alt | escape
 -%}
 
 <div
@@ -39,7 +40,7 @@
           | image_tag:
             widths: img_widths,
             sizes: img_sizes,
-            alt: section.settings.image.alt | escape,
+            alt: img_alt,
             loading: 'lazy',
             class: 'tooto-text-image-banner__img'
         }}

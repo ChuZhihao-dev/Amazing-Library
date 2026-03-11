@@ -57,20 +57,13 @@
           {{ 'hero-apparel-1' | placeholder_svg_tag: 'tooto-brand-concept__image tooto-brand-concept__image--placeholder' }}
         {%- endif -%}
       {%- elsif section.settings.media_type == 'video' and section.settings.video != blank -%}
-        <video
-          class="tooto-brand-concept__video"
-          width="1600"
-          height="900"
-          {% if section.settings.show_video_controls %}controls{% endif %}
-          playsinline
-          preload="metadata"
-          muted
-          loop
-          autoplay
-        >
-          <source src="{{ section.settings.video | video_tag | strip_html }}" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
+        <div class="tooto-brand-concept__video-wrapper">
+          {%- if section.settings.show_video_controls -%}
+            {{ section.settings.video | video_tag: image_size: '1600x900', class: 'tooto-brand-concept__video' }}
+          {%- else -%}
+            {{ section.settings.video | video_tag: image_size: '1600x900', autoplay: true, muted: true, loop: true, playsinline: true, preload: 'metadata', class: 'tooto-brand-concept__video' }}
+          {%- endif -%}
+        </div>
       {%- else -%}
         {{ 'hero-apparel-1' | placeholder_svg_tag: 'tooto-brand-concept__image tooto-brand-concept__image--placeholder' }}
       {%- endif -%}
