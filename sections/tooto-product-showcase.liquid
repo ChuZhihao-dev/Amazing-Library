@@ -52,7 +52,7 @@
 
       {%- comment -%} 箭头 + Swiper {%- endcomment -%}
       <div class="tooto-product-showcase__swiper-area">
-        <button class="tooto-product-showcase__arrow tooto-product-showcase__arrow--prev" id="tooto-prev-{{ section.id }}" aria-label="Previous">&#8249;</button>
+        <button class="tooto-product-showcase__arrow tooto-product-showcase__arrow--prev" id="tooto-prev-{{ section.id }}" aria-label="Previous"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="none" version="1.1" width="13.500000953674316" height="30.310890197753906" viewBox="0 0 13.500000953674316 30.310890197753906"><g transform="matrix(0,1,1,0,0,0)"><path d="M15.155443,-0.66960239L-0.33257389,13.126645L0.33257389,13.873357L15.155443,0.66960239L29.978315,13.873357L30.643463,13.126645L15.155443,-0.66960239Z" fill-rule="evenodd" fill="#000000" fill-opacity="1"/></g></svg></button>
 
         <div class="swiper tooto-product-showcase__swiper" id="tooto-swiper-{{ section.id }}">
           <div class="swiper-wrapper">
@@ -79,7 +79,7 @@
           </div>
         </div>
 
-        <button class="tooto-product-showcase__arrow tooto-product-showcase__arrow--next" id="tooto-next-{{ section.id }}" aria-label="Next">&#8250;</button>
+        <button class="tooto-product-showcase__arrow tooto-product-showcase__arrow--next" id="tooto-next-{{ section.id }}" aria-label="Next"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="none" version="1.1" width="13.500000953674316" height="30.310890197753906" viewBox="0 0 13.500000953674316 30.310890197753906"><g transform="matrix(0,1,-1,0,13.500000953674316,-13.500000953674316)"><path d="M28.655443953674315,-0.66960239L13.167427063674316,13.126645L13.832574843674317,13.873357L28.655443953674315,0.66960239L43.47831595367431,13.873357L44.14346395367431,13.126645L28.655443953674315,-0.66960239Z" fill-rule="evenodd" fill="#000000" fill-opacity="1"/></g></svg></button>
       </div>
 
       {%- comment -%} 色板选择器 {%- endcomment -%}
@@ -240,12 +240,14 @@
   /* 左下角文字叠加 */
   .tooto-product-showcase__left-content {
     position: absolute;
-    bottom: 40px;
+    bottom: 80px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    justify-content: center;
+    align-items: center;
+    gap: 72px;
   }
 
   .tooto-product-showcase__series-name {
@@ -264,11 +266,12 @@
   .tooto-product-showcase__series-light {
     font-size: 48px;
     font-weight: 275;
+    text-align: center;
     color: #fff;
   }
 
   .tooto-product-showcase__see-more {
-    font-size: 0.8125rem;
+    font-size: 16px;
     color: #fff;
     text-decoration: underline;
     text-underline-offset: 3px;
@@ -294,23 +297,29 @@
   .tooto-product-showcase__swiper-area {
     display: flex;
     align-items: center;
-    gap: 16px;
     width: 100%;
+    position: relative;
   }
 
   .tooto-product-showcase__arrow {
     flex-shrink: 0;
     background: none;
     border: none;
-    font-size: 1.75rem;
+    padding: 0;
     cursor: pointer;
     color: var(--color-foreground);
     opacity: 0.5;
-    padding: 8px;
     transition: opacity 0.2s ease;
     line-height: 1;
+    position: absolute;
   }
 
+  .tooto-product-showcase__arrow.tooto-product-showcase__arrow--next {
+    right: 5%;
+  }
+  .tooto-product-showcase__arrow.tooto-product-showcase__arrow--prev {
+    left: 5%;
+  }
   .tooto-product-showcase__arrow:hover {
     opacity: 1;
   }
@@ -326,8 +335,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 16px;
-    max-width: 300px;
+    max-width: 370px;
     margin: auto;
   }
 
@@ -375,16 +383,16 @@
   }
 
   .tooto-product-showcase__product-name {
-    font-size: 1.25rem;
+    font-size: 24px;
     margin: 0;
     color: var(--color-foreground-heading);
   }
 
   .tooto-product-showcase__product-subtitle {
-    font-size: 0.875rem;
+    font-size: 14px;
+    line-height: 24px;
     margin: 0;
     color: var(--color-foreground);
-    opacity: 0.7;
   }
 
   /* ── 横线型进度条 ── */
@@ -392,7 +400,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 6px;
+    gap: 0px;
   }
 
   .tooto-product-showcase__pagination .tooto-product-showcase__dot {
@@ -405,6 +413,7 @@
     cursor: pointer;
     padding: 0;
     transition: opacity 0.3s ease;
+    margin: 0 !important;
   }
 
   .tooto-product-showcase__pagination .swiper-pagination-bullet-active.tooto-product-showcase__dot {

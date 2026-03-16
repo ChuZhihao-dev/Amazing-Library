@@ -124,7 +124,7 @@
           "type": "variant",
           "settings": {
             "product_image": "shopify://shop_images/image_2x_13.webp",
-            "swatch_color": "#7B3F5E",
+            "swatch_color": "#C5B39E",
             "color_label": "Burgundy"
           }
         },
@@ -132,7 +132,7 @@
           "type": "variant",
           "settings": {
             "product_image": "shopify://shop_images/image_2x_13.webp",
-            "swatch_color": "#7B3F5E",
+            "swatch_color": "#0A508C",
             "color_label": "Burgundy"
           }
         }
