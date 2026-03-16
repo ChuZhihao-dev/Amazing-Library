@@ -17,8 +17,8 @@
         "hero_image": "shopify://shop_images/2_2x_4.webp",
         "section_width": "page-width",
         "color_scheme": "scheme-1",
-        "padding-block-start": 48,
-        "padding-block-end": 48
+        "padding-block-start": 80,
+        "padding-block-end": 80
       }
     },
     "custom_size_steps_def456": {
