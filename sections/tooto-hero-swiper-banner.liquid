@@ -76,73 +76,87 @@
 </div>
 
 <script>
-  (function () {
-    const sectionEl = document.getElementById('tooto-hero-swiper-{{ section.id }}');
-    if (!sectionEl) return;
+(function () {
+  const sectionEl = document.getElementById('tooto-hero-swiper-{{ section.id }}');
+  if (!sectionEl) return;
 
-    const swiperEl = sectionEl.querySelector('.tooto-hero-swiper__swiper');
-    const paginationEl = document.getElementById('tooto-hero-pagination-{{ section.id }}');
-    const prevBtn = document.getElementById('tooto-hero-prev-{{ section.id }}');
-    const nextBtn = document.getElementById('tooto-hero-next-{{ section.id }}');
+  const swiperEl = sectionEl.querySelector('.tooto-hero-swiper__swiper');
+  const paginationEl = document.getElementById('tooto-hero-pagination-{{ section.id }}');
+  const prevBtn = document.getElementById('tooto-hero-prev-{{ section.id }}');
+  const nextBtn = document.getElementById('tooto-hero-next-{{ section.id }}');
 
-    // Sync video play/pause across all slides (including loop clones)
-    function syncVideos(swiperInstance) {
-      swiperInstance.slides.forEach(function (slide) {
-        var video = slide.querySelector('video');
-        if (!video) return;
-        if (slide.classList.contains('swiper-slide-active')) {
-          video.play().catch(function () {});
-        } else {
-          video.pause();
-          video.currentTime = 0;
-        }
-      });
-    }
-
-    const swiper = new Swiper(swiperEl, {
-      slidesPerView: 1,
-      loop: true,
-      effect: 'slide',
-      speed: 600,
-      autoplay: {{ section.settings.autoplay | json }},
-      navigation: {
-        prevEl: prevBtn,
-        nextEl: nextBtn,
-      },
-      pagination: {
-        el: paginationEl,
-        clickable: true,
-        renderBullet: function (index, className) {
-          return '<button class="' + className + ' tooto-hero-swiper__dot" aria-label="Go to slide ' + (index + 1) + '"></button>';
-        },
-      },
-      on: {
-        init: function () {
-          syncVideos(this);
-        },
-        slideChange: function () {
-          syncVideos(this);
-        },
-      },
-    });
-
-    // Play/unmute toggle for videos
-    sectionEl.addEventListener('click', function (e) {
-      const btn = e.target.closest('.tooto-hero-swiper__play');
-      if (!btn) return;
-      const slide = btn.closest('.tooto-hero-swiper__slide');
-      const video = slide && slide.querySelector('video');
+  function syncVideos(swiperInstance) {
+    swiperInstance.slides.forEach(function (slide) {
+      const video = slide.querySelector('video');
       if (!video) return;
-      if (video.muted) {
-        video.muted = false;
-        video.play().catch(function(){});
-        btn.classList.add('is-playing');
+
+      if (slide.classList.contains('swiper-slide-active')) {
+        if (video.paused) {
+          const playPromise = video.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(function (err) {
+              console.warn('Video play failed:', err);
+            });
+          }
+        }
       } else {
-        video.muted = true;
-        btn.classList.remove('is-playing');
+        video.pause();
       }
     });
-  })();
+  }
+
+  const swiper = new Swiper(swiperEl, {
+    slidesPerView: 1,
+    loop: true,
+    effect: 'slide',
+    speed: 600,
+    autoplay: {{ section.settings.autoplay | json }},
+    navigation: {
+      prevEl: prevBtn,
+      nextEl: nextBtn,
+    },
+    pagination: {
+      el: paginationEl,
+      clickable: true,
+      renderBullet: function (index, className) {
+        return '<button class="' + className + ' tooto-hero-swiper__dot" aria-label="Go to slide ' + (index + 1) + '"></button>';
+      },
+    },
+    on: {
+      init: function () {
+        syncVideos(this);
+      },
+
+      slideChangeTransitionEnd: function () {
+        syncVideos(this);
+      },
+
+      autoplay: function () {
+        syncVideos(this);
+      }
+    },
+  });
+
+  // 点击控制静音
+  sectionEl.addEventListener('click', function (e) {
+    const btn = e.target.closest('.tooto-hero-swiper__play');
+    if (!btn) return;
+
+    const slide = btn.closest('.tooto-hero-swiper__slide');
+    const video = slide && slide.querySelector('video');
+    if (!video) return;
+
+    if (video.muted) {
+      video.muted = false;
+      video.play().catch(function(){});
+      btn.classList.add('is-playing');
+    } else {
+      video.muted = true;
+      btn.classList.remove('is-playing');
+    }
+  });
+
+})();
 </script>
 
 {% stylesheet %}

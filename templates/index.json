@@ -105,8 +105,8 @@
         "link_url": "shopify://collections/all",
         "section_width": "page-width",
         "color_scheme": "scheme-1",
-        "padding-block-start": 60,
-        "padding-block-end": 60
+        "padding-block-start": 68,
+        "padding-block-end": 80
       }
     },
     "tooto_product_showcase_1": {
