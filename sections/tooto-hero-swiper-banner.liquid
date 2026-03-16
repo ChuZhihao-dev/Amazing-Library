@@ -85,6 +85,20 @@
     const prevBtn = document.getElementById('tooto-hero-prev-{{ section.id }}');
     const nextBtn = document.getElementById('tooto-hero-next-{{ section.id }}');
 
+    // Sync video play/pause across all slides (including loop clones)
+    function syncVideos(swiperInstance) {
+      swiperInstance.slides.forEach(function (slide) {
+        var video = slide.querySelector('video');
+        if (!video) return;
+        if (slide.classList.contains('swiper-slide-active')) {
+          video.play().catch(function () {});
+        } else {
+          video.pause();
+          video.currentTime = 0;
+        }
+      });
+    }
+
     const swiper = new Swiper(swiperEl, {
       slidesPerView: 1,
       loop: true,
@@ -103,19 +117,11 @@
         },
       },
       on: {
+        init: function () {
+          syncVideos(this);
+        },
         slideChange: function () {
-          // Pause all videos except the active one
-          const slides = sectionEl.querySelectorAll('.tooto-hero-swiper__slide');
-          slides.forEach(function (slide, i) {
-            const video = slide.querySelector('video');
-            if (!video) return;
-            if (i === swiper.realIndex) {
-              // keep muted autoplay
-              video.play().catch(function() {});
-            } else {
-              video.pause();
-            }
-          });
+          syncVideos(this);
         },
       },
     });
@@ -266,18 +272,21 @@
 
   .tooto-hero-swiper__cta {
     display: inline-block;
-    padding: 12px 28px;
-    border: 1.5px solid var(--color-background);
-    color: var(--color-background);
+    margin-top: 12px;
+    padding: 8px 50px;
+    border: 0.5px solid #ffffff;
+    border-radius: 50px;
+    color: #ffffff;
     text-decoration: none;
     font-size: 0.8125rem;
     letter-spacing: 0.08em;
     transition: opacity 0.2s ease;
     width: fit-content;
+    cursor: pointer;
   }
 
   .tooto-hero-swiper__cta:hover {
-    opacity: 0.8;
+    opacity: 0.75;
   }
 
   /* 箭头 & 分页 */
@@ -298,25 +307,31 @@
   .tooto-hero-swiper__arrow--next { right: 12px; }
   .tooto-hero-swiper__arrow:hover { opacity: 1; }
 
-  .tooto-hero-swiper__pagination {
+  .tooto-hero-swiper__pagination.swiper-pagination-horizontal.swiper-pagination-bullets {
     position: absolute;
-    bottom: 16px;
+    bottom: 84px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 6px;
+    gap: 0px;
+    z-index: 2;
+    justify-content: center;
   }
-  .tooto-hero-swiper__pagination .tooto-hero-swiper__dot {
-    width: 36px;
-    height: 2px;
+  .tooto-hero-swiper__pagination.swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet.tooto-hero-swiper__dot {
+    width: 45px !important;
+    height: 2px !important;
     border: none;
-    border-radius: 2px;
-    background-color: var(--color-background);
-    opacity: 0.3;
+    border-radius: 2px !important;
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    opacity: 1 !important;
     padding: 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 0;
   }
-  .tooto-hero-swiper__pagination .swiper-pagination-bullet-active.tooto-hero-swiper__dot {
-    opacity: 1;
+  .tooto-hero-swiper__pagination.swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet-active.tooto-hero-swiper__dot {
+    background-color: #ffffff !important;
+    opacity: 1 !important;
   }
 
   /* ── 响应式 ── */
@@ -329,8 +344,8 @@
     .tooto-hero-swiper__heading-light {
       font-size: 2.2rem;
     }
-    .tooto-hero-swiper__pagination {
-      bottom: 12px;
+    .tooto-hero-swiper__pagination.swiper-pagination-horizontal.swiper-pagination-bullets {
+      bottom: 48px;
     }
   }
 {% endstylesheet %}
