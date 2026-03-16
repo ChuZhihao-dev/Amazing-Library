@@ -115,23 +115,23 @@
         "variant_1": {
           "type": "variant",
           "settings": {
-            "product_image": "shopify://shop_images/4400_2x_2b377622-5199-4fe1-b7a3-c41d7b6c1c36.webp",
+            "product_image": "shopify://shop_images/image_2x_13.webp",
             "swatch_color": "#7B3F5E",
             "color_label": "Burgundy"
           }
         },
-        "variant_aimKpt": {
+        "variant_rC6BxL": {
           "type": "variant",
           "settings": {
-            "product_image": "shopify://shop_images/4400_2x_2b377622-5199-4fe1-b7a3-c41d7b6c1c36.webp",
+            "product_image": "shopify://shop_images/image_2x_13.webp",
             "swatch_color": "#7B3F5E",
             "color_label": "Burgundy"
           }
         },
-        "variant_66xFgL": {
+        "variant_gkydmR": {
           "type": "variant",
           "settings": {
-            "product_image": "shopify://shop_images/4400_2x_2b377622-5199-4fe1-b7a3-c41d7b6c1c36.webp",
+            "product_image": "shopify://shop_images/image_2x_13.webp",
             "swatch_color": "#7B3F5E",
             "color_label": "Burgundy"
           }
@@ -139,11 +139,11 @@
       },
       "block_order": [
         "variant_1",
-        "variant_aimKpt",
-        "variant_66xFgL"
+        "variant_rC6BxL",
+        "variant_gkydmR"
       ],
       "settings": {
-        "left_image": "shopify://shop_images/222_2x_1.webp",
+        "left_image": "shopify://shop_images/4417_2x_1.webp",
         "series_label_bold": "Pathof",
         "series_label_light": "Shule",
         "link_label": "See More",
