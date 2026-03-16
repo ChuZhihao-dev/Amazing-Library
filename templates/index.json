@@ -31,7 +31,7 @@
       "settings": {
         "content_position": "left",
         "autoplay": true,
-        "section_height": 80,
+        "section_height": 100,
         "section_width": "full-width",
         "color_scheme": "scheme-1",
         "padding-block-start": 0,
