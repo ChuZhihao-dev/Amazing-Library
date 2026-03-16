@@ -202,23 +202,21 @@
     grid-column: 2;
   }
 
-  /* ===== TOP SECTION ===== */
   .tooto-footer-main__top {
-    padding-block: 48px 40px;
+    padding-block: 100px 55px;
   }
 
   .tooto-footer-main__top-inner {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
     gap: 40px;
   }
 
-  /* ===== BRAND (LEFT) ===== */
   .tooto-footer-main__brand {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 4px;
     flex-shrink: 0;
   }
 
@@ -238,20 +236,18 @@
 
   .tooto-footer-main__slogan {
     margin: 0;
-    font-size: 0.875rem;
+    font-size: 20px;
     color: var(--color-foreground);
-    opacity: 0.75;
+    opacity: 0.6;
   }
 
-  /* ===== RIGHT SIDE ===== */
   .tooto-footer-main__right {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 24px;
     min-width: 0;
   }
 
-  /* ===== SUBSCRIBE ===== */
   .tooto-footer-main__subscribe-form {
     width: 100%;
   }
@@ -266,18 +262,17 @@
   .tooto-footer-main__subscribe-input {
     flex: 1;
     min-width: 0;
-    padding: 12px 16px;
+    padding: 14px 20px;
     background: transparent;
     border: none;
     outline: none;
     color: var(--color-foreground);
-    font-size: 0.875rem;
-    font-family: var(--font-body--family, inherit);
+    font-size: 14px;
+    line-height: 20px;
   }
 
   .tooto-footer-main__subscribe-input::placeholder {
     color: var(--color-foreground);
-    opacity: 0.5;
   }
 
   .tooto-footer-main__subscribe-btn {
@@ -286,11 +281,10 @@
     color: var(--color-background);
     border: none;
     cursor: pointer;
-    font-size: 0.75rem;
+    font-size: 14px;
+    line-height: 20px;
     font-weight: 600;
-    letter-spacing: 0.1em;
     text-transform: uppercase;
-    font-family: var(--font-body--family, inherit);
     white-space: nowrap;
     transition: opacity 0.2s ease;
   }
@@ -299,7 +293,6 @@
     opacity: 0.85;
   }
 
-  /* ===== CONTACT INFO ===== */
   .tooto-footer-main__contact {
     display: flex;
     flex-direction: column;
@@ -324,7 +317,6 @@
 
   .tooto-footer-main__contact-value {
     color: var(--color-foreground);
-    opacity: 0.75;
     text-decoration: none;
   }
 
@@ -361,7 +353,8 @@
 
   .tooto-footer-main__nav-title {
     margin: 0;
-    font-size: 0.9375rem;
+    font-size: 20px;
+    line-height: 28px;
     font-weight: 700;
     color: var(--color-foreground);
     letter-spacing: 0.01em;
@@ -383,14 +376,22 @@
   .tooto-footer-main__nav-link {
     font-size: 0.875rem;
     color: var(--color-foreground);
-    opacity: 0.7;
     text-decoration: none;
     transition: opacity 0.2s ease;
     display: inline-block;
+    position: relative;
   }
 
-  .tooto-footer-main__nav-link:hover {
-    opacity: 1;
+  .tooto-footer-main__nav-link::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 1px;
+    background-color: var(--color-foreground);
+    transition: width 0.3s ease;
+  }
+  .tooto-footer-main__nav-link:hover::after {
+    width: 100%;
   }
 
   /* ===== BOTTOM ===== */
@@ -404,9 +405,9 @@
 
   .tooto-footer-main__copyright {
     margin: 0;
-    font-size: 0.75rem;
+    font-size: 16px;
     color: var(--color-foreground);
-    opacity: 0.65;
+    font-weight: 300;
   }
 
   /* ===== SOCIAL ICONS ===== */
@@ -422,13 +423,20 @@
     align-items: center;
     justify-content: center;
     color: var(--color-foreground);
-    opacity: 0.75;
     transition: opacity 0.2s ease;
     text-decoration: none;
+    padding: 8px;
+    border-radius: 50%;
+    border: 0.8px solid rgba(255, 255, 255, 0.19);
   }
 
   .tooto-footer-main__social-link:hover {
-    opacity: 1;
+    opacity: 0.8;
+  }
+
+  .tooto-footer-main__social-link svg {
+    width: 16px;
+    height: 16px;
   }
 
   /* ===== TABLET ===== */
