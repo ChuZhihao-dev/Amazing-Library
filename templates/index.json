@@ -43,7 +43,7 @@
       ],
       "settings": {
         "content_position": "left",
-        "autoplay": true,
+        "autoplay": false,
         "section_height": 100,
         "section_width": "full-width",
         "color_scheme": "scheme-1",
