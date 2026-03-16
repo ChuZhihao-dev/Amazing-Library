@@ -43,27 +43,28 @@
                 {{ 'hero-apparel-1' | placeholder_svg_tag: 'tooto-hero-swiper__image tooto-hero-swiper__image--placeholder' }}
               {%- endif -%}
             </div>
+            <div class="section tooto-hero-swiper__slide-inner">
+              <div class="tooto-hero-swiper__content tooto-hero-swiper__content--{{ section.settings.content_position }}">
+                {%- if block.settings.heading_bold != blank or block.settings.heading_light != blank -%}
+                  <h2 class="tooto-hero-swiper__heading">
+                    {%- if block.settings.heading_bold != blank -%}
+                      <span class="tooto-hero-swiper__heading-bold">{{ block.settings.heading_bold | escape }}</span>
+                    {%- endif -%}
+                    {%- if block.settings.heading_light != blank -%}
+                      <span class="tooto-hero-swiper__heading-light">{{ block.settings.heading_light | escape }}</span>
+                    {%- endif -%}
+                  </h2>
+                {%- endif -%}
 
-            <div class="tooto-hero-swiper__content tooto-hero-swiper__content--{{ section.settings.content_position }}">
-              {%- if block.settings.heading_bold != blank or block.settings.heading_light != blank -%}
-                <h2 class="tooto-hero-swiper__heading">
-                  {%- if block.settings.heading_bold != blank -%}
-                    <span class="tooto-hero-swiper__heading-bold">{{ block.settings.heading_bold | escape }}</span>
-                  {%- endif -%}
-                  {%- if block.settings.heading_light != blank -%}
-                    <span class="tooto-hero-swiper__heading-light">{{ block.settings.heading_light | escape }}</span>
-                  {%- endif -%}
-                </h2>
-              {%- endif -%}
+                {%- if block.settings.description != blank -%}
+                  <p class="tooto-hero-swiper__description">{{ block.settings.description }}</p>
+                {%- endif -%}
 
-              {%- if block.settings.description != blank -%}
-                <p class="tooto-hero-swiper__description">{{ block.settings.description }}</p>
-              {%- endif -%}
-
-              {%- if block.settings.cta_label != blank and block.settings.cta_url != blank -%}
-                <a class="tooto-hero-swiper__cta" href="{{ block.settings.cta_url }}">{{ block.settings.cta_label | escape }}</a>
-              {%- endif -%}
-            </div>
+                {%- if block.settings.cta_label != blank and block.settings.cta_url != blank -%}
+                  <a class="tooto-hero-swiper__cta" href="{{ block.settings.cta_url }}">{{ block.settings.cta_label | escape }}</a>
+                {%- endif -%}
+              </div>
+            </div> 
           </div>
         {%- endfor -%}
       </div>
@@ -224,7 +225,6 @@
     z-index: 1;
     display: flex;
     flex-direction: column;
-    padding: 48px 60px;
     width: min(440px, 100%);
   }
 
@@ -266,6 +266,7 @@
   .tooto-hero-swiper__description {
     font-size: 64px;
     line-height: 80px;
+    font-weight: 275;
     color: var(--color-background);
     margin: 0;
   }
@@ -334,7 +335,10 @@
     background-color: #ffffff !important;
     opacity: 1 !important;
   }
-
+  .tooto-hero-swiper__slide-inner.section {
+    height: 100%;
+    padding-left: 45px;
+  }
   /* ── 响应式 ── */
   @media (max-width: 767px) {
     .tooto-hero-swiper__content {
