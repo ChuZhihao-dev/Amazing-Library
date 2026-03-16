@@ -23,10 +23,23 @@
             "cta_label": "See More",
             "cta_url": ""
           }
+        },
+        "slide_MLP6yf": {
+          "type": "slide",
+          "settings": {
+            "media_type": "image",
+            "image": "shopify://shop_images/2_2x_07a6798e-806a-4c9a-86ac-1d2e1dc762af.webp",
+            "heading_bold": "Weave",
+            "heading_light": "Inspiration",
+            "description": "Unroll Your Story",
+            "cta_label": "See More",
+            "cta_url": ""
+          }
         }
       },
       "block_order": [
-        "slide_1"
+        "slide_1",
+        "slide_MLP6yf"
       ],
       "settings": {
         "content_position": "left",
