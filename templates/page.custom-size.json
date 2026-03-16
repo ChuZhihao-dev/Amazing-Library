@@ -80,8 +80,8 @@
       "settings": {
         "heading": "How It Works",
         "color_scheme": "scheme-1",
-        "padding-block-start": 64,
-        "padding-block-end": 64
+        "padding-block-start": 0,
+        "padding-block-end": 96
       }
     },
     "custom_rug_options_ghi789": {
@@ -133,10 +133,10 @@
         "option_3_special"
       ],
       "settings": {
-        "heading": "Custom Rug Options",
+        "heading": "Custom Rug <br>Options",
         "color_scheme": "scheme-1",
-        "padding-block-start": 64,
-        "padding-block-end": 64
+        "padding-block-start": 0,
+        "padding-block-end": 100
       }
     },
     "custom_size_faq_jkl012": {

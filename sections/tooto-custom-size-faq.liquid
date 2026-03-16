@@ -107,13 +107,12 @@
   .tooto-custom-size-faq__inner {
     display: flex;
     flex-direction: column;
-    gap: 48px;
+    gap: 28px;
     grid-column: 2;
     width: 100%;
     box-sizing: border-box;
   }
 
-  {%- comment -%} HEADER {%- endcomment -%}
   .tooto-custom-size-faq__header {
     display: flex;
     align-items: flex-start;
@@ -124,21 +123,19 @@
 
   .tooto-custom-size-faq__heading {
     margin: 0;
-    font-size: clamp(2rem, 4vw, 3rem);
+    font-size: 56px;
     font-weight: 700;
     color: var(--color-foreground);
     line-height: 1.2;
-    letter-spacing: -0.01em;
     flex: 0 0 auto;
   }
 
-  {%- comment -%} DECORATION {%- endcomment -%}
   .tooto-custom-size-faq__decoration {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     flex-shrink: 0;
     color: var(--color-foreground);
   }
@@ -155,14 +152,12 @@
     display: block;
   }
 
-  {%- comment -%} LIST {%- endcomment -%}
   .tooto-custom-size-faq__list {
     display: flex;
     flex-direction: column;
     gap: 0;
   }
 
-  {%- comment -%} ITEM {%- endcomment -%}
   .tooto-custom-size-faq__item {
     border-bottom: 1px solid var(--color-border);
     padding-block: 20px;
@@ -172,7 +167,6 @@
     border-top: 1px solid var(--color-border);
   }
 
-  {%- comment -%} TRIGGER {%- endcomment -%}
   .tooto-custom-size-faq__trigger {
     display: flex;
     align-items: center;
@@ -199,15 +193,13 @@
     gap: 12px;
   }
 
-  {%- comment -%} QUESTION {%- endcomment -%}
   .tooto-custom-size-faq__question {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--color-foreground);
+    font-size: 24px;
+    font-weight: 300;
+    color: #292A2B;
     line-height: 1.4;
   }
 
-  {%- comment -%} TOGGLE ICON {%- endcomment -%}
   .tooto-custom-size-faq__toggle-icon {
     display: flex;
     align-items: center;
@@ -223,7 +215,6 @@
     transform: rotate(180deg);
   }
 
-  {%- comment -%} CONTENT {%- endcomment -%}
   .tooto-custom-size-faq__content {
     display: none;
     overflow: hidden;
@@ -241,7 +232,6 @@
     }
   }
 
-  {%- comment -%} ANSWER {%- endcomment -%}
   .tooto-custom-size-faq__answer {
     padding-block: 12px 0;
     font-size: 0.9375rem;
@@ -251,7 +241,6 @@
     opacity: 0.75;
   }
 
-  {%- comment -%} RESPONSIVE {%- endcomment -%}
   @media screen and (max-width: 989px) {
     .tooto-custom-size-faq__inner {
       gap: 40px;

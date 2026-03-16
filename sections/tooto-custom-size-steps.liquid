@@ -13,7 +13,7 @@
       <h2 class="tooto-custom-size-steps__heading">{{ heading }}</h2>
     {%- endif -%}
 
-    <div class="tooto-custom-size-steps__grid">
+    <div class="tooto-custom-size-steps__flex">
       {%- for block in section.blocks -%}
         <div class="tooto-custom-size-steps__card" {{ block.shopify_attributes }}>
 
@@ -78,6 +78,9 @@
           {%- endif -%}
 
         </div>
+        {%- if forloop.last == false -%}
+          <div class="tooto-custom-size-steps__divider"></div>
+        {%- endif -%}
       {%- endfor -%}
     </div>
 
@@ -88,47 +91,48 @@
   .tooto-custom-size-steps__inner {
     display: flex;
     flex-direction: column;
-    gap: 48px;
+    gap: 96px;
     grid-column: 2;
     width: 100%;
     box-sizing: border-box;
   }
 
-  {%- comment -%} HEADING {%- endcomment -%}
   .tooto-custom-size-steps__heading {
     margin: 0;
-    font-size: clamp(2rem, 4vw, 3rem);
+    font-size: 56px;
     font-weight: 700;
     color: var(--color-foreground);
-    line-height: 1.2;
-    letter-spacing: -0.01em;
+    line-height: 64px;
   }
 
-  {%- comment -%} GRID {%- endcomment -%}
-  .tooto-custom-size-steps__grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
+  .tooto-custom-size-steps__flex {
+    display: flex;
     gap: 24px;
   }
 
-  {%- comment -%} CARD {%- endcomment -%}
   .tooto-custom-size-steps__card {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 16px;
+    align-items: start;
     text-align: center;
+    padding-inline: 20px;
   }
 
-  {%- comment -%} ICON {%- endcomment -%}
+  .tooto-custom-size-steps__divider {
+    width: 1px;
+    background-color: #d8d8d8;
+    align-self: stretch;
+  }
+
   .tooto-custom-size-steps__icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 60px;
-    height: 60px;
+    width: 48px;
+    height: 48px;
     flex-shrink: 0;
     color: var(--color-foreground);
+    margin-bottom: 40px;
   }
 
   .tooto-custom-size-steps__icon-img {
@@ -138,26 +142,23 @@
     display: block;
   }
 
-  {%- comment -%} CARD TITLE {%- endcomment -%}
   .tooto-custom-size-steps__card-title {
     margin: 0;
-    font-size: 1rem;
+    font-size: 24px;
     font-weight: 600;
     color: var(--color-foreground);
-    line-height: 1.4;
+    line-height: 28px;
+    margin-bottom: 16px;
   }
-
-  {%- comment -%} CARD DESCRIPTION {%- endcomment -%}
   .tooto-custom-size-steps__card-description {
     margin: 0;
     font-size: 0.875rem;
+    text-align: left;
     font-weight: 400;
-    line-height: 1.5;
-    color: var(--color-foreground);
-    opacity: 0.7;
+    line-height: 20px;
+    color: #1E2C32;
   }
 
-  {%- comment -%} RESPONSIVE {%- endcomment -%}
   @media screen and (max-width: 1199px) {
     .tooto-custom-size-steps__grid {
       grid-template-columns: repeat(3, 1fr);
