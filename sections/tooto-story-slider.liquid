@@ -14,7 +14,7 @@
     {%- comment -%} ── Header：居中标题 ── {%- endcomment -%}
     <div class="tooto-story-slider__header">
       <h2 class="tooto-story-slider__heading">
-        <strong>{{ section.settings.heading_bold | escape }}</strong>{{ section.settings.heading_light | escape }}
+        {{ section.settings.heading | escape }}
       </h2>
     </div>
 
@@ -74,7 +74,7 @@
 
     new Swiper(swiperEl, {
       slidesPerView: 3,
-      spaceBetween: 0,
+      spaceBetween: 16,
       loop: false,
       slidesPerGroup: 1,
       centeredSlides: false,
@@ -90,17 +90,17 @@
       breakpoints: {
         0: {
           slidesPerView: 1.2,
-          spaceBetween: 0,
+          spaceBetween: 8,
           slidesPerGroup: 1,
         },
         768: {
           slidesPerView: 2,
-          spaceBetween: 0,
+          spaceBetween: 16,
           slidesPerGroup: 1,
         },
         1024: {
           slidesPerView: 3,
-          spaceBetween: 0,
+          spaceBetween: 16,
           slidesPerGroup: 1,
         },
       },
@@ -126,14 +126,14 @@
   /* ── Header ── */
   .tooto-story-slider__header {
     text-align: center;
-    padding-bottom: 32px;
+    padding-bottom: 64px;
   }
 
   .tooto-story-slider__heading {
     margin: 0;
-    font-size: 2.25rem;
-    font-weight: 400;
-    line-height: 1.1;
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 64px;
     color: var(--color-foreground-heading);
   }
 
@@ -173,7 +173,7 @@
   /* ── 图片 ── */
   .tooto-story-slider__image-wrapper {
     position: relative;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 495 / 628;
     overflow: hidden;
   }
 
@@ -203,11 +203,9 @@
   }
 
   .tooto-story-slider__caption-text {
-    font-family: var(--font-accent--family, cursive);
-    font-style: italic;
-    font-size: 1.125rem;
+    font-size: 24px;
     font-weight: 400;
-    color: var(--color-background);
+    color: #fff;
     line-height: 1.3;
     display: block;
   }
@@ -227,7 +225,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 6px;
   }
 
   .tooto-story-slider__pagination .tooto-story-slider__dot {
@@ -239,6 +236,7 @@
     opacity: 0.2;
     cursor: pointer;
     padding: 0;
+    margin: 0 !important;
     transition: opacity 0.3s ease;
   }
 
@@ -292,15 +290,9 @@
     },
     {
       "type": "text",
-      "id": "heading_bold",
-      "label": "Heading Bold Part",
-      "default": "Woo"
-    },
-    {
-      "type": "text",
-      "id": "heading_light",
-      "label": "Heading Light Part",
-      "default": " Story"
+      "id": "heading",
+      "label": "Heading",
+      "default": "Woo Story"
     },
     {
       "type": "header",
@@ -381,8 +373,7 @@
     {
       "name": "Tooto Story Slider",
       "settings": {
-        "heading_bold": "Woo",
-        "heading_light": " Story",
+        "heading": "Woo Story",
         "cta_label": "More Story",
         "section_width": "full-width",
         "color_scheme": "scheme-2",
