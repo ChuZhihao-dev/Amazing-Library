@@ -40,26 +40,28 @@
       ></div>
     {%- endif -%}
 
-    {%- comment -%} 内容层：左下角标题 + 右下角描述 {%- endcomment -%}
-    <div class="tooto-series-hero__content">
-      {%- comment -%} 左下：系列名 {%- endcomment -%}
-      <div class="tooto-series-hero__title-block">
-        <h2 class="tooto-series-hero__heading">
-          <span class="tooto-series-hero__heading-bold">{{ section.settings.heading_bold | escape }}</span>
-          <span class="tooto-series-hero__heading-light">{{ section.settings.heading_light | escape }}</span>
-        </h2>
-      </div>
+      {%- comment -%} 内容层：左下角标题 + 右下角描述 {%- endcomment -%}
+      <div class="section"> 
+        <div class="tooto-series-hero__content">
+          {%- comment -%} 左下：系列名 {%- endcomment -%}
+          <div class="tooto-series-hero__title-block">
+            <h2 class="tooto-series-hero__heading">
+              <span class="tooto-series-hero__heading-bold">{{ section.settings.heading_bold | escape }}</span>
+              <span class="tooto-series-hero__heading-light">{{ section.settings.heading_light | escape }}</span>
+            </h2>
+          </div>
 
-      {%- comment -%} 右下：描述 + CTA {%- endcomment -%}
-      <div class="tooto-series-hero__desc-block">
-        {%- if section.settings.description != blank -%}
-          <p class="tooto-series-hero__description">{{ section.settings.description }}</p>
-        {%- endif -%}
-        {%- if section.settings.link_label != blank and section.settings.link_url != blank -%}
-          <a class="tooto-series-hero__link" href="{{ section.settings.link_url }}">
-            {{ section.settings.link_label | escape }} &rarr;
-          </a>
-        {%- endif -%}
+          {%- comment -%} 右下：描述 + CTA {%- endcomment -%}
+          <div class="tooto-series-hero__desc-block">
+            {%- if section.settings.description != blank -%}
+              <p class="tooto-series-hero__description">{{ section.settings.description }}</p>
+            {%- endif -%}
+            {%- if section.settings.link_label != blank and section.settings.link_url != blank -%}
+              <a class="tooto-series-hero__link" href="{{ section.settings.link_url }}">
+                {{ section.settings.link_label | escape }} &rarr;
+              </a>
+            {%- endif -%}
+          </div>
       </div>
     </div>
   </div>
@@ -113,10 +115,10 @@
     z-index: 1;
     display: flex;
     flex-direction: row;
-    align-items: flex-end;
+    align-items: start;
     justify-content: space-between;
     gap: 40px;
-    padding: 48px 60px;
+    padding-bottom: 72px;
   }
 
   /* ── 左下：系列名 ── */
@@ -128,15 +130,16 @@
   }
 
   .tooto-series-hero__heading-bold {
-    font-size: 3.75rem;
+    font-size: 56px;
     font-weight: 800;
     color: var(--color-background);
+    font-family: 'Manrope';
     display: block;
   }
 
   .tooto-series-hero__heading-light {
-    font-size: 3.75rem;
-    font-weight: 400;
+    font-size: 56px;
+    font-weight: 300;
     color: var(--color-background);
     display: block;
   }
@@ -145,8 +148,8 @@
   .tooto-series-hero__desc-block {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    max-width: 300px;
+    gap: 18px;
+    max-width: 488px;
     flex-shrink: 0;
   }
 
