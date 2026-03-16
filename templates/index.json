@@ -311,8 +311,7 @@
       ],
       "name": "Tooto Campaign Grid",
       "settings": {
-        "heading_bold": "Woo",
-        "heading_light": "Campaign",
+        "heading": "Woo Campaign",
         "cta_label": "SEE MORE",
         "cta_url": "",
         "section_width": "page-width",

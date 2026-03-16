@@ -14,7 +14,7 @@
     {%- comment -%} ── Header：左侧标题 + 右侧 SEE MORE 按钮 ── {%- endcomment -%}
     <div class="tooto-campaign-grid__header">
       <h2 class="tooto-campaign-grid__heading">
-        <strong>{{ section.settings.heading_bold | escape }}</strong>{{ section.settings.heading_light | escape }}
+        {{ section.settings.heading | escape }}
       </h2>
       {%- if section.settings.cta_label != blank and section.settings.cta_url != blank -%}
         <a class="tooto-campaign-grid__cta" href="{{ section.settings.cta_url }}">
@@ -244,15 +244,9 @@
     },
     {
       "type": "text",
-      "id": "heading_bold",
-      "label": "Heading Bold Part",
-      "default": "Woo"
-    },
-    {
-      "type": "text",
-      "id": "heading_light",
-      "label": "Heading Light Part",
-      "default": " Campaign"
+      "id": "heading",
+      "label": "Heading",
+      "default": "Woo Campaign"
     },
     {
       "type": "text",
@@ -346,8 +340,7 @@
     {
       "name": "Tooto Campaign Grid",
       "settings": {
-        "heading_bold": "Woo",
-        "heading_light": " Campaign",
+        "heading": "Woo Campaign",
         "cta_label": "SEE MORE",
         "section_width": "page-width",
         "color_scheme": "scheme-1",
