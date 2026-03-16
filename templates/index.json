@@ -17,6 +17,7 @@
           "settings": {
             "media_type": "image",
             "image": "shopify://shop_images/2_2x_07a6798e-806a-4c9a-86ac-1d2e1dc762af.webp",
+            "video": "shopify://files/videos/compressO-3月11日.mov",
             "heading_bold": "Weave",
             "heading_light": "Inspiration",
             "description": "Unroll Your Story",
@@ -24,7 +25,7 @@
             "cta_url": "shopify://collections"
           }
         },
-        "slide_MLP6yf": {
+        "slide_DyPbXm": {
           "type": "slide",
           "settings": {
             "media_type": "image",
@@ -33,13 +34,13 @@
             "heading_light": "Inspiration",
             "description": "Unroll Your Story",
             "cta_label": "See More",
-            "cta_url": ""
+            "cta_url": "shopify://collections"
           }
         }
       },
       "block_order": [
         "slide_1",
-        "slide_MLP6yf"
+        "slide_DyPbXm"
       ],
       "settings": {
         "content_position": "left",
