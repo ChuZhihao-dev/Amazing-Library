@@ -15,7 +15,7 @@
         "slide_1": {
           "type": "slide",
           "settings": {
-            "media_type": "image",
+            "media_type": "video",
             "image": "shopify://shop_images/2_2x_07a6798e-806a-4c9a-86ac-1d2e1dc762af.webp",
             "video": "shopify://files/videos/compressO-3月11日.mov",
             "heading_bold": "Weave",
