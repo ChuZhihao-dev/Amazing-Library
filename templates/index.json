@@ -322,8 +322,8 @@
         "cta_url": "shopify://pages/campaign",
         "section_width": "page-width",
         "color_scheme": "scheme-1",
-        "padding-block-start": 60,
-        "padding-block-end": 60
+        "padding-block-start": 68,
+        "padding-block-end": 100
       }
     },
     "tooto_story_slider_TM7PHp": {

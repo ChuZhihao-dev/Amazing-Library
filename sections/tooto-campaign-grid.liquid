@@ -64,7 +64,11 @@
         </div>
       {%- endfor -%}
     </div>
-
+    {%- if section.settings.cta_label != blank and section.settings.cta_url != blank -%}
+      <a class="tooto-campaign-grid__cta phone__cta" href="{{ section.settings.cta_url }}">
+        {{ section.settings.cta_label | escape }}
+      </a>
+    {%- endif -%}
   </div>
 </div>
 
@@ -101,12 +105,12 @@
   /* ── SEE MORE 空心按钮 ── */
   .tooto-campaign-grid__cta {
     display: inline-block;
-    padding: 10px 24px;
-    border: 1.5px solid var(--color-foreground);
-    color: var(--color-foreground);
-    font-size: 0.6875rem;
+    padding: 14px 70px;
+    border: 1px solid rgba(115, 102, 88, 0.37);
+    color: #736658;
+    font-size: 16px;
+    line-height: 20px;
     font-weight: 500;
-    letter-spacing: 0.1em;
     text-transform: uppercase;
     text-decoration: none;
     white-space: nowrap;
@@ -163,22 +167,23 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
+    padding-inline: 8px;
   }
 
   .tooto-campaign-grid__card-title {
     margin: 0;
-    font-size: 0.875rem;
-    font-weight: 700;
-    line-height: 1.4;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 32px;
     color: var(--color-foreground-heading);
   }
 
   .tooto-campaign-grid__card-desc {
     margin: 0;
-    font-size: 0.75rem;
-    line-height: 1.55;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 20px;
     color: var(--color-foreground);
-    opacity: 0.7;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -186,10 +191,12 @@
   }
 
   .tooto-campaign-grid__card-link {
-    font-size: 0.75rem;
+    font-size: 14px;
+    line-height: 20px;
     color: var(--color-foreground);
     text-decoration: underline;
     text-underline-offset: 3px;
+    font-weight: 200;
     transition: opacity 0.2s ease;
     width: fit-content;
     margin-top: 2px;
@@ -200,26 +207,58 @@
   }
 
   /* ── 响应式 ── */
-  @media (max-width: 989px) {
-    .tooto-campaign-grid__grid {
-      grid-template-columns: repeat(2, 1fr);
+  @media (max-width: 767px) {
+    .tooto-campaign-grid {
+      padding-block: 48px !important;
     }
-  }
-
-  @media (max-width: 749px) {
+    .tooto-campaign-grid__grid {
+      display: flex;
+      overflow-x: scroll;
+      overflow-y: hidden;
+      padding-bottom: 10px;
+      gap: 6px;
+      width: 100vw;
+      margin: 0 -6vw;
+      padding: 0 6vw;
+    }
+    .tooto-campaign-grid__grid::-webkit-scrollbar {
+      display: none;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .tooto-campaign-grid__inner {
+      gap: 40px;
+    }
     .tooto-campaign-grid__heading {
-      font-size: 1.75rem;
+      font-size: 28px;
+      line-height: 32px;
     }
-
-    .tooto-campaign-grid__grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
+    .tooto-campaign-grid__card {
+      width: 54%;
+      flex-shrink: 0;
     }
-  }
-
-  @media (max-width: 479px) {
-    .tooto-campaign-grid__grid {
-      grid-template-columns: 1fr;
+    .tooto-campaign-grid__card-body {
+      padding-inline: 0px;
+    }
+    .tooto-campaign-grid__card-title {
+      font-size: 16px;
+      line-height: 20px;
+    }
+    .tooto-campaign-grid__card-link,
+    .tooto-campaign-grid__card-desc {
+      font-size: 13px;
+      margin-top: 0;
+      line-height: 17px;
+    }
+    .tooto-campaign-grid__cta {
+      display: none;
+    }
+    .tooto-campaign-grid__cta.phone__cta {
+      display: inline-block;
+      padding: 12px 35px;
+      font-size: 13px;
+      line-height: 1;
+      width: min-content;
     }
   }
 {% endstylesheet %}
