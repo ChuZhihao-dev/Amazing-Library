@@ -9,3 +9,20 @@
     line-height: 50px;
   }
 }
+
+@media (max-width: 768px) {
+  .custom-faq-content .group-block-content {
+    align-items: center;
+  }
+}
+.custom-faq-content .group-block-content h2 {
+  font-size: 88px;
+  line-height: 88px;
+  font-weight: 700;
+}
+@media (max-width: 768px) {
+  .custom-faq-content .group-block-content h2 {
+    font-size: 44px;
+    line-height: 50px;
+  }
+}
