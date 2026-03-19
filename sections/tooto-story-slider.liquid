@@ -89,7 +89,7 @@
 
       breakpoints: {
         0: {
-          slidesPerView: 1.2,
+          slidesPerView: 1.4,
           spaceBetween: 8,
           slidesPerGroup: 1,
         },
@@ -109,6 +109,10 @@
 </script>
 
 {% stylesheet %}
+
+  .tooto-story-slider {
+    padding-block: 48px !important;
+  }
   /* ── 脱离主题 section grid ── */
   .tooto-story-slider__inner {
     grid-column: 1 / -1;
@@ -264,13 +268,18 @@
   }
 
   /* ── 响应式 ── */
-  @media (max-width: 749px) {
+  @media (max-width: 768px) {
     .tooto-story-slider__heading {
-      font-size: 1.75rem;
+      font-size: 28px;
+      line-height: 32px;
+    }
+    .tooto-story-slider__header {
+      padding: 32px;
     }
 
     .tooto-story-slider__caption-text {
-      font-size: 0.9375rem;
+      font-size: 13px;
+      max-width: 50%;
     }
   }
 {% endstylesheet %}

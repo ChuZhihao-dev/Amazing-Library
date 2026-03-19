@@ -113,9 +113,8 @@
   }
 
   .tooto-footer-trust-bar__label {
-    font-size: 0.6875rem;
+    font-size: 16px;
     font-weight: 500;
-    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--color-foreground);
     white-space: nowrap;
@@ -132,15 +131,21 @@
 
   @media (max-width: 749px) {
     .tooto-footer-trust-bar__list {
-      flex-direction: column;
-      gap: 14px;
+      gap: 38px;
+      flex-wrap: nowrap;
+      overflow-x: scroll;
     }
-    .tooto-footer-trust-bar__divider {
+    .tooto-footer-trust-bar__list::-webkit-scrollbar {
       display: none;
+      scrollbar-width: 0;
     }
     .tooto-footer-trust-bar__item {
       padding: 0;
       flex: none;
+    }
+    .tooto-footer-trust-bar__label {
+      font-size: 13px;
+      line-height: 17px;
     }
   }
 {% endstylesheet %}
