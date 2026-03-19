@@ -319,7 +319,7 @@
       "settings": {
         "heading": "Woo Campaign",
         "cta_label": "SEE MORE",
-        "cta_url": "",
+        "cta_url": "shopify://pages/campaign",
         "section_width": "page-width",
         "color_scheme": "scheme-1",
         "padding-block-start": 60,
