@@ -57,34 +57,67 @@
         "padding-block-end": 80
       }
     },
-    "tooto_hero_swiper_banner_9VY6M8": {
-      "type": "tooto-hero-swiper-banner",
+    "section_XtC3rQ": {
+      "type": "section",
       "blocks": {
-        "slide_zGMJQY": {
-          "type": "slide",
+        "text_TeW6wN": {
+          "type": "text",
+          "name": "t:names.heading",
           "settings": {
-            "media_type": "image",
-            "image": "shopify://shop_images/2_2x_1.webp",
-            "heading_bold": "ABOUT WOO",
-            "heading_light": "",
-            "description": "",
-            "cta_label": "See More",
-            "cta_url": ""
-          }
+            "text": "<h1>ABOUT WOO</h1>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "5.5rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
         }
       },
       "block_order": [
-        "slide_zGMJQY"
+        "text_TeW6wN"
       ],
-      "name": "Tooto Hero Swiper",
+      "name": "t:names.custom_section",
       "settings": {
-        "content_position": "left",
-        "autoplay": true,
-        "section_height": 80,
-        "section_width": "full-width",
-        "color_scheme": "",
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "flex-end",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "large",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-5",
+        "background_media": "video",
+        "video": "shopify://files/videos/compressO-3月11日.mov",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
         "padding-block-start": 0,
-        "padding-block-end": 0
+        "padding-block-end": 100
       }
     },
     "tooto_brand_concept_MQTbeJ": {
@@ -95,7 +128,9 @@
         "description": "Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel. Their inherent elasticity reduces foot fatigue, making them ideal for bedrooms or children's rooms.",
         "link_label": "See More",
         "link_url": "",
+        "media_type": "image",
         "image": "shopify://shop_images/4553_2x_d7846758-791f-460d-93e4-6d3652b5fdaa.webp",
+        "show_video_controls": false,
         "section_width": "page-width",
         "color_scheme": "scheme-1",
         "padding-block-start": 64,
@@ -251,7 +286,7 @@
   },
   "order": [
     "main",
-    "tooto_hero_swiper_banner_9VY6M8",
+    "section_XtC3rQ",
     "tooto_brand_concept_MQTbeJ",
     "tooto_services_grid_jKniJE",
     "tooto_factory_slider_HenALk",
