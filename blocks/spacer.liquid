@@ -19,7 +19,7 @@
 
     {% if block_settings.custom_mobile_size %}
       {% if block_settings.size_mobile == 'percent' %}
-        --spacer-size-mobile: {{ block_settings.percent_size_mobile }}%;
+        --spacer-size-mobile: {{ block_settings.percent_size_mobile | divided_by: 100.00 }};
       {% else %}
         --spacer-size-mobile: {{ block_settings.pixel_size_mobile }}px;
       {% endif %}

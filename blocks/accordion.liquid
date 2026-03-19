@@ -1,5 +1,7 @@
 
 
+{% assign block_settings = block.settings %}
+
 {% if block_settings.type_preset == 'custom' and block_settings.custom_size_mobile != blank %}
   <style>
     @media (max-width: 767px) {
@@ -9,8 +11,6 @@
     }
   </style>
 {% endif %}
-
-{% assign block_settings = block.settings %}
 <div
   class="accordion accordion--{{ block.id }} accordion--{{ block_settings.icon }} border-style spacing-style{% if block_settings.inherit_color_scheme == false %} color-{{ block_settings.color_scheme }}{% endif %}{% if block_settings.dividers %} accordion--dividers{% endif %}"
   style="
@@ -59,7 +59,7 @@
   }
 
   .accordion--dividers accordion-custom:first-child .details {
-    border-block-start: calc(var(--style-border-width) * var(--show-fallback-borders)) solid var(--color-border);
+    /* border-block-start: calc(var(--style-border-width) * var(--show-fallback-borders)) solid var(--color-border); */
   }
 
   .accordion--dividers accordion-custom:last-child .details {
