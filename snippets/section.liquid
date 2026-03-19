@@ -26,6 +26,22 @@
     {% if section.settings.section_height != '' %}
      --section-preview-height: 600px;
      {% endif %}
+
+    {% if section.settings.enable_mobile_height %}
+      {% if section.settings.section_height_mobile == 'custom' %}
+        --section-min-height-mobile: {{ section.settings.section_height_mobile_custom }}vh;
+      {% elsif section.settings.section_height_mobile == 'full-screen' %}
+        --section-min-height-mobile: 100vh;
+      {% elsif section.settings.section_height_mobile == 'auto' %}
+        --section-min-height-mobile: auto;
+      {% elsif section.settings.section_height_mobile == 'small' %}
+        --section-min-height-mobile: 30vh;
+      {% elsif section.settings.section_height_mobile == 'medium' %}
+        --section-min-height-mobile: 50vh;
+      {% elsif section.settings.section_height_mobile == 'large' %}
+        --section-min-height-mobile: 70vh;
+      {% endif %}
+    {% endif %}
   "
 >
   <div class="custom-section-background">
@@ -40,7 +56,9 @@
 
   <div
     class="border-style custom-section-content"
-    style="{% render 'border-override', settings: section.settings %}"
+    style="
+      {% render 'border-override', settings: section.settings %}
+    "
   >
     {% if section.settings.toggle_overlay %}
       {% render 'overlay', settings: section.settings, layer: '0' %}
@@ -93,5 +111,11 @@
 
   .custom-section-content {
     z-index: var(--layer-flat);
+  }
+
+  @media (max-width: 767px) {
+    .section {
+      --section-min-height: var(--section-min-height-mobile, var(--section-min-height));
+    }
   }
 {% endstylesheet %}
