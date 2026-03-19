@@ -5,6 +5,28 @@
   @param {string} children - The children of the section
 {%- enddoc -%}
 
+{% if section.settings.enable_mobile_height and section.settings.section_height_mobile != '' %}
+  {%- liquid
+    if section.settings.section_height_mobile == 'custom'
+      assign mobile_height = section.settings.section_height_mobile_custom | append: 'vh'
+    elsif section.settings.section_height_mobile == 'full-screen'
+      assign mobile_height = '100vh'
+    else
+      assign mobile_height = 'var(--section-height-' | append: section.settings.section_height_mobile | append: ')'
+    endif
+  -%}
+  <style>
+    @media (max-width: 767px) {
+      #shopify-section-{{ section.id }} .section {
+        min-height: {{ mobile_height }} !important;
+      }
+      #shopify-section-{{ section.id }} .section-content-wrapper {
+        min-height: {{ mobile_height }} !important;
+      }
+    }
+  </style>
+{% endif %}
+
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
 <div
   class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }}"
@@ -105,11 +127,5 @@
 
   .custom-section-content {
     z-index: var(--layer-flat);
-  }
-
-  @media (max-width: 767px) {
-    .section {
-      --section-min-height: var(--section-min-height-mobile, var(--section-min-height));
-    }
   }
 {% endstylesheet %}
