@@ -105,18 +105,17 @@
 {% stylesheet %}
 
   .contact-form__title {
-    font-size: clamp(2rem, 5vw, 3rem);
+    font-size: 56px;
     font-weight: 700;
     color: #ffffff;
     text-align: center;
-    margin-bottom: 2rem;
-    letter-spacing: -0.01em;
+    margin-bottom: 36px;
   }
 
   .contact-form__form {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
   }
 
   .contact-form__form-row {
@@ -133,23 +132,24 @@
 
 
 
-  .contact-form__input {
+  input.contact-form__input,
+  textarea.contact-form__input {
     width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     color: #1a1a1a;
     background-color: #ffffff;
-    padding: 18px 20px;
-    border-radius: 4px;
-    border: 1px solid #e0e0e0;
+    padding: 20px 24px;
+    border-radius: 0;
+    border: 1px solid transparent;
     -webkit-font-smoothing: antialiased;
-    font-size: 0.9375rem;
+    font-size: 16px;
     outline: none;
     transition: border-color 0.2s ease, background-color 0.2s ease;
   }
 
   .contact-form__input::placeholder {
-    color: #555555;
+    color: #060002;
   }
 
   .contact-form__input:focus {
@@ -167,11 +167,14 @@
     max-width: 100% !important;
     min-width: 100% !important;
     padding: 16px 20px;
-    font-size: 1rem;
+    font-size: 20px;
+    line-height: 28px;
     font-weight: 600;
-    letter-spacing: 0.03em;
     cursor: pointer;
     transition: opacity 0.2s ease;
+    background-color: #F5F5EF;
+    color: #000;
+    margin-top: 14px;
   }
 
   .contact-form .submit-button:hover {

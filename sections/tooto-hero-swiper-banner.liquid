@@ -292,6 +292,7 @@
     border-radius: 50%;
     color: #ffffff;
     text-decoration: none;
+    text-transform: uppercase;
     font-size: 0.8125rem;
     letter-spacing: 0.08em;
     transition: opacity 0.2s ease;
@@ -333,20 +334,20 @@
     justify-content: center;
   }
   .tooto-hero-swiper__pagination.swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet.tooto-hero-swiper__dot {
-    width: 45px !important;
-    height: 2px !important;
+    width: 45px;
+    height: 2px;
     border: none;
-    border-radius: 2px !important;
-    background-color: rgba(255, 255, 255, 0.2) !important;
-    opacity: 1 !important;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 0.2);
+    opacity: 1;
     padding: 0;
     cursor: pointer;
     transition: background-color 0.3s ease;
     margin: 0;
   }
   .tooto-hero-swiper__pagination.swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet-active.tooto-hero-swiper__dot {
-    background-color: #ffffff !important;
-    opacity: 1 !important;
+    background-color: #ffffff;
+    opacity: 1;
   }
   .tooto-hero-swiper__slide-inner.section {
     height: 100%;
@@ -357,13 +358,29 @@
     .tooto-hero-swiper__content {
       padding: 28px 20px;
       width: 100%;
-    }
-    .tooto-hero-swiper__heading-bold,
-    .tooto-hero-swiper__heading-light {
-      font-size: 2.2rem;
+      max-width: 222px;
     }
     .tooto-hero-swiper__pagination.swiper-pagination-horizontal.swiper-pagination-bullets {
       bottom: 48px;
+    }
+    .tooto-hero-swiper__description,
+    .tooto-hero-swiper__heading-bold,
+    .tooto-hero-swiper__heading-light {
+      font-size: 32px;
+      line-height: 40px;
+    }
+    .tooto-hero-swiper__slide-inner.section {
+      padding-left: 30px;
+    }
+    .tooto-hero-swiper__cta {
+      padding: 9px 32px;
+      font-size: 13px;
+      line-height: 1;
+      margin-top: 32px;
+    }
+    .tooto-hero-swiper__pagination.swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet.tooto-hero-swiper__dot {
+      width: 22px;
+      height: 1px;
     }
   }
 {% endstylesheet %}
