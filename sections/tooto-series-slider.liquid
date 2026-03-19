@@ -110,8 +110,8 @@
     }
 
     var swiper = new Swiper(swiperEl, {
-      slidesPerView: 1,
-      spaceBetween: 20,
+      slidesPerView: 1.8,
+      spaceBetween: 10,
       loop: false,
       slidesPerGroup: 1,
       speed: 500,
@@ -223,8 +223,6 @@
   .tooto-series-slider__link {
     font-size: 0.875rem;
     color: var(--color-foreground);
-    text-decoration: underline;
-    text-underline-offset: 3px;
     transition: opacity 0.2s ease;
   }
 
@@ -318,14 +316,41 @@
   }
 
   @media (max-width: 767px) {
+    .tooto-series-slider {
+      padding-block: 48px !important;
+    }
     .tooto-series-slider__header {
       grid-template-columns: 1fr;
-      gap: 16px;
-      margin-bottom: 24px;
+      gap: 12px;
+      margin-bottom: 40px;
+      padding-right: 0;
+      padding-inline: 10px;
     }
 
     .tooto-series-slider__heading {
-      font-size: 1.75rem;
+      font-size: 28px;
+      line-height: 32px;
+    }
+    .tooto-series-slider__description {
+      font-size: 13px;
+      line-height: 17px;
+    }
+    .tooto-series-slider__card-title {
+      font-size: 14px;
+      line-height: 14px;
+    }
+    .tooto-series-slider__badge {
+      top: 9px;
+      left: 10px;
+      font-size: 13px;
+      line-height: 1;
+    }
+    .tooto-series-slider__pagination {
+      margin-top: 40px;
+    }
+    .tooto-series-slider__dot {
+      width: 25px;
+      height: 1px;
     }
   }
 {% endstylesheet %}
