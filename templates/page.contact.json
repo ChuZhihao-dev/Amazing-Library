@@ -9,52 +9,6 @@
  */
 {
   "sections": {
-    "contact_info": {
-      "type": "tooto-contact-info",
-      "blocks": {
-        "item_chat": {
-          "type": "contact_item",
-          "settings": {
-            "icon": "chat",
-            "title": "Live Chat",
-            "description": "<p>Our support team is online and ready to assist\u2014just click the chat bubble to get started.</p>",
-            "button_label": "Start Chat",
-            "button_url": ""
-          }
-        },
-        "item_phone": {
-          "type": "contact_item",
-          "settings": {
-            "icon": "phone",
-            "title": "Call us",
-            "description": "<p>Prefer to talk? We\u2019d love to hear from you. Available 9am\u20136pm PDT (Mon\u2013Sun)</p>",
-            "button_label": "+1 61*******011",
-            "button_url": "tel:+16100000011"
-          }
-        },
-        "item_email": {
-          "type": "contact_item",
-          "settings": {
-            "icon": "email",
-            "title": "Email us",
-            "description": "<p>We respond to all inquiries within 24 hours.<br>service@woocarpet.com</p>",
-            "button_label": "Send an Email",
-            "button_url": "mailto:service@woocarpet.com"
-          }
-        }
-      },
-      "block_order": [
-        "item_chat",
-        "item_phone",
-        "item_email"
-      ],
-      "settings": {
-        "section_width": "page-width",
-        "color_scheme": "scheme-1",
-        "padding-block-start": 64,
-        "padding-block-end": 64
-      }
-    },
     "form": {
       "type": "section",
       "blocks": {
@@ -104,7 +58,7 @@
         "vertical_alignment_flex_direction_column": "center",
         "gap": 32,
         "section_width": "page-width",
-        "section_height": "",
+        "section_height": "full-screen",
         "section_height_custom": 50,
         "color_scheme": "scheme-1",
         "background_media": "image",
@@ -121,6 +75,52 @@
         "gradient_direction": "to top",
         "padding-block-start": 80,
         "padding-block-end": 100
+      }
+    },
+    "contact_info": {
+      "type": "tooto-contact-info",
+      "blocks": {
+        "item_chat": {
+          "type": "contact_item",
+          "settings": {
+            "icon": "chat",
+            "title": "Live Chat",
+            "description": "<p>Our support team is online and ready to assist—just click the chat bubble to get started.</p>",
+            "button_label": "Start Chat",
+            "button_url": ""
+          }
+        },
+        "item_phone": {
+          "type": "contact_item",
+          "settings": {
+            "icon": "phone",
+            "title": "Call us",
+            "description": "<p>Prefer to talk? We’d love to hear from you. Available 9am–6pm PDT (Mon–Sun)</p>",
+            "button_label": "+1 61*******011",
+            "button_url": "tel:+16100000011"
+          }
+        },
+        "item_email": {
+          "type": "contact_item",
+          "settings": {
+            "icon": "email",
+            "title": "Email us",
+            "description": "<p>We respond to all inquiries within 24 hours.<br>service@woocarpet.com</p>",
+            "button_label": "Send an Email",
+            "button_url": "mailto:service@woocarpet.com"
+          }
+        }
+      },
+      "block_order": [
+        "item_chat",
+        "item_phone",
+        "item_email"
+      ],
+      "settings": {
+        "section_width": "page-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 64,
+        "padding-block-end": 64
       }
     }
   },
