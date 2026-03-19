@@ -1,25 +1,46 @@
 {%- liquid
   assign image = section.settings.image
+  assign image_mobile = section.settings.image_mobile
   assign title = section.settings.title
   assign height = section.settings.height
+  assign height_mobile = section.settings.height_mobile
   assign color_scheme = section.settings.color_scheme
   assign section_width = section.settings.section_width
 -%}
 
+<style>
+  #shopify-section-{{ section.id }} .tooto-simple-banner__inner {
+    min-height: {{ height }}vw;
+  }
+  @media (max-width: 767px) {
+    #shopify-section-{{ section.id }} .tooto-simple-banner__inner {
+      min-height: {{ height_mobile }}vw !important;
+    }
+    {% if image_mobile != blank %}
+    #shopify-section-{{ section.id }} .tooto-simple-banner__image--desktop { display: none; }
+    #shopify-section-{{ section.id }} .tooto-simple-banner__image--mobile { display: block; }
+    {% endif %}
+  }
+</style>
+
 <div
   id="tooto-simple-banner-{{ section.id }}"
   class="section section--{{ section_width }} color-{{ color_scheme }} tooto-simple-banner"
-  style="--banner-height: {{ height }}vw;"
 >
   <div class="tooto-simple-banner__inner">
+    {%- liquid
+      assign img_widths = '400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000'
+      assign img_sizes = '(min-width: 990px) 100vw, 100vw'
+      assign img_widths_mobile = '400, 600, 800, 1000, 1200'
+      assign img_sizes_mobile = '100vw'
+    -%}
     {%- if image != blank -%}
-      {%- liquid
-        assign img_widths = '400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000'
-        assign img_sizes = '(min-width: 990px) 100vw, 100vw'
-      -%}
-      {{ image | image_url: width: 2000 | image_tag: widths: img_widths, sizes: img_sizes, class: 'tooto-simple-banner__image' }}
+      {{ image | image_url: width: 2000 | image_tag: widths: img_widths, sizes: img_sizes, class: 'tooto-simple-banner__image tooto-simple-banner__image--desktop' }}
     {%- else -%}
-      {{ 'lifestyle-1' | placeholder_svg_tag: 'tooto-simple-banner__image placeholder' }}
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'tooto-simple-banner__image tooto-simple-banner__image--desktop placeholder' }}
+    {%- endif -%}
+    {%- if image_mobile != blank -%}
+      {{ image_mobile | image_url: width: 1200 | image_tag: widths: img_widths_mobile, sizes: img_sizes_mobile, class: 'tooto-simple-banner__image tooto-simple-banner__image--mobile' }}
     {%- endif -%}
 
     {%- if title != blank -%}
@@ -40,7 +61,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: var(--banner-height, 34vw);
     overflow: hidden;
   }
 
@@ -67,7 +87,11 @@
     max-width: 90%;
   }
 
-  @media (max-width: 768px) {
+  .tooto-simple-banner__image--mobile {
+    display: none;
+  }
+
+  @media (max-width: 767px) {
     .tooto-simple-banner__title {
       font-size: 32px;
       line-height: 40px;
@@ -98,6 +122,21 @@
       "max": 100,
       "step": 1,
       "default": 34,
+      "unit": "vw"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile Background Image"
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "label": "Mobile Height (vw)",
+      "min": 20,
+      "max": 200,
+      "step": 1,
+      "default": 60,
       "unit": "vw"
     },
     {
