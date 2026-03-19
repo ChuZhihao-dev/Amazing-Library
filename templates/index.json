@@ -286,7 +286,7 @@
             "title": "Discuss global trends in rug design",
             "description": "Deep-dive into wool, nylon, jute materials and traditional/modern production techniques.",
             "link_label": "Details",
-            "link_url": ""
+            "link_url": "shopify://pages/city-of-gems"
           }
         },
         "card_CgUNGe": {
@@ -296,7 +296,7 @@
             "title": "Discuss global trends in rug design",
             "description": "Deep-dive into wool, nylon, jute materials and traditional/modern production techniques.",
             "link_label": "Details",
-            "link_url": ""
+            "link_url": "shopify://pages/city-of-gems"
           }
         },
         "card_hxcTKg": {
@@ -306,7 +306,7 @@
             "title": "Discuss global trends in rug design",
             "description": "Deep-dive into wool, nylon, jute materials and traditional/modern production techniques.",
             "link_label": "Details",
-            "link_url": ""
+            "link_url": "shopify://pages/city-of-gems"
           }
         }
       },
@@ -319,7 +319,7 @@
       "settings": {
         "heading": "Woo Campaign",
         "cta_label": "SEE MORE",
-        "cta_url": "",
+        "cta_url": "shopify://pages/campaign",
         "section_width": "page-width",
         "color_scheme": "scheme-1",
         "padding-block-start": 60,
