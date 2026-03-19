@@ -77,7 +77,14 @@
         {%- endfor -%}
       </div>
     {%- endif -%}
-
+    {%- if section.settings.button_label != blank -%}
+      <a
+        href="{{ section.settings.button_url }}"
+        class="tooto-services-grid__button phone-button"
+      >
+        {{ section.settings.button_label }}
+      </a>
+    {%- endif -%}
   </div>
 </div>
 
@@ -111,11 +118,11 @@
   }
 
   .tooto-services-grid__heading strong {
-    font-weight: 800;
+    font-weight: 700;
   }
 
   .tooto-services-grid__heading-light {
-    font-weight: 300;
+    font-weight: 275;
     color: var(--color-foreground);
   }
 
@@ -124,12 +131,11 @@
     display: inline-flex;
     align-items: center;
     white-space: nowrap;
-    padding: 12px 24px;
-    background-color: var(--color-foreground);
+    padding: 12px 40px;
+    background-color: var(--color-primary);
     color: var(--color-background);
-    font-size: 0.875rem;
-    font-weight: 500;
-    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
     text-decoration: none;
     transition: opacity 0.2s ease;
     flex-shrink: 0;
@@ -164,7 +170,6 @@
     position: relative;
     aspect-ratio: 1 / 1.05;
     overflow: hidden;
-    border-radius: 4px;
   }
 
   .tooto-services-grid__image {
@@ -217,7 +222,7 @@
     bottom: 16px;
     left: 16px;
     right: 16px;
-    font-size: 1.25rem;
+    font-size: 32px;
     font-weight: 700;
     color: #ffffff;
     line-height: 1.25;
@@ -233,6 +238,60 @@
     line-height: 1.5;
     opacity: 0.7;
   }
+  .tooto-services-grid__button.phone-button {
+    display: none;
+  }
+  @media(max-width: 749px) {
+    .tooto-services-grid {
+      padding-block: 0 50px !important;
+    }
+    .tooto-services-grid__button {
+      display: none;
+      padding: 14px 33px;
+      line-height: 1;
+      font-size: 13px;
+      width: min-content;
+    }
+    .tooto-services-grid__heading {
+      font-size: 28px;
+      line-height: 32px;
+    }
+    .tooto-services-grid__grid {
+      display: flex;
+      overflow-x: scroll;
+      overflow-y: hidden;
+      gap: 10px;
+    }
+    .tooto-services-grid__item {
+      max-width: 60%;
+      flex-shrink: 0;
+      gap: 8px;
+    }
+    .tooto-services-grid__image-wrapper {
+      aspect-ratio: 413 / 460;
+    }
+    .tooto-services-grid__image-wrapper::-webkit-scrollbar {
+      display: none;
+    }
+    .tooto-services-grid__description {
+      font-size: 13px;
+      line-height: 17px;
+    }
+    .tooto-services-grid__number {
+      top: 21px;
+      left: 16px;
+      font-size: 28px;
+      line-height: 32px;
+    }
+    .tooto-services-grid__button.phone-button {
+      display: block;
+    }
+    .tooto-services-grid__title {
+      font-size: 16px;
+      max-width: 60%;
+    }
+  }
+
 {% endstylesheet %}
 
 {% schema %}

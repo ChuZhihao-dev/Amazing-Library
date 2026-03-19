@@ -38,7 +38,7 @@
     {%- comment -%} Swiper.js — 本地版本（全局加载一次，供所有 tooto- section 使用） {%- endcomment -%}
     {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'swiper-bundle.min.js' | asset_url }}" ></script>
-
+    {{ 'custom.css' | asset_url | stylesheet_tag }}
     {{ content_for_header }}
   </head>
 

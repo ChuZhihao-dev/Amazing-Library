@@ -1,0 +1,13 @@
+.about-custom-box {
+    .group-block-content {
+        h1 {
+            font-size: 88px;
+            line-height: 100px;
+            font-weight: 700;
+            @media (max-width: 768px) {
+                font-size: 44px;
+                line-height: 50px;
+            }
+        }
+    }
+}
