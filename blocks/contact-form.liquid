@@ -189,6 +189,34 @@
     color: #ffffff;
     margin-bottom: 1rem;
   }
+  @media(max-width: 768px) {
+    .contact-form__title {
+      font-size: 28px;
+      line-height: 36px;
+      margin-bottom: 16px;
+    }
+    input.contact-form__input, textarea.contact-form__input {
+      padding: 10px;
+      font-size: 13px;
+    }
+   .contact-form__input--textarea {
+      min-height: 130px;
+      height: 130px;
+    }
+    .contact-form__form-row {
+      flex-direction: row;
+      gap: 6px;
+    }
+    .contact-form__form {
+      gap: 6px;
+    }
+    .contact-form .submit-button {
+      padding: 9px;
+      font-size: 13px;
+      line-height: 17px;
+      margin-top: 10px;
+    }
+  }
 {% endstylesheet %}
 
 {% schema %}
