@@ -180,6 +180,7 @@
       "type": "tooto-series-hero",
       "settings": {
         "image": "shopify://shop_images/160_2x_1.webp",
+        "image_mobile": "shopify://shop_images/160_2x_3.webp",
         "heading_bold": "Pathof",
         "heading_light": "Shule",
         "description": "Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel. Their inherent elasticity reduces foot fatigue, making them ideal for bedrooms or children's rooms.",
