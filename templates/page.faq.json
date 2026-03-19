@@ -184,7 +184,11 @@
           "settings": {
             "icon": "caret",
             "dividers": true,
-            "type_preset": "h5",
+            "type_preset": "custom",
+            "custom_font": "var(--font-body--family)",
+            "custom_size": "1.25rem",
+            "custom_size_mobile": "0.875rem",
+            "custom_weight": "500",
             "inherit_color_scheme": true,
             "color_scheme": "",
             "border": "none",
