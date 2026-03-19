@@ -13,6 +13,10 @@
 }
 
 .custom-faq-content {
+    padding-block: 90px 136px;
+    @media (max-width: 768px) {
+        padding-block: 48px;
+    }
     .group-block-content {
         @media (max-width: 768px) {
             align-items: center;
