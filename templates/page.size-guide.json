@@ -32,10 +32,10 @@
             "size": "pixel",
             "percent_size": 100,
             "pixel_size": 80,
-            "custom_mobile_size": false,
-            "size_mobile": "percent",
+            "custom_mobile_size": true,
+            "size_mobile": "pixel",
             "percent_size_mobile": 100,
-            "pixel_size_mobile": 120
+            "pixel_size_mobile": 48
           },
           "blocks": {}
         },
@@ -186,6 +186,85 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
+            },
+            "spacer_zn7Yxf": {
+              "type": "spacer",
+              "name": "t:names.spacer",
+              "settings": {
+                "size": "pixel",
+                "percent_size": 100,
+                "pixel_size": 120,
+                "custom_mobile_size": true,
+                "size_mobile": "pixel",
+                "percent_size_mobile": 100,
+                "pixel_size_mobile": 40
+              },
+              "blocks": {}
+            },
+            "text_jnFyzj": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<p>Size Matching</p>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "custom",
+                "font": "var(--font-body--family)",
+                "font_size": "3rem",
+                "font_size_mobile": "1.5rem",
+                "weight": "700",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "spacer_BUUBwp": {
+              "type": "spacer",
+              "name": "t:names.spacer",
+              "settings": {
+                "size": "pixel",
+                "percent_size": 100,
+                "pixel_size": 48,
+                "custom_mobile_size": true,
+                "size_mobile": "pixel",
+                "percent_size_mobile": 100,
+                "pixel_size_mobile": 24
+              },
+              "blocks": {}
+            },
+            "image_4nJb8H": {
+              "type": "image",
+              "name": "t:names.image",
+              "settings": {
+                "image": "shopify://shop_images/4572_2x_1.webp",
+                "link": "",
+                "image_ratio": "adapt",
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
             }
           },
           "block_order": [
@@ -193,7 +272,11 @@
             "spacer_RNqp97",
             "text_RVTmth",
             "spacer_xm6exJ",
-            "image_88LBxR"
+            "image_88LBxR",
+            "spacer_zn7Yxf",
+            "text_jnFyzj",
+            "spacer_BUUBwp",
+            "image_4nJb8H"
           ]
         },
         "spacer_bxYpci": {
@@ -202,11 +285,11 @@
           "settings": {
             "size": "pixel",
             "percent_size": 100,
-            "pixel_size": 160,
-            "custom_mobile_size": false,
-            "size_mobile": "percent",
+            "pixel_size": 92,
+            "custom_mobile_size": true,
+            "size_mobile": "pixel",
             "percent_size_mobile": 100,
-            "pixel_size_mobile": 120
+            "pixel_size_mobile": 48
           },
           "blocks": {}
         }
