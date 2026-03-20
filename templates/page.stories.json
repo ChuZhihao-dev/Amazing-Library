@@ -12,7 +12,7 @@
     "stories-section": {
       "type": "tooto-stories",
       "settings": {
-        "blog": "stories",
+        "blog": "blog",
         "heading": "Stories",
         "posts_per_page": 12,
         "section_width": "page-width",
@@ -35,6 +35,8 @@
             "type_preset": "h2",
             "font": "var(--font-primary--family)",
             "font_size": "",
+            "font_size_mobile": "",
+            "weight": "",
             "line_height": "normal",
             "letter_spacing": "normal",
             "case": "none",
