@@ -72,10 +72,6 @@
     --gallery-aspect-ratio: {{ ratio }};
   "
   data-product-id="{{ product.id }}"
-  {% if settings.show_second_image_on_hover %}
-    on:pointerenter="/previewImage"
-    on:pointerleave="/resetImage"
-  {% endif %}
   {% if settings.transition_to_main_product %}
     data-view-transition-to-main-product
   {% endif %}
@@ -94,9 +90,7 @@
       assign other_media = product.media | reject: 'src', product.featured_media
       assign media_list_to_show = product.featured_media | concat: other_media
 
-      if product.media.size > 2 and generic_media_size > 0
-        assign show_arrows = true
-      endif
+      # Arrows removed: image switching is handled by color swatches only
 
       # Don't overfetch media if we don't need to
       assign max_visible_slide_count = 1
@@ -168,7 +162,7 @@
         initial_slide: 0,
         slides: slides,
         slide_count: media_list_to_show.size,
-        show_arrows: show_arrows,
+        show_arrows: false,
         attributes: slideshow_attributes
       %}
     </a>
@@ -207,6 +201,38 @@
     overflow: hidden;
     container-type: inline-size; /* Make card-gallery a container */
     container-name: card-gallery-container; /* Optional: name the container */
+  }
+
+  /* Slideshow scroll container layout */
+  slideshow-container {
+    position: relative;
+    display: block;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  slideshow-slides {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow: hidden;
+    width: 100%;
+    scroll-snap-type: x mandatory;
+  }
+
+  slideshow-component[in-viewport] slideshow-slides {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  slideshow-slides::-webkit-scrollbar {
+    display: none;
+  }
+
+  slideshow-slide {
+    flex-shrink: 0;
+    width: 100%;
+    scroll-snap-align: start;
   }
 
   .card-gallery__placeholder svg {
