@@ -114,7 +114,11 @@
         gutters="{{ slideshow_gutters }}"
       {% endif %}
     >
-      {{ slides }}
+      {% if slides %}
+        {% for slide in slides %}
+          {{ slide }}
+        {% endfor %}
+      {% endif %}
     </slideshow-slides>
   </slideshow-container>
   {{ controls }}
@@ -129,3 +133,4 @@
     height: auto;
   }
 {% endstylesheet %}
+

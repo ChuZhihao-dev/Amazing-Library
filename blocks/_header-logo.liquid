@@ -142,6 +142,17 @@
   .header[transparent][data-sticky-state='active'] .header-logo__image-container--inverse {
     display: none;
   }
+
+  /* When transparent header's menu is hovered/focused (underlay appears), switch back to normal logo */
+  .header[transparent]:has(header-menu:hover) .header-logo__image-container--original,
+  .header[transparent]:has(header-menu:focus-within) .header-logo__image-container--original {
+    display: block;
+  }
+
+  .header[transparent]:has(header-menu:hover) .header-logo__image-container--inverse,
+  .header[transparent]:has(header-menu:focus-within) .header-logo__image-container--inverse {
+    display: none;
+  }
 {% endstylesheet %}
 
 {% schema %}

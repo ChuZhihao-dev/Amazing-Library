@@ -235,6 +235,17 @@
     scroll-snap-align: start;
   }
 
+  /* 图片切换淡入效果：钩住 [hidden] 移除时的首次渲染，定义起始 opacity */
+  .card-gallery slideshow-slide {
+    transition: opacity 0.35s ease;
+  }
+
+  @starting-style {
+    .card-gallery slideshow-slide:not([hidden]) {
+      opacity: 0;
+    }
+  }
+
   .card-gallery__placeholder svg {
     height: 100%;
     width: 100%;
