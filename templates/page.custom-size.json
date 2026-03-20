@@ -91,7 +91,7 @@
         "option_1_measure": {
           "type": "option",
           "settings": {
-            "image": "shopify://shop_images/79_2x_27ade766-0336-43f1-8611-72501adbcc1f.webp",
+            "image": "shopify://shop_images/79_2x_3b6665b4-682c-435e-9f71-3c5df0b7165d.webp",
             "custom_icon": "shopify://shop_images/4571.svg",
             "icon": "measure",
             "title": "Made To Measure",
@@ -104,7 +104,7 @@
         "option_2_wall": {
           "type": "option",
           "settings": {
-            "image": "shopify://shop_images/80_2x_5f8a0fdc-7b51-424e-88fa-03cc97ea2090.webp",
+            "image": "shopify://shop_images/80_2x_7d5271a5-74ed-4aae-8a4d-e2e1dd217ae3.webp",
             "custom_icon": "shopify://shop_images/4598.svg",
             "icon": "wall",
             "title": "Wall To Wall",
@@ -117,7 +117,7 @@
         "option_3_special": {
           "type": "option",
           "settings": {
-            "image": "shopify://shop_images/81_2x_e6a5779f-acb4-42a7-8274-e0972b576073.webp",
+            "image": "shopify://shop_images/81_2x_d38329ef-680c-45af-826d-783e0b563f28.webp",
             "custom_icon": "shopify://shop_images/4599.svg",
             "icon": "special",
             "title": "Special Request",
