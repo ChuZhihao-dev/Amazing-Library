@@ -119,8 +119,8 @@
       "settings": {
         "section_width": "page-width",
         "color_scheme": "scheme-1",
-        "padding-block-start": 64,
-        "padding-block-end": 64
+        "padding-block-start": 80,
+        "padding-block-end": 80
       }
     }
   },

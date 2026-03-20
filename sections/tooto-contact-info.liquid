@@ -6,26 +6,17 @@
 >
   <div class="tooto-contact-info__grid">
     {%- for block in section.blocks -%}
-      <div class="tooto-contact-info__item{% unless forloop.last %} tooto-contact-info__item--bordered{% endunless %}" {{ block.shopify_attributes }}>
+      <div class="tooto-contact-info__item" {{ block.shopify_attributes }}>
 
         {%- comment -%} Icon {%- endcomment -%}
         <div class="tooto-contact-info__icon">
           {%- case block.settings.icon -%}
             {%- when 'chat' -%}
-              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/>
-                <circle cx="8.5" cy="11" r="1.5"/>
-                <circle cx="12" cy="11" r="1.5"/>
-                <circle cx="15.5" cy="11" r="1.5"/>
-              </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="none" version="1.1" width="64" height="64" viewBox="0 0 64 64"><defs><clipPath id="master_svg0_7_2751"><rect x="0" y="0" width="64" height="64" rx="0"/></clipPath></defs><g clip-path="url(#master_svg0_7_2751)"><rect x="0" y="0" width="64" height="64" rx="0" fill="#FFFFFF" fill-opacity="0"/><path d="M56.521664,60.666664C56.056572,60.666298,55.600319,60.539555,55.201668,60.299995L44.055004,53.634991C40.203003,55.08971,36.117508,55.827957,31.999998,55.813328C15.458332,55.813328,2,44.191662,2,29.906666C2,15.621667,15.458332,4,31.999998,4C48.541664,4,61.999996,15.621666,61.999996,29.906664C61.999996,36.209995,59.41333,42.169998,54.673328,46.878326L58.911663,57.036659C59.344994,58.07666,59.068329,59.279995,58.226662,60.02166C57.743324,60.448326,57.134995,60.666656,56.521664,60.666664ZM16.883332,30.153332L16.883332,30.223331C16.894334999999998,32.089336,18.410631,33.595953,20.276665,33.594999C22.142931,33.576681,23.644091,32.054674,23.636665,30.188334C23.636665,28.313334,22.136665,26.788332,20.276665,26.780001C18.409986,26.779057,16.893422,28.286682,16.883332,30.153332ZM28.113333,30.153332C28.113333,32.079998,29.661667,33.639999,31.57,33.639999C33.486708,33.630819,35.03331,32.070042,35.025002,30.153332C35.033306,28.236626,33.486708,26.67585,31.570002,26.666666C29.652645,26.674931,28.105034,28.235975,28.113333,30.153332ZM39.344997,30.153332L39.344997,30.223331C39.355999,32.089334,40.872299,33.595953,42.738331,33.594999C44.604599,33.576679,46.105755,32.054672,46.098331,30.188334C46.098331,28.313334,44.598331,26.788332,42.738331,26.780001C40.871651,26.779057,39.355087,28.286682,39.344997,30.153332Z" fill="#000000" fill-opacity="1" style="mix-blend-mode:passthrough"/></g></svg>
             {%- when 'phone' -%}
-              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/>
-              </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="none" version="1.1" width="64" height="64" viewBox="0 0 64 64"><defs><clipPath id="master_svg0_7_2756"><rect x="0" y="0" width="64" height="64" rx="0"/></clipPath></defs><g clip-path="url(#master_svg0_7_2756)"><rect x="0" y="0" width="64" height="64" rx="0" fill="#FFFFFF" fill-opacity="0"/><path d="M56.852497,44.874996C56.566589,43.444614,55.928596,42.108067,54.996246,40.986248L45.966248,30.14875C44.305779,28.15004,41.84095,26.995298,39.242496,26.998751L23.769997,26.998751C21.171247,26.998751,18.707498,28.150003,17.046247,30.14875L8.0162487,40.986248C7.082552,42.107685,6.4432633,43.444263,6.1562488,44.874996L4.92624897,51.021248C4.30576637,54.116547,6.6743722000000005,57.004868,9.8312483,57.002499L53.181248,57.002499C56.334995,57.002499,58.701244,54.114998,58.082497,51.021248L56.856247,44.87125L56.852497,44.874996ZM31.502497,44.499996C25.982496,44.499996,21.504999,41.702499,21.504999,38.252499C21.504999,34.802499999999995,25.982496,32.001247,31.506247,32.001247C37.029995,32.001247,41.503746,34.798746,41.503746,38.252499C41.503746,41.702496,37.029995,44.499996,31.506247,44.499996L31.502497,44.499996ZM59.008747,20.751248L59.008747,23.874998C59.008747,25.599998,57.609997,26.998747,55.884995,27.002501L44.634998,27.002501C42.907726,27.002501,41.507492,25.602268,41.507492,23.874998L41.507492,20.751248C41.507492,19.974998,40.532494,19.056248,38.957493,18.358749C36.984997,17.481248,34.341248,17.001248,31.502497,17.001248C28.663746,17.001248,26.023748,17.481248,24.054998,18.358749C22.479998,19.05625,21.504999,19.971249,21.504999,20.751248L21.504999,23.874998C21.501249,25.599998,20.102499,26.998747,18.377499,27.002501L7.1274998,27.002501C5.4002295,27.002501,4.00000028610228,25.602268,4,23.874998L4,20.751248C4,16.9037485,6.9849996999999995,13.363749,12.3999996,10.7837496C17.526249999999997,8.3462497,24.30625,7,31.502497,7C38.694996,7,45.478748,8.3425001,50.60125,10.7837496C56.016251,13.363749,59.001251,16.9037495,59.001251,20.751248L59.008747,20.751248Z" fill="#000000" fill-opacity="1" style="mix-blend-mode:passthrough"/></g></svg>
             {%- when 'email' -%}
-              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-              </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="none" version="1.1" width="64" height="64" viewBox="0 0 64 64"><defs><clipPath id="master_svg0_7_2760"><rect x="0" y="0" width="64" height="64" rx="0"/></clipPath></defs><g clip-path="url(#master_svg0_7_2760)"><rect x="0" y="0" width="64" height="64" rx="0" fill="#FFFFFF" fill-opacity="0"/><path d="M6.364974,7L57.277409,7C60.750553,7,63.598232,9.7740986,63.642384,13.173656900000001L31.83223,30.635025L0.029433407,13.1957321C0.058866814,9.7814569,2.8844738,7,6.364974,7ZM0.029433407,19.877115L0,50.752758C0,54.18911,2.8623989,57,6.364974,57L57.277409,57C60.779984,57,63.642384,54.18911,63.642384,50.752758L63.642384,19.862399L32.582783,36.50699C32.104488,36.764532,31.530537,36.764532,31.059603,36.50699L0.029433407,19.877115Z" fill="#000000" fill-opacity="1" style="mix-blend-mode:passthrough"/></g></svg>
           {%- endcase -%}
         </div>
 
@@ -36,7 +27,7 @@
 
         {%- comment -%} Description {%- endcomment -%}
         {%- if block.settings.description != blank -%}
-          <p class="tooto-contact-info__description">{{ block.settings.description }}</p>
+          <div class="tooto-contact-info__description">{{ block.settings.description }}</div>
         {%- endif -%}
 
         {%- comment -%} Button {%- endcomment -%}
@@ -50,6 +41,7 @@
         {%- endif -%}
 
       </div>
+      {%- unless forloop.last -%}<div class="tooto-contact-info__divider"></div>{%- endunless -%}
     {%- endfor -%}
   </div>
 </div>
@@ -60,14 +52,16 @@
   }
 
   .tooto-contact-info__grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
     gap: 0;
+    justify-content: space-between;
   }
 
   @media (max-width: 749px) {
     .tooto-contact-info__grid {
+      display: grid;
       grid-template-columns: 1fr;
+      gap: 12px;
     }
   }
 
@@ -76,18 +70,20 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 48px 40px;
-    gap: 12px;
+    padding: 8px 0px;
+    gap: 8px;
   }
 
-  .tooto-contact-info__item--bordered {
-    border-right: 1px solid #d0d0d0;
+  .tooto-contact-info__divider {
+    width: 1px;
+    background-color: #d0d0d0;
+    align-self: stretch;
   }
 
   @media (max-width: 749px) {
-    .tooto-contact-info__item--bordered {
-      border-right: none;
-      border-bottom: 1px solid #d0d0d0;
+    .tooto-contact-info__divider {
+      width: 100%;
+      height: 1px;
     }
   }
 
@@ -100,39 +96,56 @@
   }
 
   .tooto-contact-info__title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #1a1a1a;
+    font-size: 24px;
+    font-weight: 500;
+    color: #393939;
     margin: 0;
-    line-height: 1.3;
   }
 
   .tooto-contact-info__description {
-    font-size: 0.9375rem;
-    color: #555555;
+    font-size: 14px;
+    color: #393939;
     margin: 0;
-    line-height: 1.6;
-    max-width: 220px;
+    max-width: 228px;
   }
 
   .tooto-contact-info__button {
     display: inline-block;
-    margin-top: 8px;
-    padding: 12px 28px;
-    border: 1.5px solid #1a1a1a;
-    border-radius: 4px;
-    font-size: 0.9375rem;
+    margin-top: 10px;
+    padding: 8px;
+    border: 1px solid #29375b33;
+    font-size: 16px;
     font-weight: 600;
-    color: #1a1a1a;
+    color: #000000;
     text-decoration: none;
     background-color: transparent;
     transition: background-color 0.2s ease, color 0.2s ease;
     white-space: nowrap;
+    min-width: 228px;
   }
 
   .tooto-contact-info__button:hover {
     background-color: #1a1a1a;
     color: #ffffff;
+  }
+  @media(max-width: 768px) {
+    .tooto-contact-info__icon {
+      width: 32px;
+      height: 32px;
+    }
+    .tooto-contact-info__title {
+      font-size: 16px;
+    }
+    .tooto-contact-info__description {
+      font-size: 12px;
+    }
+    .tooto-contact-info__button {
+      font-size: 12px;
+      min-width: 164px;
+    }
+    .tooto-contact-info {
+      padding-block: 48px !important;
+    }
   }
 {% endstylesheet %}
 
