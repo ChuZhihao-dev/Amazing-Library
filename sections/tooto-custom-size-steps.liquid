@@ -120,6 +120,7 @@
 
   .tooto-custom-size-steps__divider {
     width: 1px;
+    flex-shrink: 0;
     background-color: #d8d8d8;
     align-self: stretch;
   }
@@ -183,8 +184,11 @@
   }
 
   @media screen and (max-width: 749px) {
+    .tooto-custom-size-steps__flex  {
+      overflow-x: scroll;
+    }
     .tooto-custom-size-steps__inner {
-      gap: 32px;
+      gap: 24px;
       overflow: hidden;
     }
 
@@ -192,22 +196,37 @@
       grid-template-columns: 1fr;
       gap: 28px;
     }
-
+    .tooto-custom-size-steps__card {
+      padding: 0;
+      flex-shrink: 0;
+      max-width: 40%;
+      justify-content: center;
+      padding: 10px;
+    }
     .tooto-custom-size-steps__heading {
-      font-size: clamp(1.5rem, 5vw, 2rem);
+      font-size: 28px;
+      line-height: 32px;
     }
 
     .tooto-custom-size-steps__icon {
       width: 48px;
       height: 48px;
+      margin-bottom: 20px;
     }
 
     .tooto-custom-size-steps__card-title {
-      font-size: 0.9375rem;
+      font-size: 20px;
+      line-height: 24px;
     }
-
+    .tooto-custom-size-steps__divider {
+      margin-block: 30px;
+    }
     .tooto-custom-size-steps__card-description {
-      font-size: 0.8125rem;
+      font-size: 13px;
+      line-height: 17px;
+    }
+    .tooto-custom-size-steps-wrapper > .section {
+      padding-bottom: 48px !important;
     }
   }
 {% endstylesheet %}

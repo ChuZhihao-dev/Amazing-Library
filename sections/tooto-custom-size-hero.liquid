@@ -7,6 +7,9 @@
 
 {%- if hero_image_mobile != blank -%}
   <style>
+    /* 桌面端：隐藏 mobile 图 */
+    #shopify-section-{{ section.id }} .tooto-custom-size-hero__image--mobile { display: none !important; }
+    /* 移动端：隐藏 desktop 图，显示 mobile 图 */
     @media screen and (max-width: 749px) {
       #shopify-section-{{ section.id }} .tooto-custom-size-hero__image--desktop { display: none !important; }
       #shopify-section-{{ section.id }} .tooto-custom-size-hero__image--mobile { display: block !important; }
@@ -21,7 +24,6 @@
 >
   <div class="tooto-custom-size-hero__inner">
 
-    {%- comment -%} ===== TOP SECTION: Two Column (Title + Description) ===== {%- endcomment -%}
     <div class="tooto-custom-size-hero__top">
       <div class="tooto-custom-size-hero__left">
         {%- if heading != blank -%}
@@ -36,7 +38,6 @@
       </div>
     </div>
 
-    {%- comment -%} ===== BOTTOM SECTION: Hero Image ===== {%- endcomment -%}
     <div class="tooto-custom-size-hero__bottom">
       {%- if hero_image != blank -%}
         {%- liquid
@@ -44,6 +45,8 @@
           assign img_sizes = '(min-width: 1200px) calc(100vw - 40px), calc(100vw - 40px)'
           assign img_widths_mobile = '400, 600, 800, 1000'
           assign img_sizes_mobile = '100vw'
+          assign img_alt = hero_image.alt | default: section.settings.heading
+          assign img_alt_mobile = hero_image_mobile.alt | default: section.settings.heading
         -%}
         {{
           hero_image
@@ -51,7 +54,7 @@
           | image_tag:
             widths: img_widths,
             sizes: img_sizes,
-            alt: hero_image.alt | default: section.settings.heading,
+            alt: img_alt,
             class: 'tooto-custom-size-hero__image tooto-custom-size-hero__image--desktop',
             loading: 'lazy'
         }}
@@ -62,7 +65,7 @@
             | image_tag:
               widths: img_widths_mobile,
               sizes: img_sizes_mobile,
-              alt: hero_image_mobile.alt | default: section.settings.heading,
+              alt: img_alt_mobile,
               class: 'tooto-custom-size-hero__image tooto-custom-size-hero__image--mobile',
               loading: 'lazy'
           }}
@@ -103,7 +106,7 @@
     font-size: 88px;
     font-weight: 700;
     color: var(--color-foreground);
-    line-height: 1.2;
+    line-height: 1;
   }
 
   .tooto-custom-size-hero__right {
@@ -114,7 +117,7 @@
   }
 
   .tooto-custom-size-hero__description {
-    margin: 0;
+    margin-left: auto;
     font-size: 1rem;
     font-weight: 400;
     line-height: 24px;
@@ -141,40 +144,24 @@
     justify-content: center;
   }
 
-  .tooto-custom-size-hero__image--mobile {
-    display: none;
-  }
-  @media screen and (max-width: 989px) {
-    .tooto-custom-size-hero__inner {
-      gap: 40px;
-    }
-
-    .tooto-custom-size-hero__top {
-      grid-template-columns: 1fr;
-      gap: 32px;
-    }
-
-    .tooto-custom-size-hero__heading {
-      font-size: clamp(2rem, 4vw, 3rem);
-    }
-  }
-
   @media screen and (max-width: 749px) {
     .tooto-custom-size-hero__inner {
       gap: 32px;
     }
 
     .tooto-custom-size-hero__top {
-      gap: 24px;
+      grid-template-columns: 1fr;
+      gap: 12px;
     }
 
     .tooto-custom-size-hero__heading {
-      font-size: clamp(1.75rem, 5vw, 2.5rem);
+      font-size: 44px;
+      line-height: 1.1;
     }
 
     .tooto-custom-size-hero__description {
-      font-size: 0.9375rem;
-      line-height: 1.5;
+      font-size: 13px;
+      line-height: 18px;
     }
     .tooto-custom-size-hero-wrapper > .section {
       padding-block-start: 48px !important;
