@@ -1,29 +1,12 @@
 {%- liquid
   assign img_widths = '400, 600, 900'
   assign img_sizes = '(min-width: 990px) 38vw, (min-width: 750px) 45vw, 100vw'
-  assign current_tag = request.params.tag | default: ''
-  assign current_page = request.params.page | plus: 0
-  if current_page < 1
-    assign current_page = 1
-  endif
   if section.settings.blog != blank
     assign current_blog = blogs[section.settings.blog]
   else
     assign current_blog = blog
   endif
-  if current_tag != blank
-    assign all_articles = current_blog.articles | where: 'tags', current_tag
-  else
-    assign all_articles = current_blog.articles
-  endif
-  assign posts_per_page = section.settings.posts_per_page | plus: 0
-  assign total_articles = all_articles.size
-  assign total_pages = total_articles | divided_by: posts_per_page | ceil
-  if total_pages < 1
-    assign total_pages = 1
-  endif
-  assign offset = current_page | minus: 1 | times: posts_per_page
-  assign filtered_articles = all_articles | slice: offset, posts_per_page
+  assign all_articles = current_blog.articles
 -%}
 
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
@@ -32,31 +15,34 @@
   class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} tooto-stories"
   style="padding-block-start: {{ section.settings.padding-block-start }}px; padding-block-end: {{ section.settings.padding-block-end }}px;"
 >
+  <h1 class="tooto-stories__heading">{{ section.settings.heading | default: current_blog.title }}</h1>
+
+  {%- comment -%} 移动端 filter bar {%- endcomment -%}
+  <div class="tooto-stories__mobile-bar" id="tooto-stories-mobile-bar-{{ section.id }}">
+    <span class="tooto-stories__mobile-count" id="tooto-stories-mobile-count-{{ section.id }}">All Stories({{ all_articles.size }})</span>
+    <button class="tooto-stories__mobile-filter-btn" id="tooto-stories-filter-btn-{{ section.id }}" aria-label="Open filter">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="none" version="1.1" width="35" height="25" viewBox="0 0 35 25"><path d="M33.470829,4.0776396L16.445679,4.0778155C15.762473,1.6647861,13.567246,1.5847801e-12,11.068577,1.5847801e-12C8.5699091,-0.000001875569,6.3746824,1.6647843,5.6914768,4.0778155L1.528874,4.0778155C0.6842593,4.0786409,0,4.7662954,0,5.6142783C0,6.4622612,0.68425888,7.1499205,1.528874,7.1507497L5.6914768,7.1507497C6.3746824,9.5637751,8.5699091,11.228561,11.068577,11.228561C13.567246,11.228561,15.762473,9.5637751,16.445679,7.1507497L33.470829,7.1505742C34.315445,7.1497416,35,6.4620905,35,5.6141071C35,4.7661242,34.315441,4.078465,33.470829,4.0776396ZM11.068577,8.1562128C9.6699638,8.1575708,8.5351915,7.0201092,8.5342865,5.6159215C8.5333872,4.211731,9.6666965,3.0728021,11.065314,3.0723481C12.463928,3.0718977,13.597972,4.2100916,13.597972,5.6142826C13.596624,7.0166311,12.465359,8.1535044,11.068577,8.1562128ZM33.464851,17.849428L26.297226,17.849428C25.614019,15.436399,23.419281,13.771788,20.920612,13.771788C18.421946,13.771788,16.227209,15.436399,15.543999,17.849428L1.5303683,17.849428C0.6851688,17.849428,0,18.537327,0,19.385895C0,20.234463,0.6851688,20.922361,1.5303683,20.922361L6.0879965,20.922361L15.543999,20.922361C16.227205,23.33539,18.421946,25,20.920612,25C23.419287,25,25.614019,23.33539,26.297226,20.922361L33.464851,20.922361C34.310047,20.922361,34.99522,20.234463,34.99522,19.385895C34.99522,18.537327,34.310047,17.849428,33.464851,17.849428ZM20.920612,21.925268C19.521681,21.926624,18.386391,20.788605,18.385941,19.384094C18.38549,17.979584,19.520481,16.841272,20.919418,16.841721C22.318352,16.842175,23.451855,17.981386,23.450504,19.385895C23.449154,20.787846,22.316998,21.923916,20.920612,21.925268Z" fill="#252525" fill-opacity="1"/></svg>
+      Filter
+    </button>
+  </div>
+
   <div class="tooto-stories__inner">
 
     {%- comment -%} 左侧：标题 + 分类导航 {%- endcomment -%}
     <aside class="tooto-stories__sidebar">
-      <h1 class="tooto-stories__heading">{{ section.settings.heading | default: current_blog.title }}</h1>
 
       <nav class="tooto-stories__tags" aria-label="Blog categories">
-        <ul class="tooto-stories__tag-list">
+        <ul class="tooto-stories__tag-list" id="tooto-stories-tags-{{ section.id }}">
 
-          {%- comment -%} All — 无 tag 时高亮 {%- endcomment -%}
           <li class="tooto-stories__tag-item">
-            <a
-              href="{{ page.url }}"
-              class="tooto-stories__tag-link{% if current_tag == blank %} tooto-stories__tag-link--active{% endif %}"
-            >All</a>
+            <a href="#" data-tag="" class="tooto-stories__tag-link">All</a>
           </li>
 
-          {%- comment -%} 遍历所有文章 tag {%- endcomment -%}
           {%- assign all_tags = current_blog.all_tags -%}
           {%- for tag in all_tags -%}
+            {%- assign tag_handle = tag | handleize -%}
             <li class="tooto-stories__tag-item">
-              <a
-                href="{{ page.url }}?tag={{ tag | handleize }}"
-                class="tooto-stories__tag-link{% if current_tag == tag %} tooto-stories__tag-link--active{% endif %}"
-              >{{ tag }}</a>
+              <a href="#" data-tag="{{ tag_handle }}" class="tooto-stories__tag-link">{{ tag }}</a>
             </li>
           {%- endfor -%}
 
@@ -65,10 +51,14 @@
     </aside>
 
     {%- comment -%} 右侧：文章网格 {%- endcomment -%}
-    <div class="tooto-stories__grid">
-      {%- if filtered_articles.size > 0 -%}
-        {%- for article in filtered_articles -%}
-            <article class="tooto-stories__card">
+    <div class="tooto-stories__grid" id="tooto-stories-grid-{{ section.id }}">
+      {%- if all_articles.size > 0 -%}
+        {%- for article in all_articles -%}
+          {%- assign article_tags = '' -%}
+          {%- for t in article.tags -%}
+            {%- assign article_tags = article_tags | append: t | handleize | append: ',' -%}
+          {%- endfor -%}
+            <article class="tooto-stories__card" data-tags="{{ article_tags }}">
               <a href="{{ article.url }}" class="tooto-stories__card-link" aria-label="{{ article.title | escape }}">
 
                 {%- comment -%} 图片 {%- endcomment -%}
@@ -111,38 +101,191 @@
             </article>
         {%- endfor -%}
       {%- else -%}
-        <p class="tooto-stories__empty">No articles found{% if current_tag != blank %} for "{{ current_tag }}"{% endif %}.</p>
+        <p class="tooto-stories__empty">No articles found.</p>
       {%- endif -%}
-
-      {%- if total_pages > 1 -%}
-        {%- liquid
-          assign base_url = request.path
-          if current_tag != blank
-            assign base_url = base_url | append: '?tag=' | append: current_tag | append: '&page='
-          else
-            assign base_url = base_url | append: '?page='
-          endif
-        -%}
-        <div class="tooto-stories__pagination">
-          {%- if current_page > 1 -%}
-            <a href="{{ base_url }}{{ current_page | minus: 1 }}" class="tooto-stories__page-btn">← Previous</a>
-          {%- endif -%}
-          {%- for i in (1..total_pages) -%}
-            {%- if i == current_page -%}
-              <span class="tooto-stories__page-btn tooto-stories__page-btn--current">{{ i }}</span>
-            {%- else -%}
-              <a href="{{ base_url }}{{ i }}" class="tooto-stories__page-btn">{{ i }}</a>
-            {%- endif -%}
-          {%- endfor -%}
-          {%- if current_page < total_pages -%}
-            <a href="{{ base_url }}{{ current_page | plus: 1 }}" class="tooto-stories__page-btn">Next →</a>
-          {%- endif -%}
-        </div>
-      {%- endif -%}
+      <p class="tooto-stories__empty tooto-stories__empty--filtered" style="display:none;">No articles found for this category.</p>
     </div>
 
   </div>
 </div>
+
+{%- comment -%} 移动端 filter popup — 挂在 section 外，避免被 overflow/transform 截断 {%- endcomment -%}
+<div class="tooto-stories__filter-popup" id="tooto-stories-popup-{{ section.id }}" aria-hidden="true">
+  <div class="tooto-stories__filter-popup-inner">
+    <div class="tooto-stories__filter-popup-header">
+      <span class="tooto-stories__filter-popup-title">Category</span>
+      <button class="tooto-stories__filter-popup-close" id="tooto-stories-popup-close-{{ section.id }}" aria-label="Close filter">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <line x1="1" y1="1" x2="15" y2="15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="15" y1="1" x2="1" y2="15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <ul class="tooto-stories__filter-popup-list" id="tooto-stories-popup-list-{{ section.id }}">
+      <li class="tooto-stories__filter-popup-item tooto-stories__filter-popup-item--all">
+        <label class="tooto-stories__filter-popup-label">
+          <input type="radio" name="stories-filter-{{ section.id }}" value="" class="tooto-stories__filter-popup-radio">
+          <span class="tooto-stories__filter-popup-checkbox"></span>
+          All
+        </label>
+      </li>
+      <li class="tooto-stories__filter-popup-divider"></li>
+      {%- for tag in current_blog.all_tags -%}
+        {%- assign tag_handle = tag | handleize -%}
+        <li class="tooto-stories__filter-popup-item">
+          <label class="tooto-stories__filter-popup-label">
+            <input type="radio" name="stories-filter-{{ section.id }}" value="{{ tag_handle }}" class="tooto-stories__filter-popup-radio">
+            <span class="tooto-stories__filter-popup-checkbox"></span>
+            {{ tag }}
+          </label>
+        </li>
+      {%- endfor -%}
+    </ul>
+    <div class="tooto-stories__filter-popup-footer">
+      <button class="tooto-stories__filter-popup-confirm" id="tooto-stories-popup-confirm-{{ section.id }}">Confirm</button>
+    </div>
+  </div>
+</div>
+<script>
+  (function () {
+    var sectionId = '{{ section.id }}';
+    var tagList = document.getElementById('tooto-stories-tags-' + sectionId);
+    var grid = document.getElementById('tooto-stories-grid-' + sectionId);
+    if (!tagList || !grid) return;
+
+    var cards = Array.from(grid.querySelectorAll('.tooto-stories__card'));
+    var emptyMsg = grid.querySelector('.tooto-stories__empty:not(.tooto-stories__empty--filtered)');
+    var filteredMsg = grid.querySelector('.tooto-stories__empty--filtered');
+
+    function getTagFromURL() {
+      return new URLSearchParams(window.location.search).get('tag') || '';
+    }
+
+    function applyFilter(tag, animate) {
+      // 高亮 sidebar
+      tagList.querySelectorAll('.tooto-stories__tag-link').forEach(function (a) {
+        a.classList.toggle('tooto-stories__tag-link--active', a.dataset.tag === tag);
+      });
+
+      function doFilter() {
+        var visible = 0;
+        cards.forEach(function (card) {
+          var tags = card.dataset.tags || '';
+          var show = tag === '' || tags.split(',').indexOf(tag) !== -1;
+          card.style.display = show ? '' : 'none';
+          if (show) visible++;
+        });
+        if (emptyMsg) emptyMsg.style.display = (cards.length === 0) ? '' : 'none';
+        if (filteredMsg) filteredMsg.style.display = (cards.length > 0 && visible === 0) ? '' : 'none';
+      }
+
+      if (animate) {
+        grid.style.transition = 'opacity 0.2s ease';
+        grid.style.opacity = '0';
+        setTimeout(function () {
+          doFilter();
+          grid.style.opacity = '1';
+        }, 200);
+      } else {
+        doFilter();
+      }
+    }
+
+    // 点击 tag 时更新 URL 并过滤（无刷新）
+    tagList.querySelectorAll('.tooto-stories__tag-link').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        var tag = this.dataset.tag;
+        var url = new URL(window.location.href);
+        if (tag) {
+          url.searchParams.set('tag', tag);
+        } else {
+          url.searchParams.delete('tag');
+        }
+        history.pushState({}, '', url);
+        applyFilter(tag, true);
+      });
+    });
+
+    // 页面加载时读取 URL 参数（无动画）
+    applyFilter(getTagFromURL(), false);
+
+    // ── 移动端 popup 逻辑 ──
+    var filterBtn = document.getElementById('tooto-stories-filter-btn-' + sectionId);
+    var popup = document.getElementById('tooto-stories-popup-' + sectionId);
+    var closeBtn = document.getElementById('tooto-stories-popup-close-' + sectionId);
+    var confirmBtn = document.getElementById('tooto-stories-popup-confirm-' + sectionId);
+    var mobileCount = document.getElementById('tooto-stories-mobile-count-' + sectionId);
+
+    function openPopup() {
+      if (!popup) return;
+      // 同步当前选中状态到 popup radio
+      var currentTag = getTagFromURL();
+      popup.querySelectorAll('.tooto-stories__filter-popup-radio').forEach(function (r) {
+        r.checked = r.value === currentTag;
+      });
+      popup.setAttribute('aria-hidden', 'false');
+      popup.classList.add('tooto-stories__filter-popup--open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closePopup() {
+      if (!popup) return;
+      popup.classList.remove('tooto-stories__filter-popup--open');
+      popup.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    function updateMobileCount(tag) {
+      if (!mobileCount) return;
+      var visible = 0;
+      cards.forEach(function (card) {
+        var tags = card.dataset.tags || '';
+        if (tag === '' || tags.split(',').indexOf(tag) !== -1) visible++;
+      });
+      var labelEl = popup ? popup.querySelector('input[value="' + tag + '"] ~ .tooto-stories__filter-popup-checkbox') : null;
+      // 找 tag 显示名
+      var tagLabel = 'All';
+      if (tag !== '' && popup) {
+        var checkedInput = popup.querySelector('.tooto-stories__filter-popup-radio[value="' + tag + '"]');
+        if (checkedInput) {
+          tagLabel = checkedInput.closest('.tooto-stories__filter-popup-label').textContent.trim();
+        }
+      }
+      mobileCount.textContent = (tag === '' ? 'All' : tagLabel) + ' Stories(' + visible + ')';
+    }
+
+    if (filterBtn) filterBtn.addEventListener('click', openPopup);
+    if (closeBtn) closeBtn.addEventListener('click', closePopup);
+
+    // 点击遮罩关闭
+    if (popup) {
+      popup.addEventListener('click', function (e) {
+        if (e.target === popup) closePopup();
+      });
+    }
+
+    if (confirmBtn) {
+      confirmBtn.addEventListener('click', function () {
+        var checked = popup.querySelector('.tooto-stories__filter-popup-radio:checked');
+        var tag = checked ? checked.value : '';
+        var url = new URL(window.location.href);
+        if (tag) {
+          url.searchParams.set('tag', tag);
+        } else {
+          url.searchParams.delete('tag');
+        }
+        history.pushState({}, '', url);
+        applyFilter(tag, true);
+        updateMobileCount(tag);
+        closePopup();
+      });
+    }
+
+    // 初始化 mobile count
+    updateMobileCount(getTagFromURL());
+  })();
+</script>
 
 {% stylesheet %}
   .tooto-stories__inner {
@@ -166,12 +309,11 @@
   }
 
   .tooto-stories__heading {
-    font-size: clamp(2.5rem, 5vw, 3.5rem);
-    font-weight: 800;
+    font-size: 88px;
+    font-weight: 700;
     line-height: 1.05;
-    letter-spacing: -0.02em;
     color: var(--color-foreground-heading);
-    margin: 0 0 32px 0;
+    margin: 0 0 40px 0;
   }
 
   /* ── 分类导航 ── */
@@ -181,41 +323,35 @@
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 8px;
   }
 
   .tooto-stories__tag-link {
-    font-size: 0.9375rem;
+    font-size: 24px;
     color: var(--color-foreground);
     text-decoration: none;
-    line-height: 1.5;
-    opacity: 0.6;
+    line-height: 40px;
     transition: opacity 0.2s ease;
     display: block;
   }
 
-  .tooto-stories__tag-link:hover {
-    opacity: 1;
-  }
-
   .tooto-stories__tag-link--active {
-    font-weight: 700;
-    opacity: 1;
+    font-weight: 600;
     color: var(--color-foreground-heading);
   }
 
   /* ── 右侧文章网格 ── */
   .tooto-stories__grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 40px 24px;
-    align-items: start;
+    columns: 2;
+    column-gap: 20px;
+    padding-top: 44px;
   }
 
   /* ── 文章卡片 ── */
   .tooto-stories__card {
     display: flex;
     flex-direction: column;
+    break-inside: avoid;
+    margin-bottom: 40px;
   }
 
   .tooto-stories__card-link {
@@ -223,12 +359,11 @@
     color: inherit;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 12px;
   }
 
   /* ── 图片 ── */
   .tooto-stories__card-image-wrapper {
-    aspect-ratio: 3 / 4;
     overflow: hidden;
     width: 100%;
   }
@@ -254,13 +389,12 @@
   .tooto-stories__card-body {
     display: flex;
     flex-direction: column;
-    gap: 6px;
   }
 
   .tooto-stories__card-date {
-    font-size: 0.75rem;
-    color: var(--color-foreground);
-    opacity: 0.6;
+    font-size: 16px;
+    line-height: 24px;
+    color: #000;
     display: block;
   }
 
@@ -273,9 +407,9 @@
   }
 
   .tooto-stories__card-title {
-    font-size: 1rem;
-    font-weight: 600;
-    line-height: 1.4;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 32px;
     color: var(--color-foreground-heading);
     margin: 0;
   }
@@ -289,7 +423,7 @@
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    border: 1.5px solid var(--color-foreground);
+    border: 1px solid #1E2C32;
     color: var(--color-foreground);
     margin-top: 2px;
     transition: background-color 0.2s ease, color 0.2s ease;
@@ -302,7 +436,7 @@
 
   /* ── 空状态 ── */
   .tooto-stories__empty {
-    grid-column: 1 / -1;
+    column-span: all;
     color: var(--color-foreground);
     opacity: 0.6;
     font-size: 0.9375rem;
@@ -310,7 +444,7 @@
 
   /* ── 分页 ── */
   .tooto-stories__pagination {
-    grid-column: 1 / -1;
+    column-span: all;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -332,6 +466,16 @@
     color: var(--color-background);
   }
 
+  /* ── 移动端 filter bar（桌面隐藏）── */
+  .tooto-stories__mobile-bar {
+    display: none;
+  }
+
+  /* ── 移动端 filter popup（桌面隐藏）── */
+  .tooto-stories__filter-popup {
+    display: none;
+  }
+
   /* ── 响应式 ── */
   @media (max-width: 749px) {
     .tooto-stories__inner {
@@ -339,23 +483,218 @@
       gap: 24px;
     }
 
+    /* 隐藏桌面侧边栏 */
     .tooto-stories__sidebar {
-      position: static;
+      display: none;
     }
 
     .tooto-stories__heading {
-      margin-bottom: 16px;
-    }
-
-    .tooto-stories__tag-list {
-      flex-direction: row;
-      flex-wrap: wrap;
-      gap: 8px 16px;
+      margin-bottom: 80px;
+      font-size: 44px;
+      text-align: center;
     }
 
     .tooto-stories__grid {
-      grid-template-columns: 1fr;
-      gap: 32px;
+      column-gap: 10px;
+      padding-top: 0;
+    }
+
+    .tooto-stories__card {
+      margin-bottom: 15px;
+    }
+
+    .tooto-stories__card-footer {
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .tooto-stories__card-title {
+      font-size: 13px;
+      line-height: 17px;
+    }
+
+    .tooto-stories__card-date {
+      font-size: 13px;
+      line-height: 17px;
+    }
+
+    .tooto-stories__card-arrow {
+      width: 18px;
+      height: 18px;
+    }
+
+    .tooto-stories__card-arrow svg {
+      width: 14px;
+      height: 12px;
+    }
+
+    /* ── mobile filter bar ── */
+    .tooto-stories__mobile-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+      border-top: 1px solid #D8D8D8;
+      border-bottom: 1px solid #D8D8D8;
+      margin-bottom: 20px;
+    }
+
+    .tooto-stories__mobile-count {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--color-foreground-heading);
+    }
+
+    .tooto-stories__mobile-filter-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--color-foreground);
+      cursor: pointer;
+    }
+    .tooto-stories__mobile-filter-btn svg {
+      width: 16px;
+    }
+    /* ── mobile filter popup ── */
+    .tooto-stories__filter-popup {
+      display: block;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .tooto-stories__filter-popup--open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .tooto-stories__filter-popup-inner {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      top: var(--header-height, 60px);
+      background: var(--color-background);
+      display: flex;
+      flex-direction: column;
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+    }
+
+    .tooto-stories__filter-popup--open .tooto-stories__filter-popup-inner {
+      transform: translateY(0);
+    }
+
+    .tooto-stories__filter-popup-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 20px 16px;
+      flex-shrink: 0;
+    }
+
+    .tooto-stories__filter-popup-title {
+      font-size: 20px;
+      line-height: 24px;
+      font-weight: 600;
+      color: var(--color-foreground-heading);
+    }
+
+    .tooto-stories__filter-popup-close {
+      background: #252525;
+      border: 1px solid var(--color-foreground);
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--color-foreground);
+      flex-shrink: 0;
+    }
+    .tooto-stories__filter-popup-close svg {
+      color: white;
+    }
+    .tooto-stories__filter-popup-list {
+      list-style: none;
+      margin: 0;
+      padding: 0 20px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .tooto-stories__filter-popup-divider {
+      height: 1px;
+      background: #D8D8D8;
+      margin: 4px 0 8px;
+    }
+
+    .tooto-stories__filter-popup-label {
+      display: flex;
+      align-items: center;
+      gap: 5px !important;
+      padding: 14px 0;
+      font-size: 16px;
+      color: var(--color-foreground);
+      cursor: pointer;
+    }
+
+    .tooto-stories__filter-popup-radio {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .tooto-stories__filter-popup-checkbox {
+      width: 16px;
+      height: 16px;
+      border: 2px solid #252525;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s ease;
+    }
+
+    .tooto-stories__filter-popup-radio:checked + .tooto-stories__filter-popup-checkbox {
+      background: #1a1a1a;
+    }
+
+    .tooto-stories__filter-popup-radio:checked + .tooto-stories__filter-popup-checkbox::after {
+      content: '';
+      width: 5px;
+      height: 9px;
+      border: 2px solid white;
+      border-top: none;
+      border-left: none;
+      transform: rotate(45deg) translateY(-1px);
+      display: block;
+    }
+
+    .tooto-stories__filter-popup-footer {
+      padding: 16px;
+      flex-shrink: 0;
+    }
+
+    .tooto-stories__filter-popup-confirm {
+      width: 100%;
+      padding: 16px;
+      background: #1a1a1a;
+      color: #fff;
+      border: none;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      letter-spacing: 0.02em;
     }
   }
 {% endstylesheet %}

@@ -2,7 +2,17 @@
   assign heading = section.settings.heading
   assign description = section.settings.description
   assign hero_image = section.settings.hero_image
+  assign hero_image_mobile = section.settings.hero_image_mobile
 -%}
+
+{%- if hero_image_mobile != blank -%}
+  <style>
+    @media screen and (max-width: 749px) {
+      #shopify-section-{{ section.id }} .tooto-custom-size-hero__image--desktop { display: none !important; }
+      #shopify-section-{{ section.id }} .tooto-custom-size-hero__image--mobile { display: block !important; }
+    }
+  </style>
+{%- endif -%}
 
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
 <div
@@ -32,6 +42,8 @@
         {%- liquid
           assign img_widths = '400, 600, 800, 1000, 1200, 1400'
           assign img_sizes = '(min-width: 1200px) calc(100vw - 40px), calc(100vw - 40px)'
+          assign img_widths_mobile = '400, 600, 800, 1000'
+          assign img_sizes_mobile = '100vw'
         -%}
         {{
           hero_image
@@ -40,9 +52,21 @@
             widths: img_widths,
             sizes: img_sizes,
             alt: hero_image.alt | default: section.settings.heading,
-            class: 'tooto-custom-size-hero__image',
+            class: 'tooto-custom-size-hero__image tooto-custom-size-hero__image--desktop',
             loading: 'lazy'
         }}
+        {%- if hero_image_mobile != blank -%}
+          {{
+            hero_image_mobile
+            | image_url: width: 1000
+            | image_tag:
+              widths: img_widths_mobile,
+              sizes: img_sizes_mobile,
+              alt: hero_image_mobile.alt | default: section.settings.heading,
+              class: 'tooto-custom-size-hero__image tooto-custom-size-hero__image--mobile',
+              loading: 'lazy'
+          }}
+        {%- endif -%}
       {%- else -%}
         {{ 'image' | placeholder_svg_tag: 'tooto-custom-size-hero__image tooto-custom-size-hero__image--placeholder' }}
       {%- endif -%}
@@ -117,7 +141,9 @@
     justify-content: center;
   }
 
-  {%- comment -%} RESPONSIVE {%- endcomment -%}
+  .tooto-custom-size-hero__image--mobile {
+    display: none;
+  }
   @media screen and (max-width: 989px) {
     .tooto-custom-size-hero__inner {
       gap: 40px;
@@ -150,6 +176,10 @@
       font-size: 0.9375rem;
       line-height: 1.5;
     }
+    .tooto-custom-size-hero-wrapper > .section {
+      padding-block-start: 48px !important;
+      padding-block-end: 48px !important;
+    }
   }
 {% endstylesheet %}
 
@@ -175,6 +205,11 @@
       "type": "image_picker",
       "id": "hero_image",
       "label": "Hero Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image_mobile",
+      "label": "Hero Image (Mobile)"
     },
     {
       "type": "select",
