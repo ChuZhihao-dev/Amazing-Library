@@ -1,0 +1,289 @@
+{%- liquid
+  assign img_widths = '750, 1100, 1500, 2000, 3000'
+  assign img_sizes = '(min-width: 750px) 65vw, 100vw'
+-%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div
+  id="tooto-split-feature-{{ section.id }}"
+  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} tooto-split-feature"
+  style="padding-block-start: {{ section.settings.padding-block-start }}px; padding-block-end: {{ section.settings.padding-block-end }}px;"
+>
+  <div class="tooto-split-feature__inner">
+    <div class="tooto-split-feature__grid">
+      <div class="tooto-split-feature__content">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="tooto-split-feature__heading">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.description != blank -%}
+          <div class="tooto-split-feature__description rte">
+            {{ section.settings.description }}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.button_label != blank -%}
+          {%- if section.settings.button_url != blank -%}
+            <a class="tooto-split-feature__link" href="{{ section.settings.button_url }}">
+              <span>{{ section.settings.button_label | escape }}</span>
+              <span class="tooto-split-feature__link-arrow" aria-hidden="true">→</span>
+            </a>
+          {%- else -%}
+            <span class="tooto-split-feature__link">
+              <span>{{ section.settings.button_label | escape }}</span>
+              <span class="tooto-split-feature__link-arrow" aria-hidden="true">→</span>
+            </span>
+          {%- endif -%}
+        {%- endif -%}
+      </div>
+
+      <div class="tooto-split-feature__media">
+        {%- if section.settings.image != blank -%}
+          {{
+            section.settings.image
+            | image_url: width: 2200
+            | image_tag:
+              widths: img_widths,
+              sizes: img_sizes,
+              alt: section.settings.image.alt,
+              loading: 'lazy',
+              class: 'tooto-split-feature__image'
+          }}
+        {%- else -%}
+          {{ 'hero-apparel-1' | placeholder_svg_tag: 'tooto-split-feature__image tooto-split-feature__image--placeholder' }}
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .tooto-split-feature__inner {
+    grid-column: 1 / -1;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .section--page-width .tooto-split-feature__inner {
+    grid-column: 2;
+  }
+
+  .tooto-split-feature__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.38fr);
+    align-items: stretch;
+    gap: 0;
+    min-height: 100%;
+  }
+
+  .tooto-split-feature__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 28px;
+    padding: 56px 48px 56px 0;
+    min-width: 0;
+  }
+
+  .tooto-split-feature__heading {
+    margin: 0;
+    max-width: 6ch;
+    font-size: 48px;
+    line-height: 56px;
+    font-weight: 700;
+    color: var(--color-foreground-heading);
+    letter-spacing: -0.03em;
+  }
+
+  .tooto-split-feature__description {
+    max-width: 420px;
+    margin: 0;
+    color: var(--color-foreground);
+  }
+
+  .tooto-split-feature__description p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  .tooto-split-feature__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    line-height: 1.25;
+    font-weight: 600;
+    color: var(--color-foreground-heading);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    transition: opacity 0.2s ease;
+  }
+
+  .tooto-split-feature__link:hover {
+    opacity: 0.7;
+  }
+
+  .tooto-split-feature__link-arrow {
+    display: inline-block;
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  .tooto-split-feature__media {
+    position: relative;
+    min-width: 0;
+    aspect-ratio: 1.38 / 1;
+    overflow: hidden;
+    background-color: rgb(var(--color-foreground-rgb) / 0.06);
+  }
+
+  .tooto-split-feature__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .tooto-split-feature__image--placeholder {
+    width: 100%;
+    height: 100%;
+  }
+
+  @media (max-width: 989px) {
+    .tooto-split-feature__content {
+      padding: 40px 32px 40px 0;
+      gap: 24px;
+    }
+
+    .tooto-split-feature__heading {
+      font-size: 40px;
+      line-height: 48px;
+    }
+  }
+
+  @media (max-width: 749px) {
+    .section--page-width .tooto-split-feature__inner {
+      padding-inline: 0;
+    }
+
+    .tooto-split-feature__grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .tooto-split-feature__content {
+      order: 1;
+      padding: 0;
+      gap: 20px;
+    }
+
+    .tooto-split-feature__heading {
+      max-width: none;
+      font-size: 34px;
+      line-height: 40px;
+    }
+
+    .tooto-split-feature__description {
+      max-width: none;
+    }
+
+    .tooto-split-feature__media {
+      order: 2;
+      aspect-ratio: 4 / 3;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Tooto Split Feature",
+  "tag": "section",
+  "class": "tooto-split-feature-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "A Shade For Every Room"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel. Their inherent elasticity reduces foot fatigue, making them ideal for bedrooms or</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        { "value": "page-width", "label": "Page width" },
+        { "value": "full-width", "label": "Full width" }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tooto Split Feature",
+      "settings": {
+        "heading": "A Shade For Every Room",
+        "description": "<p>Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel. Their inherent elasticity reduces foot fatigue, making them ideal for bedrooms or</p>",
+        "button_label": "Shop Now",
+        "section_width": "page-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    }
+  ]
+}
+{% endschema %}
