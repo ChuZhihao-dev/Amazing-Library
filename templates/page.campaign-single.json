@@ -23,6 +23,8 @@
             "type_preset": "h2",
             "font": "var(--font-primary--family)",
             "font_size": "",
+            "font_size_mobile": "",
+            "weight": "",
             "line_height": "normal",
             "letter_spacing": "normal",
             "case": "none",
@@ -64,6 +66,7 @@
         "image": "shopify://shop_images/2_2x_6.webp",
         "title": "{{ page.title }}",
         "height": 54,
+        "height_mobile": 60,
         "color_scheme": "scheme-1",
         "section_width": "full-width"
       }
@@ -96,6 +99,8 @@
             "type_preset": "rte",
             "font": "var(--font-body--family)",
             "font_size": "1rem",
+            "font_size_mobile": "",
+            "weight": "",
             "line_height": "normal",
             "letter_spacing": "normal",
             "case": "none",
@@ -144,6 +149,9 @@
         "section_width": "page-width",
         "section_height": "",
         "section_height_custom": 50,
+        "enable_mobile_height": false,
+        "section_height_mobile": "",
+        "section_height_mobile_custom": 50,
         "color_scheme": "",
         "background_media": "none",
         "video_position": "cover",
@@ -309,6 +317,21 @@
         "padding-block-end": 48
       }
     },
+    "tooto_split_feature_qDdxy9": {
+      "type": "tooto-split-feature",
+      "name": "Tooto Split Feature",
+      "settings": {
+        "image": "shopify://shop_images/230_2x_4cc563ce-8c63-4d77-a66f-eb062a7c48ed.webp",
+        "heading": "A Shade For Every Room",
+        "description": "<p>Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel. Their inherent elasticity reduces foot fatigue, making them ideal for bedrooms or</p>",
+        "button_label": "Shop Now",
+        "button_url": "shopify://collections/all",
+        "section_width": "page-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    },
     "section_64MhNt": {
       "type": "section",
       "blocks": {
@@ -353,6 +376,9 @@
         "section_width": "full-width",
         "section_height": "",
         "section_height_custom": 50,
+        "enable_mobile_height": false,
+        "section_height_mobile": "",
+        "section_height_mobile_custom": 50,
         "color_scheme": "",
         "background_media": "none",
         "video_position": "cover",
@@ -436,6 +462,9 @@
         "section_width": "page-width",
         "section_height": "small",
         "section_height_custom": 50,
+        "enable_mobile_height": false,
+        "section_height_mobile": "",
+        "section_height_mobile_custom": 50,
         "color_scheme": "",
         "background_media": "none",
         "video_position": "cover",
@@ -522,6 +551,7 @@
     "tooto_simple_banner_VBrj9T",
     "section_M6Tb6J",
     "product_list_UCeTdb",
+    "tooto_split_feature_qDdxy9",
     "section_64MhNt",
     "section_aQ3EEJ",
     "tooto_brand_concept_r3B7Bh",
