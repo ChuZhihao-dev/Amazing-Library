@@ -377,7 +377,7 @@
       "name": "Tooto Rug Auto Slider",
       "settings": {
         "autoplay_delay": 3,
-        "section_width": "page-width",
+        "section_width": "full-width",
         "color_scheme": "scheme-1",
         "padding-block-start": 48,
         "padding-block-end": 48
