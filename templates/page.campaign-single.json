@@ -332,6 +332,57 @@
         "padding-block-end": 48
       }
     },
+    "tooto_rug_auto_slider_aKELhh": {
+      "type": "tooto-rug-auto-slider",
+      "blocks": {
+        "card_a4Pd7x": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/4547_2x_fe9cf3c4-aed7-4465-a09e-69b818232084.webp",
+            "title": "Woven Serenity Wool Rug 192001",
+            "link": ""
+          }
+        },
+        "card_QJQ4GJ": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/2548_2x_5.webp",
+            "title": "Woven Serenity Wool Rug 192001",
+            "link": ""
+          }
+        },
+        "card_zPVDWx": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/2550_2x_2.webp",
+            "title": "Woven Serenity Wool Rug 192001",
+            "link": ""
+          }
+        },
+        "card_UtrYHK": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/2549_2x_3.webp",
+            "title": "Woven Serenity Wool Rug 192001",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "card_a4Pd7x",
+        "card_QJQ4GJ",
+        "card_zPVDWx",
+        "card_UtrYHK"
+      ],
+      "name": "Tooto Rug Auto Slider",
+      "settings": {
+        "autoplay_delay": 3,
+        "section_width": "page-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    },
     "section_64MhNt": {
       "type": "section",
       "blocks": {
@@ -552,6 +603,7 @@
     "section_M6Tb6J",
     "product_list_UCeTdb",
     "tooto_split_feature_qDdxy9",
+    "tooto_rug_auto_slider_aKELhh",
     "section_64MhNt",
     "section_aQ3EEJ",
     "tooto_brand_concept_r3B7Bh",
