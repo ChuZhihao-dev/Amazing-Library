@@ -34,3 +34,15 @@
     line-height: 50px;
   }
 }
+
+.campaign-custom {
+  padding-block: 88px 68px;
+}
+@media (max-width: 768px) {
+  .campaign-custom {
+    padding-block: 48px 40px;
+  }
+  .campaign-custom .group-block-content {
+    align-items: center;
+  }
+}

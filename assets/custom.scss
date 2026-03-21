@@ -32,3 +32,13 @@
         }
     }
 }
+
+.campaign-custom {
+    padding-block: 88px 68px;
+        @media (max-width: 768px) {
+            padding-block: 48px 40px;
+            .group-block-content {
+                align-items: center;
+            }
+        }
+}

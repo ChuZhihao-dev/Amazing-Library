@@ -16,6 +16,22 @@
     {%- comment -%} ── 媒体区 ── {%- endcomment -%}
     <div class="tooto-campaign-card__media">
 
+      {%- comment -%} ── 媒体文字覆盖层（左上角） ── {%- endcomment -%}
+      {%- if section.settings.overlay_text != blank -%}
+        <div class="tooto-campaign-card__overlay">
+          {%- if section.settings.overlay_text_weight == 'light-sm' -%}
+            {%- assign words = section.settings.overlay_text | split: ' ' -%}
+            <span class="tooto-campaign-card__overlay-text tooto-campaign-card__overlay-text--first">{{ words.first }}</span>
+            {%- if words.size > 1 -%}
+              {%- assign rest_words = section.settings.overlay_text | remove_first: words.first | strip -%}
+              <span class="tooto-campaign-card__overlay-text tooto-campaign-card__overlay-text--rest">{{ rest_words }}</span>
+            {%- endif -%}
+          {%- else -%}
+            <span class="tooto-campaign-card__overlay-text">{{ section.settings.overlay_text }}</span>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
       {%- if section.settings.media_type == 'video' -%}
         {%- comment -%} 视频模式 {%- endcomment -%}
         <div class="tooto-campaign-card__video-wrapper" id="video-wrapper-{{ section.id }}">
@@ -195,6 +211,10 @@
 </script>
 
 {% stylesheet %}
+  .tooto-campaign-card {
+    padding-top: 0 !important;
+    padding-bottom: 40px !important;
+  }
   /* ── 脱离主题 section grid ── */
   .tooto-campaign-card__inner {
     grid-column: 1 / -1;
@@ -207,6 +227,7 @@
 
   .section--page-width .tooto-campaign-card__inner {
     grid-column: 2;
+    padding-inline: 20px;
   }
 
   /* ── 媒体区 ── */
@@ -378,7 +399,7 @@
   .tooto-campaign-card__body {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 24px 48px;
+    gap: 272px;
     padding-top: 24px;
     align-items: start;
   }
@@ -393,10 +414,10 @@
 
   .tooto-campaign-card__desc {
     margin: 0 0 12px;
-    font-size: 0.9375rem;
-    line-height: 1.65;
+    font-size: 16px;
+    line-height: 24px;
     color: var(--color-foreground);
-    opacity: 0.8;
+    max-width: 540px;
   }
 
   .tooto-campaign-card__link {
@@ -419,7 +440,7 @@
   /* ── 响应式 ── */
   @media (max-width: 749px) {
     .tooto-campaign-card__media {
-      aspect-ratio: 4 / 3;
+      aspect-ratio: 670 / 365;
     }
 
     .tooto-campaign-card__body {
@@ -439,6 +460,9 @@
 
     .tooto-campaign-card__arrow--next {
       right: 12px;
+    }
+    .section--page-width .tooto-campaign-card__inner {
+      padding-inline: 0;
     }
   }
 {% endstylesheet %}
