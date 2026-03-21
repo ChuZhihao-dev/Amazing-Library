@@ -105,18 +105,14 @@
                 {%- endif -%}
               {%- endfor -%}
             </div>
-            {%- comment -%} 左右箭头 {%- endcomment -%}
-            <button class="tooto-campaign-card__arrow tooto-campaign-card__arrow--prev" aria-label="Previous slide">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <polyline points="15 18 9 12 15 6"></polyline>
-              </svg>
-            </button>
-            <button class="tooto-campaign-card__arrow tooto-campaign-card__arrow--next" aria-label="Next slide">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
-            </button>
           </div>
+          {%- comment -%} 左右箭头 {%- endcomment -%}
+          <button class="tooto-campaign-card__arrow tooto-campaign-card__arrow--prev" aria-label="Previous slide">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="none" version="1.1" width="13.500000953674316" height="30.310890197753906" viewBox="0 0 13.500000953674316 30.310890197753906"><g transform="matrix(0,1,1,0,0,0)"><path d="M15.155443,-0.66960239L-0.33257389,13.126645L0.33257389,13.873357L15.155443,0.66960239L29.978315,13.873357L30.643463,13.126645L15.155443,-0.66960239Z" fill-rule="evenodd" fill="#000000" fill-opacity="1"/></g></svg>
+          </button>
+          <button class="tooto-campaign-card__arrow tooto-campaign-card__arrow--next" aria-label="Next slide">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="none" version="1.1" width="13.500000953674316" height="30.310890197753906" viewBox="0 0 13.500000953674316 30.310890197753906"><g transform="matrix(0,1,-1,0,13.500000953674316,-13.500000953674316)"><path d="M28.655443953674315,-0.66960239L13.167427063674316,13.126645L13.832574843674317,13.873357L28.655443953674315,0.66960239L43.47831595367431,13.873357L44.14346395367431,13.126645L28.655443953674315,-0.66960239Z" fill-rule="evenodd" fill="#000000" fill-opacity="1"/></g></svg>
+          </button>
         {%- else -%}
           <div class="tooto-campaign-card__media-placeholder">
             {{ 'hero-apparel-1' | placeholder_svg_tag: 'tooto-campaign-card__placeholder-img' }}
@@ -234,7 +230,7 @@
   .tooto-campaign-card__media {
     width: 100%;
     aspect-ratio: 16 / 9;
-    overflow: hidden;
+    overflow: visible;
     position: relative;
     background-color: rgb(var(--color-foreground-rgb) / 0.06);
   }
@@ -245,9 +241,7 @@
     left: 24px;
     z-index: 3;
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2px;
+    gap: 6px;
     max-width: min(58%, 420px);
     color: var(--color-background);
     pointer-events: none;
@@ -257,24 +251,20 @@
   .tooto-campaign-card__overlay-text {
     display: block;
     margin: 0;
-    font-size: clamp(2rem, 4vw, 3.5rem);
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 400;
     line-height: 1;
-    letter-spacing: -0.03em;
     color: inherit;
   }
 
   .tooto-campaign-card__overlay-text--first {
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    font-weight: 600;
-    line-height: 0.92;
+    font-size: 16px;
+    font-weight: 500;
   }
 
   .tooto-campaign-card__overlay-text--rest {
-    font-size: clamp(0.875rem, 1.6vw, 1rem);
-    font-weight: 400;
-    line-height: 1.35;
-    letter-spacing: 0.04em;
+    font-size: 16px;
+    font-weight: 275;
   }
 
   /* ── 单图 ── */
@@ -398,10 +388,9 @@
     z-index: 10;
     width: 44px;
     height: 44px;
-    border-radius: 50%;
-    border: 1.5px solid rgba(255, 255, 255, 0.7);
-    background: rgba(0, 0, 0, 0.25);
-    color: white;
+    background: transparent;
+    border: none;
+    color: #000;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -409,17 +398,12 @@
     transition: background 0.2s ease, border-color 0.2s ease;
   }
 
-  .tooto-campaign-card__arrow:hover {
-    background: rgba(0, 0, 0, 0.5);
-    border-color: white;
-  }
-
   .tooto-campaign-card__arrow--prev {
-    left: 20px;
+    left: -64px;
   }
 
   .tooto-campaign-card__arrow--next {
-    right: 20px;
+    right: -64px;
   }
 
   /* ── 媒体占位 ── */
