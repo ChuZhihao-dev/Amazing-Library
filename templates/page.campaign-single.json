@@ -326,7 +326,7 @@
         "description": "<p>Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel. Their inherent elasticity reduces foot fatigue, making them ideal for bedrooms or</p>",
         "button_label": "Shop Now",
         "button_url": "shopify://collections/all",
-        "section_width": "page-width",
+        "section_width": "full-width",
         "color_scheme": "scheme-1",
         "padding-block-start": 48,
         "padding-block-end": 48
