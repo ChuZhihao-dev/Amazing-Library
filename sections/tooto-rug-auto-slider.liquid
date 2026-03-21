@@ -1,0 +1,304 @@
+{%- liquid
+  assign card_widths = '400, 600, 900'
+  assign card_sizes = '(min-width: 1024px) 31vw, (min-width: 750px) 46vw, 78vw'
+-%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div
+  id="tooto-rug-auto-slider-{{ section.id }}"
+  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} tooto-rug-auto-slider"
+  style="padding-block-start: {{ section.settings.padding-block-start }}px; padding-block-end: {{ section.settings.padding-block-end }}px;"
+>
+  <div class="tooto-rug-auto-slider__inner">
+    <div class="swiper tooto-rug-auto-slider__swiper">
+      <div class="swiper-wrapper">
+        {%- for block in section.blocks -%}
+          <div class="swiper-slide tooto-rug-auto-slider__slide" {{ block.shopify_attributes }}>
+            {%- if block.settings.link != blank -%}
+              <a class="tooto-rug-auto-slider__card" href="{{ block.settings.link }}">
+            {%- else -%}
+              <div class="tooto-rug-auto-slider__card">
+            {%- endif -%}
+
+            <div class="tooto-rug-auto-slider__image-wrapper">
+              {%- if block.settings.image != blank -%}
+                {{
+                  block.settings.image
+                  | image_url: width: 900
+                  | image_tag:
+                    widths: card_widths,
+                    sizes: card_sizes,
+                    alt: block.settings.image.alt,
+                    loading: 'lazy',
+                    class: 'tooto-rug-auto-slider__image'
+                }}
+              {%- else -%}
+                {{ 'collection-1' | placeholder_svg_tag: 'tooto-rug-auto-slider__image tooto-rug-auto-slider__image--placeholder' }}
+              {%- endif -%}
+            </div>
+
+            {%- if block.settings.title != blank -%}
+              <p class="tooto-rug-auto-slider__title">{{ block.settings.title | escape }}</p>
+            {%- endif -%}
+
+            {%- if block.settings.link != blank -%}
+              </a>
+            {%- else -%}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    function initSection() {
+      var sectionEl = document.getElementById('tooto-rug-auto-slider-{{ section.id }}');
+      if (!sectionEl || typeof Swiper === 'undefined') return;
+
+      var swiperEl = sectionEl.querySelector('.tooto-rug-auto-slider__swiper');
+      if (!swiperEl || swiperEl.swiper) return;
+
+      var totalSlides = swiperEl.querySelectorAll('.swiper-slide').length;
+      var enableLoop = totalSlides > 3;
+
+      new Swiper(swiperEl, {
+        slidesPerView: 1.15,
+        spaceBetween: 12,
+        loop: enableLoop,
+        speed: 800,
+        grabCursor: true,
+        simulateTouch: true,
+        allowTouchMove: true,
+        watchOverflow: true,
+        autoplay: enableLoop
+          ? {
+              delay: {{ section.settings.autoplay_delay | times: 1000 }},
+              disableOnInteraction: false,
+              pauseOnMouseEnter: true
+            }
+          : false,
+        breakpoints: {
+          750: {
+            slidesPerView: 2.15,
+            spaceBetween: 16
+          },
+          1024: {
+            slidesPerView: 3.15,
+            spaceBetween: 16
+          }
+        }
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initSection);
+    } else {
+      initSection();
+    }
+  })();
+</script>
+
+{% stylesheet %}
+  .tooto-rug-auto-slider__inner {
+    grid-column: 1 / -1;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .section--page-width .tooto-rug-auto-slider__inner {
+    grid-column: 2;
+  }
+
+  .tooto-rug-auto-slider__swiper {
+    overflow: hidden;
+    width: 100%;
+    min-width: 0;
+    position: relative;
+    cursor: grab;
+  }
+
+  .tooto-rug-auto-slider__swiper:active {
+    cursor: grabbing;
+  }
+
+  .tooto-rug-auto-slider__swiper > .swiper-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    box-sizing: content-box;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    will-change: transform;
+  }
+
+  .tooto-rug-auto-slider__swiper > .swiper-wrapper > .swiper-slide {
+    flex-shrink: 0;
+    width: 100%;
+    height: auto;
+    position: relative;
+    display: block;
+  }
+
+  .tooto-rug-auto-slider__card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .tooto-rug-auto-slider__image-wrapper {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    background-color: rgb(var(--color-foreground-rgb) / 0.06);
+  }
+
+  .tooto-rug-auto-slider__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+    will-change: transform;
+  }
+
+  .tooto-rug-auto-slider__card:hover .tooto-rug-auto-slider__image {
+    transform: scale(1.04);
+  }
+
+  .tooto-rug-auto-slider__image--placeholder {
+    width: 100%;
+    height: 100%;
+  }
+
+  .tooto-rug-auto-slider__title {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.3;
+    font-weight: 600;
+    color: var(--color-foreground-heading);
+  }
+
+  @media (max-width: 749px) {
+    .section--page-width .tooto-rug-auto-slider__inner {
+      padding-inline: 0;
+    }
+
+    .tooto-rug-auto-slider__card {
+      gap: 10px;
+    }
+
+    .tooto-rug-auto-slider__title {
+      font-size: 16px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Tooto Rug Auto Slider",
+  "tag": "section",
+  "class": "tooto-rug-auto-slider-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "range",
+      "id": "autoplay_delay",
+      "label": "Autoplay Delay",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "unit": "s",
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        { "value": "page-width", "label": "Page width" },
+        { "value": "full-width", "label": "Full width" }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Woven Serenity Wool Rug 192001"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tooto Rug Auto Slider",
+      "blocks": [
+        { "type": "card", "settings": { "title": "Woven Serenity Wool Rug 192001" } },
+        { "type": "card", "settings": { "title": "Woven Serenity Wool Rug 192001" } },
+        { "type": "card", "settings": { "title": "Woven Serenity Wool Rug 192001" } },
+        { "type": "card", "settings": { "title": "Woven Serenity Wool Rug 192001" } }
+      ],
+      "settings": {
+        "autoplay_delay": 3,
+        "section_width": "page-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    }
+  ]
+}
+{% endschema %}
