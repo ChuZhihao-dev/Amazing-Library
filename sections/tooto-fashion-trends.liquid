@@ -111,8 +111,8 @@
       },
       breakpoints: {
         0: {
-          slidesPerView: 1,
-          spaceBetween: 16,
+          slidesPerView: 1.4,
+          spaceBetween: 8,
         },
         768: {
           slidesPerView: 1.8,
@@ -186,7 +186,6 @@
     width: 100%;
     aspect-ratio: 495 / 628;
     overflow: hidden;
-    border-radius: 4px;
     position: relative;
   }
 
@@ -276,12 +275,23 @@
   }
 
   @media (max-width: 767px) {
+    .tooto-fashion-trends {
+      padding-top: 0 !important;
+    }
     .tooto-fashion-trends__title {
       font-size: 1.75rem;
     }
 
     .tooto-fashion-trends__slide-caption {
-      font-size: 0.875rem;
+      font-size: 13px;
+      max-width: 60%;
+      text-align: left;
+    }
+    .tooto-fashion-trends__inner {
+      gap: 16px;
+    }
+    .tooto-fashion-trends__slide-image {
+      max-height: 314px;
     }
   }
 {% endstylesheet %}

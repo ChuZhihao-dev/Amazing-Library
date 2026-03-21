@@ -46,3 +46,15 @@
     align-items: center;
   }
 }
+
+.two-image {
+  padding-block: 80px;
+}
+@media (max-width: 768px) {
+  .two-image {
+    padding-block: 20px;
+  }
+  .two-image .group-block-content {
+    flex-direction: column-reverse;
+  }
+}
