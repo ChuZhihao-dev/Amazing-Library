@@ -178,6 +178,8 @@
       "settings": {
         "media_type": "video",
         "video_cover": "shopify://shop_images/2_2x_3.webp",
+        "overlay_text": "City of Gems",
+        "overlay_text_weight": "regular",
         "title": "City of Gems",
         "description": "Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel. Their inherent elasticity reduces foot fatigue, making them ideal for bedrooms or",
         "link_label": "See More",
@@ -193,7 +195,9 @@
       "name": "Tooto Campaign Card",
       "settings": {
         "media_type": "image",
-        "image": "shopify://shop_images/2548_2x_3.webp",
+        "image": "shopify://shop_images/2548_2x_4.webp",
+        "overlay_text": "Cloud Scape",
+        "overlay_text_weight": "light-sm",
         "title": "City of Gems",
         "description": "Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel. Their inherent elasticity reduces foot fatigue, making them ideal for bedrooms or",
         "link_label": "See More",
@@ -227,6 +231,8 @@
       "name": "Tooto Campaign Card",
       "settings": {
         "media_type": "slideshow",
+        "overlay_text": "City of Gems",
+        "overlay_text_weight": "regular",
         "title": "City of Gems",
         "description": "Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel. Their inherent elasticity reduces foot fatigue, making them ideal for bedrooms or",
         "link_label": "See More",
