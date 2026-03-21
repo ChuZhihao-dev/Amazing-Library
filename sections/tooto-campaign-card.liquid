@@ -21,13 +21,13 @@
         <div class="tooto-campaign-card__overlay">
           {%- if section.settings.overlay_text_weight == 'light-sm' -%}
             {%- assign words = section.settings.overlay_text | split: ' ' -%}
-            <span class="tooto-campaign-card__overlay-text tooto-campaign-card__overlay-text--first">{{ words.first }}</span>
+            <span class="tooto-campaign-card__overlay-text tooto-campaign-card__overlay-text--first">{{ words.first | escape }}</span>
             {%- if words.size > 1 -%}
               {%- assign rest_words = section.settings.overlay_text | remove_first: words.first | strip -%}
-              <span class="tooto-campaign-card__overlay-text tooto-campaign-card__overlay-text--rest">{{ rest_words }}</span>
+              <span class="tooto-campaign-card__overlay-text tooto-campaign-card__overlay-text--rest">{{ rest_words | escape }}</span>
             {%- endif -%}
           {%- else -%}
-            <span class="tooto-campaign-card__overlay-text">{{ section.settings.overlay_text }}</span>
+            <span class="tooto-campaign-card__overlay-text">{{ section.settings.overlay_text | escape }}</span>
           {%- endif -%}
         </div>
       {%- endif -%}
@@ -239,6 +239,44 @@
     background-color: rgb(var(--color-foreground-rgb) / 0.06);
   }
 
+  .tooto-campaign-card__overlay {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    max-width: min(58%, 420px);
+    color: var(--color-background);
+    pointer-events: none;
+    text-shadow: 0 2px 12px rgb(var(--color-foreground-rgb) / 0.24);
+  }
+
+  .tooto-campaign-card__overlay-text {
+    display: block;
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: inherit;
+  }
+
+  .tooto-campaign-card__overlay-text--first {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 600;
+    line-height: 0.92;
+  }
+
+  .tooto-campaign-card__overlay-text--rest {
+    font-size: clamp(0.875rem, 1.6vw, 1rem);
+    font-weight: 400;
+    line-height: 1.35;
+    letter-spacing: 0.04em;
+  }
+
   /* ── 单图 ── */
   .tooto-campaign-card__image-wrapper {
     width: 100%;
@@ -443,6 +481,25 @@
       aspect-ratio: 670 / 365;
     }
 
+    .tooto-campaign-card__overlay {
+      top: 16px;
+      left: 16px;
+      max-width: calc(100% - 32px);
+    }
+
+    .tooto-campaign-card__overlay-text {
+      font-size: clamp(1.5rem, 8vw, 2.25rem);
+    }
+
+    .tooto-campaign-card__overlay-text--first {
+      font-size: clamp(2rem, 10vw, 3rem);
+    }
+
+    .tooto-campaign-card__overlay-text--rest {
+      font-size: 0.75rem;
+      line-height: 1.3;
+    }
+
     .tooto-campaign-card__body {
       grid-template-columns: 1fr;
       gap: 16px;
@@ -463,6 +520,14 @@
     }
     .section--page-width .tooto-campaign-card__inner {
       padding-inline: 0;
+    }
+    .tooto-campaign-card__title {
+      font-size: 24px;
+      line-height: 28px;
+    }
+    .tooto-campaign-card__desc {
+      font-size: 13px;
+      line-height: 17px;
     }
   }
 {% endstylesheet %}
@@ -508,6 +573,26 @@
       "id": "video_cover",
       "label": "Video Cover Image",
       "info": "Shown before video plays"
+    },
+    {
+      "type": "header",
+      "content": "Media Overlay"
+    },
+    {
+      "type": "text",
+      "id": "overlay_text",
+      "label": "Overlay Text",
+      "info": "Shown in the top-left corner of the media"
+    },
+    {
+      "type": "select",
+      "id": "overlay_text_weight",
+      "label": "Overlay Style",
+      "options": [
+        { "value": "regular", "label": "Regular" },
+        { "value": "light-sm", "label": "Large first word + small rest" }
+      ],
+      "default": "regular"
     },
     {
       "type": "header",
@@ -595,6 +680,8 @@
       "name": "Tooto Campaign Card",
       "settings": {
         "media_type": "image",
+        "overlay_text": "City of Gems",
+        "overlay_text_weight": "light-sm",
         "title": "City of Gems",
         "description": "Made from natural animal fibers, wool carpets offer a soft, skin-friendly touch and a warm, inviting feel.",
         "link_label": "See More",
