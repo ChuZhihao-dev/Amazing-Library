@@ -91,10 +91,9 @@
   assign selected_swatch_value = blank
   assign selected_group_variant_media_lookup = '||'
   assign has_selected_group_variant_media = false
-  assign color_anchor_media_ids = '' | split: ','
+  assign color_anchor_media_id_lookup = '||'
   assign selected_anchor_media_id = blank
   assign next_anchor_media_id = blank
-  assign selected_color_index = blank
 
   if request.page_type == 'product' and swatch_option_key != blank
     assign selected_swatch_value = selected_product.selected_or_first_available_variant[swatch_option_key]
@@ -105,37 +104,47 @@
       endif
 
       for product_option_value in product_option.values
-        assign anchor_media = product_option_value.variant.featured_media
+        assign anchor_media_id = blank
 
-        if anchor_media == blank and product_option_value.variant == blank
-          for variant in selected_product.variants
-            if variant[swatch_option_key] == product_option_value.name and variant.featured_media
-              assign anchor_media = variant.featured_media
-              break
-            endif
-          endfor
-        elsif anchor_media == blank and product_option_value.product_url
-          assign anchor_media = product_option_value.variant.product.featured_media
-        endif
+        for variant in selected_product.variants
+          if variant[swatch_option_key] == product_option_value.name and variant.featured_media
+            assign anchor_media_id = variant.featured_media.id
+            break
+          endif
+        endfor
 
-        if anchor_media
-          assign color_anchor_media_ids = color_anchor_media_ids | concat: selected_product.media | where: 'id', anchor_media.id
-        endif
+        if anchor_media_id != blank
+          assign anchor_token = '||' | append: anchor_media_id | append: '||'
+          unless color_anchor_media_id_lookup contains anchor_token
+            assign color_anchor_media_id_lookup = color_anchor_media_id_lookup | append: anchor_media_id | append: '||'
+          endunless
 
-        if selected_swatch_value != blank and product_option_value.name == selected_swatch_value and anchor_media
-          assign selected_anchor_media_id = anchor_media.id
-          assign selected_color_index = forloop.index0
-          assign has_selected_group_variant_media = true
+          if selected_swatch_value != blank and product_option_value.name == selected_swatch_value
+            assign selected_anchor_media_id = anchor_media_id
+            assign has_selected_group_variant_media = true
+          endif
         endif
       endfor
 
       break
     endfor
 
-    if selected_color_index != blank
-      for anchor_media in color_anchor_media_ids
-        if forloop.index0 > selected_color_index
-          assign next_anchor_media_id = anchor_media.id
+    if selected_anchor_media_id != blank
+      assign has_passed_selected_anchor = false
+
+      for media in selected_product.media
+        if media.id == selected_anchor_media_id
+          assign has_passed_selected_anchor = true
+          continue
+        endif
+
+        if has_passed_selected_anchor == false
+          continue
+        endif
+
+        assign media_anchor_token = '||' | append: media.id | append: '||'
+        if color_anchor_media_id_lookup contains media_anchor_token
+          assign next_anchor_media_id = media.id
           break
         endif
       endfor
@@ -269,11 +278,6 @@
       assign sorted_media = selected_product.media
     endif
   endif
-  assign color_anchor_media_id_lookup = '||'
-  for anchor_media in color_anchor_media_ids
-    assign color_anchor_media_id_lookup = color_anchor_media_id_lookup | append: anchor_media.id | append: '||'
-  endfor
-
   assign sorted_media_id_lookup = '||'
   for sorted_media_item in sorted_media
     assign sorted_media_id_lookup = sorted_media_id_lookup | append: sorted_media_item.id | append: '||'
@@ -482,67 +486,6 @@
 
   :root { --gallery-media-border-radius: {{ block_settings.media_radius }}px; }
 {% endstyle %}
-
-{%- if block_settings.show_debug_media_grouping and selected_product != blank -%}
-  <div class="tooto-media-debug">
-    <div class="tooto-media-debug__summary">
-      <strong>Media Debug</strong>
-      <div>Selected swatch: {{ selected_swatch_value | default: 'blank' }}</div>
-      <div>Selected anchor id: {{ selected_anchor_media_id | default: 'blank' }}</div>
-      <div>Next anchor id: {{ next_anchor_media_id | default: 'blank' }}</div>
-      <div>Selected variant featured media: {% if selected_variant_media != blank %}{{ selected_variant_media.id }}{% else %}blank{% endif %}</div>
-      <div>Color anchor ids: {{ color_anchor_media_id_lookup }}</div>
-      <div>Sorted ids: {{ sorted_media_id_lookup }}</div>
-    </div>
-    <div class="tooto-media-debug__table-wrap">
-      <table class="tooto-media-debug__table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>ID</th>
-            <th>Type</th>
-            <th>Alt</th>
-            <th>VariantImg</th>
-            <th>Anchor</th>
-            <th>Selected</th>
-            <th>Next</th>
-            <th>Sorted</th>
-          </tr>
-        </thead>
-        <tbody>
-          {%- for media in selected_product.media -%}
-            {%- liquid
-              assign variant_token = media.id | append: '||'
-              assign is_variant_image = false
-              if variant_image_id_lookup contains variant_token
-                assign is_variant_image = true
-              endif
-              assign is_anchor = false
-              if color_anchor_media_id_lookup contains variant_token
-                assign is_anchor = true
-              endif
-              assign is_sorted = false
-              if sorted_media_id_lookup contains variant_token
-                assign is_sorted = true
-              endif
-            -%}
-            <tr>
-              <td>{{ forloop.index }}</td>
-              <td>{{ media.id }}</td>
-              <td>{{ media.media_type }}</td>
-              <td>{{ media.alt | default: '-' }}</td>
-              <td>{% if is_variant_image %}yes{% else %}no{% endif %}</td>
-              <td>{% if is_anchor %}yes{% else %}no{% endif %}</td>
-              <td>{% if selected_anchor_media_id == media.id %}yes{% else %}no{% endif %}</td>
-              <td>{% if next_anchor_media_id == media.id %}yes{% else %}no{% endif %}</td>
-              <td>{% if is_sorted %}yes{% else %}no{% endif %}</td>
-            </tr>
-          {%- endfor -%}
-        </tbody>
-      </table>
-    </div>
-  </div>
-{%- endif -%}
 
 {% if closest.product == blank %}
   <div
@@ -862,42 +805,6 @@
 {% endif %}
 
 {% stylesheet %}
-  .tooto-media-debug {
-    margin-bottom: 20px;
-    padding: 16px;
-    border: 1px dashed rgb(var(--color-border-rgb) / 0.5);
-    background: rgb(var(--color-background));
-    color: var(--color-foreground);
-    font-size: 12px;
-    line-height: 1.5;
-    overflow: auto;
-  }
-
-  .tooto-media-debug__summary {
-    display: grid;
-    gap: 4px;
-    margin-bottom: 12px;
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  }
-
-  .tooto-media-debug__table {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  }
-
-  .tooto-media-debug__table th,
-  .tooto-media-debug__table td {
-    border: 1px solid rgb(var(--color-border-rgb) / 0.28);
-    padding: 6px 8px;
-    text-align: left;
-    vertical-align: top;
-  }
-
-  .tooto-media-debug__table th {
-    font-weight: 700;
-  }
-
   .dialog-zoomed-gallery__dialog {
     background-color: var(--color-background);
   }

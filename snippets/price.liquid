@@ -11,6 +11,7 @@
   assign show_unit_price = show_unit_price | default: false
   assign show_sale_price_first = show_sale_price_first | default: false
   assign selected_variant = product_resource.selected_or_first_available_variant
+  assign explicitly_selected_variant = product_resource.selected_variant
   assign price = selected_variant.price
   assign compare_at_price = selected_variant.compare_at_price
 
@@ -41,7 +42,7 @@
     assign price_max = product_resource.price_max
     assign has_volume_pricing = product_resource.quantity_price_breaks_configured? | default: false
   else
-    if product_resource.price_varies
+    if product_resource.price_varies and explicitly_selected_variant == blank
       assign has_price_range = true
       assign price_min = product_resource.price_min
       assign price_max = product_resource.price_max
