@@ -1596,7 +1596,7 @@ media-gallery {
 :where(media-gallery, .product-grid__item) {
   .media-gallery__grid {
     grid-template-columns: 1fr;
-    gap: var(--image-gap);
+    gap: 20px;
   }
 }
 

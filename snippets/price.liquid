@@ -23,13 +23,14 @@
     assign price = 1999
   endif
 
-  # Check if variant has volume pricing
+  # Check if variant has volume pricing or product-level price range
   assign has_volume_pricing = null
+  assign has_price_range = false
   assign price_min = null
   assign price_max = null
 
   # For product cards (collection/search pages), calculate min/max across all variants
-  # For product pages, only use the selected variant's pricing
+  # For product pages, show range pricing when the product price varies
   assign is_product_card = false
   if template.name != 'product'
     assign is_product_card = true
@@ -40,8 +41,11 @@
     assign price_max = product_resource.price_max
     assign has_volume_pricing = product_resource.quantity_price_breaks_configured? | default: false
   else
-    # Product page: only use selected variant's pricing
-    if selected_variant.quantity_price_breaks.size > 0
+    if product_resource.price_varies
+      assign has_price_range = true
+      assign price_min = product_resource.price_min
+      assign price_max = product_resource.price_max
+    elsif selected_variant.quantity_price_breaks.size > 0
       assign has_volume_pricing = true
       assign price_min = selected_variant.quantity_price_breaks.last.price
       assign price_max = selected_variant.price
@@ -73,7 +77,13 @@
 -%}
 
 <div ref="priceContainer">
-  {% if has_volume_pricing %}
+  {% if has_price_range %}
+    <span class="price-range" role="group">
+      <span class="visually-hidden">{{ 'content.price_range' | t }}&nbsp;</span>
+      <span class="price-range__prefix">FROM</span>
+      <span class="price price-range__values">{{ price_min }} - {{ price_max }}</span>
+    </span>
+  {% elsif has_volume_pricing %}
     {% comment %} Volume pricing display {% endcomment %}
     {% if show_compare_price %}
       <span role="group">

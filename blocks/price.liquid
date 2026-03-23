@@ -37,7 +37,7 @@
 %}
 
 <product-price
-  class="text-block {{ text_block_classes }} text-{{ block_settings.alignment }} {{ block_settings.type_preset | default: 'paragraph' }} spacing-style"
+  class="text-block {{ text_block_classes }} text-{{ block_settings.alignment }} {{ block_settings.type_preset | default: 'paragraph' }} spacing-style{% if request.page_type == 'product' %} product-price--product-page{% endif %}"
   data-block-id="{{ block.id }}"
   data-product-id="{{ product_resource.id }}"
   style="
@@ -88,6 +88,28 @@
 {% stylesheet %}
   .tax-note:empty {
     display: none;
+  }
+
+  .product-price--product-page .price-range {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .product-price--product-page .price-range__prefix {
+    font-size: 14px;
+    line-height: 1.2;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  .product-price--product-page .price-range__values,
+  .product-price--product-page .price {
+    font-size: 24px;
+    line-height: 1.15;
+    font-weight: 400;
   }
 
   form.payment-terms {
