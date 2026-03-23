@@ -73,3 +73,20 @@ details.details[open] {
         }
     }
 }
+
+.collection-wrapper {
+    .product-media {
+        background-color: #F9FAFC;
+    }
+}
+.product-information__media {
+    media-gallery.media-gallery--grid{
+        .media-gallery__grid {
+            .product-media-container {
+                :is(img, .deferred-media__poster-image) {
+                    background: #F6F6F6;
+                }
+            }
+        }
+    }
+}

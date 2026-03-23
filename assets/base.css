@@ -2801,7 +2801,11 @@ product-price.text-block:is(.h1, .h2, .h3, .h4, .h5, .h6) > *:not(.tax-note) {
   gap: var(--gap);
   height: 100%;
 }
-
+@media (max-width: 768px) {
+  .layout-panel-flex {
+    gap: calc(var(--gap) / 2);
+  }
+}
 .layout-panel-flex--row {
   flex-flow: row var(--flex-wrap);
   justify-content: var(--horizontal-alignment);
