@@ -177,19 +177,10 @@
                         "padding-inline-end": 0
                       },
                       "blocks": {}
-                    },
-                    "tooto_style_selector_Tt8mNq": {
-                      "type": "tooto-style-selector",
-                      "name": "Tooto Style Selector",
-                      "settings": {
-                        "tooltip_text": "Helpful information about style options."
-                      },
-                      "blocks": {}
                     }
                   },
                   "block_order": [
-                    "text_AwkbwJ",
-                    "tooto_style_selector_Tt8mNq"
+                    "text_AwkbwJ"
                   ]
                 },
                 "text_xrnftG": {
@@ -300,6 +291,16 @@
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "tooto_style_selector_4jcKLJ": {
+              "type": "tooto-style-selector",
+              "name": "Tooto Style Selector",
+              "settings": {
+                "made_to_measure_product": "charmeuse-rug",
+                "wall_to_wall_product": "made-to-measure",
+                "tooltip_text": "Helpful information about style options."
               },
               "blocks": {}
             },
@@ -584,6 +585,7 @@
             "group_icgrde",
             "divider_VJhene",
             "variant_picker_R3rGDr",
+            "tooto_style_selector_4jcKLJ",
             "buy_buttons_eYQEYi",
             "accordion_qg3cFG",
             "tooto_service_guarantee_J7pLm2"
