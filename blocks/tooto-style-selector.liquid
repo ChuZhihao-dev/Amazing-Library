@@ -91,10 +91,10 @@
   }
 
   .tooto-style-selector__heading {
-    font-size: 16px;
-    line-height: 1.25;
+    font-size: 14px;
+    line-height: 1.3;
     font-weight: 400;
-    color: var(--color-foreground-heading);
+    color: #000000;
   }
 
   .tooto-style-selector__info-wrap {
@@ -105,8 +105,8 @@
   }
 
   .tooto-style-selector__info {
-    width: 32px;
-    height: 32px;
+    width: 17px;
+    height: 17px;
     border: 1px solid rgb(var(--color-border-rgb) / 0.75);
     border-radius: 999px;
     display: inline-flex;
@@ -114,15 +114,16 @@
     justify-content: center;
     background: var(--color-background);
     color: var(--color-foreground-heading);
-    font-size: 20px;
+    font-size: 11px;
     line-height: 1;
-    font-weight: 400;
+    font-weight: 500;
     box-sizing: border-box;
+    flex-shrink: 0;
   }
 
   .tooto-style-selector__tooltip {
     position: absolute;
-    top: calc(100% + 10px);
+    top: calc(100% + 8px);
     left: 50%;
     transform: translateX(-50%);
     min-width: 220px;
@@ -150,7 +151,7 @@
 
   .tooto-style-selector__options {
     display: grid;
-    gap: 18px;
+    gap: 15px;
   }
 
   .tooto-style-selector__option {
@@ -203,15 +204,15 @@
   .tooto-style-selector__title {
     font-size: 16px;
     line-height: 1.4;
-    font-weight: 600;
-    color: var(--color-foreground-heading);
+    font-weight: 500;
+    color: #2D2D27;
   }
 
   .tooto-style-selector__meta {
     font-size: 16px;
     line-height: 1.4;
-    font-weight: 400;
-    color: rgb(var(--color-foreground-rgb) / 0.72);
+    font-weight: 300;
+    color: #2D2D27;
   }
 
   @media screen and (max-width: 749px) {

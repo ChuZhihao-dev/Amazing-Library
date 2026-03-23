@@ -177,10 +177,19 @@
                         "padding-inline-end": 0
                       },
                       "blocks": {}
+                    },
+                    "tooto_style_selector_Tt8mNq": {
+                      "type": "tooto-style-selector",
+                      "name": "Tooto Style Selector",
+                      "settings": {
+                        "tooltip_text": "Helpful information about style options."
+                      },
+                      "blocks": {}
                     }
                   },
                   "block_order": [
-                    "text_AwkbwJ"
+                    "text_AwkbwJ",
+                    "tooto_style_selector_Tt8mNq"
                   ]
                 },
                 "text_xrnftG": {
