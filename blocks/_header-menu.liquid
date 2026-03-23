@@ -534,6 +534,7 @@
     display: block;
     width: 100%;
     --tooto-mega-menu-image-radius: var(--menu-image-border-radius, 24px);
+    padding-block: 30px;
   }
 
   .tooto-mega-menu__panel {
@@ -595,7 +596,10 @@
     cursor: pointer;
     text-align: left;
   }
-
+  .tooto-mega-menu__back:focus-visible,
+  .tooto-mega-menu__nav-btn:focus-visible{
+    outline: none !important;
+  }
   .tooto-mega-menu__back-icon,
   .tooto-mega-menu__cta-icon {
     display: inline-flex;
@@ -658,7 +662,6 @@
     min-width: 0;
     overflow: hidden;
     border-radius: var(--tooto-mega-menu-image-radius);
-    background-color: rgb(var(--color-foreground-rgb) / 0.06);
   }
 
   .tooto-mega-menu__media-link {
