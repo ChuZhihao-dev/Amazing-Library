@@ -339,7 +339,7 @@ class TootoMegaMenuPanel extends HTMLElement {
 
       const isActive = panel.dataset.panel === panelId;
       panel.classList.toggle('is-active', isActive);
-      panel.toggleAttribute('hidden', !isActive);
+      panel.hidden = !isActive;
 
       if (isActive) {
         activePanel = panel;
@@ -359,9 +359,13 @@ class TootoMegaMenuPanel extends HTMLElement {
         '[data-back-panel], [data-target-panel], a[href], button:not([disabled])'
       );
 
-      if (focusTarget instanceof HTMLElement) {
+      if (focusTarget instanceof HTMLElement && typeof focusTarget.focus === 'function') {
         requestAnimationFrame(() => {
-          focusTarget.focus({ preventScroll: true });
+          try {
+            focusTarget.focus();
+          } catch (error) {
+            console.warn('Tooto mega menu focus failed', error);
+          }
         });
       }
     }

@@ -282,15 +282,6 @@ class ProductFormComponent extends Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    const submitter = /** @type {HTMLButtonElement | null} */ (
-      'submitter' in event ? /** @type {SubmitEvent} */ (event).submitter : null
-    );
-
-    if (submitter?.dataset.addSample === 'true') {
-      this.#processSampleAddToCart(submitter, event);
-      return;
-    }
-
     if (this.#variantChangeInProgress) {
       const intendedVariantId = this.#getIntendedVariantId();
       const quantity = this.#getQuantity();
@@ -314,145 +305,6 @@ class ProductFormComponent extends Component {
   /** @returns {number} */
   #getQuantity() {
     return Number(this.refs.quantitySelector?.getValue?.()) || Number(this.dataset.quantityDefault) || 1;
-  }
-
-  /** @returns {string} */
-  #getCartSections() {
-    const cartItemsComponents = document.querySelectorAll('cart-items-component');
-    const cartItemComponentsSectionIds = [];
-
-    for (const item of cartItemsComponents) {
-      if (item instanceof HTMLElement && item.dataset.sectionId) {
-        cartItemComponentsSectionIds.push(item.dataset.sectionId);
-      }
-    }
-
-    return cartItemComponentsSectionIds.join(',');
-  }
-
-  /**
-   * @param {HTMLButtonElement} submitter
-   * @param {Event} [event]
-   */
-  #processSampleAddToCart(submitter, event) {
-    const sampleVariantId = submitter.dataset.sampleVariantId;
-    const sampleSourceTitle = submitter.dataset.sampleSourceTitle;
-    const { addToCartTextError } = this.refs;
-
-    if (!sampleVariantId) return;
-
-    const sourceVariantId = this.#getIntendedVariantId() || '';
-    const cartSections = this.#getCartSections();
-    const wasDisabled = submitter.disabled;
-    const properties = {};
-
-    if (sampleSourceTitle) {
-      properties['Sample For'] = sampleSourceTitle;
-    }
-
-    if (this.dataset.productId) {
-      properties._source_product_id = this.dataset.productId;
-    }
-
-    if (sourceVariantId) {
-      properties._source_variant_id = sourceVariantId;
-    }
-
-    const item = {
-      id: Number(sampleVariantId),
-      quantity: 1,
-      ...(Object.keys(properties).length > 0 ? { properties } : {}),
-    };
-
-    const payload = {
-      items: [item],
-      ...(cartSections ? { sections: cartSections } : {}),
-    };
-
-    if (this.#timeout) clearTimeout(this.#timeout);
-
-    submitter.disabled = true;
-
-    fetch(Theme.routes.cart_add_url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      body: JSON.stringify(payload),
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        if (response.status) {
-          this.dispatchEvent(
-            new CartErrorEvent(this.id, response.message, response.description, response.errors)
-          );
-
-          if (addToCartTextError) {
-            addToCartTextError.classList.remove('hidden');
-
-            const textNode = addToCartTextError.childNodes[2];
-            if (textNode) {
-              textNode.textContent = response.message;
-            } else {
-              addToCartTextError.appendChild(document.createTextNode(response.message));
-            }
-
-            this.#setLiveRegionText(response.message);
-
-            this.#timeout = setTimeout(() => {
-              addToCartTextError.classList.add('hidden');
-              this.#clearLiveRegionText();
-            }, ERROR_MESSAGE_DISPLAY_DURATION);
-          }
-
-          this.dispatchEvent(
-            new CartAddEvent({}, this.id, {
-              didError: true,
-              source: 'product-form-component',
-              itemCount: 1,
-              productId: this.dataset.productId,
-              variantId: sampleVariantId.toString(),
-            })
-          );
-
-          return;
-        }
-
-        if (addToCartTextError) {
-          addToCartTextError.classList.add('hidden');
-          addToCartTextError.removeAttribute('aria-live');
-        }
-
-        const addedText = Theme.translations.added || 'Added';
-        this.#setLiveRegionText(addedText);
-
-        setTimeout(() => {
-          this.#clearLiveRegionText();
-        }, SUCCESS_MESSAGE_DISPLAY_DURATION);
-
-        this.dispatchEvent(
-          new CartAddEvent({}, sampleVariantId.toString(), {
-            source: 'product-form-component',
-            itemCount: 1,
-            productId: this.dataset.productId,
-            variantId: sampleVariantId.toString(),
-            sections: response.sections,
-          })
-        );
-      })
-      .catch((error) => {
-        console.error(error);
-      })
-      .finally(() => {
-        if (!wasDisabled) {
-          submitter.disabled = false;
-        }
-
-        if (event) {
-          cartPerformance.measureFromEvent('add:user-action', event);
-        }
-      });
   }
 
   /**
@@ -644,12 +496,20 @@ class ProductFormComponent extends Component {
 
     if (this.#timeout) clearTimeout(this.#timeout);
 
+    const cartItemsComponents = document.querySelectorAll('cart-items-component');
+    const cartItemComponentsSectionIds = [];
+    for (const item of cartItemsComponents) {
+      if (item instanceof HTMLElement && item.dataset.sectionId) {
+        cartItemComponentsSectionIds.push(item.dataset.sectionId);
+      }
+    }
+
     const payload = {
       items: items.map((item) => ({
         id: Number(item.variantId),
         quantity: item.quantity,
       })),
-      sections: this.#getCartSections(),
+      sections: cartItemComponentsSectionIds.join(','),
     };
 
     fetch(Theme.routes.cart_add_url, {

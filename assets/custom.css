@@ -68,15 +68,15 @@
   position: relative;
 }
 
-variant-swatch-king div.swatches div.swatch-single ul.swatch-view li.swatch-view-item {
+.product-details variant-swatch-king div.swatches div.swatch-single ul.swatch-view li.swatch-view-item {
   margin-right: 12px;
 }
-variant-swatch-king div.swatches div.swatch-single ul.swatch-view li.swatch-view-item .swatch-image-wrapper {
+.product-details variant-swatch-king div.swatches div.swatch-single ul.swatch-view li.swatch-view-item .swatch-image-wrapper {
   border-radius: 0px;
   padding: 6px;
   width: 94px;
 }
-variant-swatch-king div.swatches div.swatch-single ul.swatch-view li.swatch-view-item .swatch-image-wrapper .star-set-image {
+.product-details variant-swatch-king div.swatches div.swatch-single ul.swatch-view li.swatch-view-item .swatch-image-wrapper .star-set-image {
   width: 82px;
   height: 70px;
 }

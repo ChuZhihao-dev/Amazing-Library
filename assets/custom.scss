@@ -60,19 +60,21 @@
     position: relative;
 }
 
-variant-swatch-king {
-    div.swatches {
-        div.swatch-single {
-            ul.swatch-view {
-                 li.swatch-view-item {
-                    margin-right: 12px;
-                    .swatch-image-wrapper {
-                        border-radius: 0px;
-                        padding: 6px;
-                        width: 94px;
-                        .star-set-image {
-                            width: 82px;
-                            height: 70px;
+.product-details {
+    variant-swatch-king {
+        div.swatches {
+            div.swatch-single {
+                ul.swatch-view {
+                    li.swatch-view-item {
+                        margin-right: 12px;
+                        .swatch-image-wrapper {
+                            border-radius: 0px;
+                            padding: 6px;
+                            width: 94px;
+                            .star-set-image {
+                                width: 82px;
+                                height: 70px;
+                            }
                         }
                     }
                 }

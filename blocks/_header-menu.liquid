@@ -537,6 +537,7 @@
   }
 
   .tooto-mega-menu__panel {
+    position: relative;
     display: none;
     grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
     gap: 48px;
@@ -550,13 +551,26 @@
   }
 
   .tooto-mega-menu__copy {
+    position: relative;
     min-width: 0;
+    min-height: 460px;
+    pointer-events: auto;
+  }
+
+  .tooto-mega-menu__copy::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
   }
 
   .tooto-mega-menu__copy-inner {
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     min-height: 100%;
+    height: 100%;
     padding-inline-start: clamp(8px, 1.2vw, 16px);
   }
 
