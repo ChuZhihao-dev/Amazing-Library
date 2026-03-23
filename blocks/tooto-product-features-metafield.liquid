@@ -68,18 +68,20 @@
 {% stylesheet %}
   .tooto-product-features-metafield {
     width: 100%;
+    padding-block: 110px 150px;
   }
 
   .tooto-product-features-metafield__list {
     display: grid;
-    gap: 80px;
+    gap: 12px;
   }
 
   .tooto-product-features-metafield__item {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: 42% 40%;
     align-items: center;
-    gap: 48px;
+    justify-content: center;
+    gap: 58px;
   }
 
   .tooto-product-features-metafield__item--reverse .tooto-product-features-metafield__media {
@@ -92,9 +94,8 @@
 
   .tooto-product-features-metafield__media {
     width: 100%;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 588 / 685;
     overflow: hidden;
-    background-color: rgb(var(--color-foreground-rgb) / 0.06);
   }
 
   .tooto-product-features-metafield__image {
@@ -113,24 +114,24 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 24px;
+    gap: 40px;
     min-width: 0;
   }
 
   .tooto-product-features-metafield__heading {
     margin: 0;
-    font-size: clamp(2rem, 4vw, 3.5rem);
-    line-height: 1.05;
+    font-size: 48px;
+    line-height: 56px;
     font-weight: 700;
-    color: var(--color-foreground-heading);
+    color: #A78776;
     text-wrap: balance;
   }
 
   .tooto-product-features-metafield__body {
     margin: 0;
     font-size: 1rem;
-    line-height: 1.7;
-    color: var(--color-foreground);
+    line-height: 1.4;
+    color: #240512;
     max-width: 48ch;
   }
 
