@@ -294,8 +294,7 @@ class TootoMegaMenuPanel extends HTMLElement {
   onPointerDown = (event) => {
     if (!(event.target instanceof Element)) return;
 
-    const panelToggle = event.target.closest('[data-target-panel], [data-back-panel]');
-    if (panelToggle instanceof HTMLElement) {
+    if (this.contains(event.target)) {
       event.preventDefault();
     }
   };
