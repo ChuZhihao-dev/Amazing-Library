@@ -1,8 +1,13 @@
 {%- liquid
-  assign feature_items = closest.product.metafields.custom.tooto_product_features.value
+  assign product_resource = product | default: closest.product
+  assign feature_items = blank
   assign feature_img_widths = '400, 600, 900, 1200'
   assign feature_img_sizes = '(min-width: 750px) 50vw, 100vw'
   assign show_empty_state = false
+
+  if product_resource != blank
+    assign feature_items = product_resource.metafields.custom.tooto_product_features.value
+  endif
 
   if feature_items == blank and request.design_mode
     assign show_empty_state = true
@@ -55,7 +60,6 @@
       </div>
     {%- else -%}
       <div class="tooto-product-features-metafield__empty">
-        Add product metafield entries to `custom.tooto_product_features` to show this content.
       </div>
     {%- endif -%}
   </div>
@@ -165,7 +169,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Reads product metafield: custom.tooto_product_features"
+      "content": "Reads product page metafield: custom.tooto_product_features"
     }
   ]
 }

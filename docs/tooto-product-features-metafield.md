@@ -29,8 +29,10 @@
 
 ## 3. Theme Editor 使用方式
 
-- 打开产品页模板中的 `Product information`
-- 在该 section 下新增 block：`Tooto Product Features Metafield`
+- 打开产品页模板
+- 新增一个通用自定义分区：`Section`
+- 在该 `Section` 下新增 block：`Tooto Product Features Metafield`
+- 这个 block 会读取当前产品页的 `custom.tooto_product_features`
 
 ## 4. 渲染规则
 
@@ -43,4 +45,4 @@
 ## 5. 代码位置
 
 - Block: `blocks/tooto-product-features-metafield.liquid`
-- Section 接入: `sections/product-information.liquid`
+- Section 接入: `sections/section.liquid`

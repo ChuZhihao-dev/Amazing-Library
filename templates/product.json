@@ -697,6 +697,12 @@
           },
           "blocks": {}
         },
+        "tooto_product_features_metafield_k7N2xQ": {
+          "type": "tooto-product-features-metafield",
+          "name": "Tooto Product Features Metafield",
+          "settings": {},
+          "blocks": {}
+        },
         "spacer_ihny8D": {
           "type": "spacer",
           "name": "t:names.spacer",
@@ -716,6 +722,7 @@
         "text_V3kLK9",
         "text_c89FTN",
         "image_AxTRVt",
+        "tooto_product_features_metafield_k7N2xQ",
         "spacer_ihny8D"
       ],
       "name": "t:names.custom_section",
