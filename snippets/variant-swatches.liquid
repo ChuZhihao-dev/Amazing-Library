@@ -88,8 +88,14 @@
         assign swatch_count = product_option.values | map: 'swatch' | compact | size
         assign option_has_visual_values = false
         assign option_key = 'option' | append: product_option.position
+        assign option_name_handle = product_option.name | handleize
+        assign is_visual_option = false
 
-        if swatch_count == 0
+        if option_name_handle contains 'color' or option_name_handle contains 'colour'
+          assign is_visual_option = true
+        endif
+
+        if swatch_count == 0 and is_visual_option
           for product_option_value in product_option.values
             assign option_value_media = product_option_value.variant.featured_media
 
@@ -111,6 +117,10 @@
           endfor
         endif
       -%}
+
+      {% if is_visual_option == false %}
+        {% continue %}
+      {% endif %}
 
       {% if swatch_count == 0 and option_has_visual_values == false %}
         {% continue %}

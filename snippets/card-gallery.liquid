@@ -16,9 +16,44 @@
 
   if product != blank
     for product_option in product.options_with_values
+      assign option_name_handle = product_option.name | handleize
       assign swatch_count = product_option.values | map: 'swatch' | compact | size
+      assign option_has_visual_values = false
 
-      if swatch_count > 0
+      if option_name_handle contains 'color' or option_name_handle contains 'colour'
+        if swatch_count == 0
+          assign option_key = 'option' | append: product_option.position
+
+          for product_option_value in product_option.values
+            assign option_value_media = product_option_value.variant.featured_media
+
+            if option_value_media == blank and product_option_value.variant == blank
+              for variant in product.variants
+                if variant[option_key] == product_option_value.name and variant.featured_media
+                  assign option_value_media = variant.featured_media
+                  break
+                endif
+              endfor
+            elsif option_value_media == blank and product_option_value.product_url
+              assign option_value_media = product_option_value.variant.product.featured_media
+            endif
+
+            if option_value_media
+              assign option_has_visual_values = true
+              break
+            endif
+          endfor
+        endif
+      endif
+
+      assign use_visual_swatches = false
+      if option_name_handle contains 'color' or option_name_handle contains 'colour'
+        if swatch_count > 0 or option_has_visual_values
+          assign use_visual_swatches = true
+        endif
+      endif
+
+      if use_visual_swatches
         assign product_has_swatches = true
         break
       endif

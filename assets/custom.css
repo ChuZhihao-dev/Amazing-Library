@@ -67,3 +67,7 @@
   padding: 100px 0;
   position: relative;
 }
+
+details.details[open] .details__header {
+  font-weight: 500;
+}

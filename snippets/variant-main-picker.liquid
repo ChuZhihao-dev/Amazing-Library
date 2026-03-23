@@ -38,8 +38,14 @@
           assign swatch_count = product_option.values | map: 'swatch' | compact | size
           assign option_has_visual_values = false
           assign option_key = 'option' | append: product_option.position
+          assign option_name_handle = product_option.name | handleize
+          assign is_visual_option = false
 
-          if swatch_count == 0
+          if option_name_handle contains 'color' or option_name_handle contains 'colour'
+            assign is_visual_option = true
+          endif
+
+          if swatch_count == 0 and is_visual_option
             for product_option_value in product_option.values
               assign option_value_media = product_option_value.variant.featured_media
 
@@ -62,8 +68,15 @@
           endif
 
           assign variant_style = block_settings.variant_style
+          assign use_visual_swatches = false
 
-          if block_settings.show_swatches and (swatch_count > 0 or option_has_visual_values)
+          if block_settings.show_swatches and is_visual_option
+            if swatch_count > 0 or option_has_visual_values
+              assign use_visual_swatches = true
+            endif
+          endif
+
+          if use_visual_swatches
             if block_settings.variant_style == 'dropdown'
               assign variant_style = 'swatch_dropdown'
             else
@@ -106,8 +119,8 @@
             {{ option_id_attribute }}
           >
             <legend>
-              {{ product_option.name | escape -}}
-              {%- if variant_style == 'swatch' -%}
+              {{ product_option.name | escape -}}{% if swatch_card_class != blank %}:{% endif %}
+              {%- if variant_style == 'swatch' and swatch_card_class == blank -%}
                 <span class="variant-option__swatch-value">{{ product_option.selected_value }}</span>
               {%- endif %}
             </legend>
@@ -358,6 +371,10 @@
 
   .variant-picker .variant-option--swatch-cards legend {
     margin-block-end: var(--gap-sm);
+  }
+
+  .variant-picker .variant-option--swatch-cards .variant-option__swatch-value {
+    display: none;
   }
 
   .variant-picker .variant-option--swatch-cards .variant-option__button-label--has-swatch {

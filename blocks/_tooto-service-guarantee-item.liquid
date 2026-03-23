@@ -1,0 +1,65 @@
+{% liquid
+  assign block_settings = block.settings
+%}
+
+<div class="tooto-service-guarantee__item" {{ block.shopify_attributes }}>
+  <div class="tooto-service-guarantee__item-icon">
+    {% render 'icon-or-image',
+      icon: block_settings.icon,
+      image_upload: block_settings.image_upload,
+      width: block_settings.icon_width,
+      class_name: 'tooto-service-guarantee__icon'
+    %}
+  </div>
+  <div class="tooto-service-guarantee__item-text">{{ block_settings.text | escape }}</div>
+</div>
+
+{% schema %}
+{
+  "name": "Service Item",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "100% Authentic Luxury"
+    },
+    {
+      "type": "header",
+      "content": "Icon"
+    },
+    {
+      "type": "select",
+      "id": "icon",
+      "label": "Icon",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "lock", "label": "Lock" },
+        { "value": "plane", "label": "Plane" },
+        { "value": "return", "label": "Return" },
+        { "value": "price_tag", "label": "Price Tag" },
+        { "value": "check_box", "label": "Check Box" },
+        { "value": "map_pin", "label": "Map Pin" },
+        { "value": "question_mark", "label": "Question Mark" }
+      ],
+      "default": "lock"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_upload",
+      "label": "Custom Icon Image"
+    },
+    {
+      "type": "range",
+      "id": "icon_width",
+      "label": "Icon Width",
+      "min": 16,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 28
+    }
+  ]
+}
+{% endschema %}

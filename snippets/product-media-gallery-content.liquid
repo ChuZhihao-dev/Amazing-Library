@@ -27,10 +27,14 @@
   assign selected_variant_media = selected_product.selected_or_first_available_variant.featured_media
   assign first_3d_model = selected_product.media | where: 'media_type', 'model' | first
   assign variant_images = selected_product.images | where: 'attached_to_variant?', true | map: 'src'
-  assign variant_image_lookup = '||'
+  assign variant_image_id_lookup = '||'
 
-  for variant_image in variant_images
-    assign variant_image_lookup = variant_image_lookup | append: variant_image | append: '||'
+  for variant_image in selected_product.images
+    unless variant_image.attached_to_variant?
+      continue
+    endunless
+
+    assign variant_image_id_lookup = variant_image_id_lookup | append: variant_image.id | append: '||'
   endfor
 
   assign swatch_option_position = blank
@@ -39,8 +43,14 @@
   for product_option in selected_product.options_with_values
     assign swatch_count = product_option.values | map: 'swatch' | compact | size
     assign option_has_visual_values = false
+    assign option_name_handle = product_option.name | handleize
+    assign is_visual_option = false
 
-    if swatch_count == 0
+    if option_name_handle contains 'color' or option_name_handle contains 'colour'
+      assign is_visual_option = true
+    endif
+
+    if swatch_count == 0 and is_visual_option
       assign option_key = 'option' | append: product_option.position
 
       for product_option_value in product_option.values
@@ -64,7 +74,14 @@
       endfor
     endif
 
-    if swatch_count > 0 or option_has_visual_values
+    assign use_visual_group = false
+    if is_visual_option
+      if swatch_count > 0 or option_has_visual_values
+        assign use_visual_group = true
+      endif
+    endif
+
+    if use_visual_group
       assign swatch_option_position = product_option.position
       assign swatch_option_key = 'option' | append: swatch_option_position
       break
@@ -95,7 +112,7 @@
 
         if image_matches_selected_group
           assign has_selected_group_variant_media = true
-          assign selected_group_variant_media_lookup = selected_group_variant_media_lookup | append: image.src | append: '||'
+          assign selected_group_variant_media_lookup = selected_group_variant_media_lookup | append: image.id | append: '||'
         endif
       endfor
     endif
@@ -171,27 +188,25 @@
 
   assign sorted_media = '' | split: ','
   if has_selected_group_variant_media
-    assign selected_variant_media_src = selected_variant_media.src | default: selected_variant_media.preview_image.src
-    assign selected_variant_media_match_token = '||' | append: selected_variant_media_src | append: '||'
+    assign selected_variant_media_match_token = '||' | append: selected_variant_media.id | append: '||'
+    assign selected_group_media = '' | split: ','
+    assign generic_media = '' | split: ','
 
     if selected_variant_media and selected_group_variant_media_lookup contains selected_variant_media_match_token
-      assign sorted_media = sorted_media | concat: selected_product.media | where: 'id', selected_variant_media.id
+      assign selected_group_media = selected_group_media | concat: selected_product.media | where: 'id', selected_variant_media.id
     endif
 
     for media in selected_product.media
-      assign media_src = media.src | default: media.preview_image.src
-      assign media_match_token = '||' | append: media_src | append: '||'
+      assign media_match_token = '||' | append: media.id | append: '||'
       assign media_is_selected_group_variant = false
       assign media_is_variant_specific = false
 
-      if media_src != blank
-        if selected_group_variant_media_lookup contains media_match_token
-          assign media_is_selected_group_variant = true
-        endif
+      if selected_group_variant_media_lookup contains media_match_token
+        assign media_is_selected_group_variant = true
+      endif
 
-        if variant_image_lookup contains media_match_token
-          assign media_is_variant_specific = true
-        endif
+      if variant_image_id_lookup contains media_match_token
+        assign media_is_variant_specific = true
       endif
 
       if media_is_variant_specific and media_is_selected_group_variant == false
@@ -203,8 +218,19 @@
       endif
 
       assign found_media = selected_product.media | where: 'id', media.id
-      assign sorted_media = sorted_media | concat: found_media
+
+      if media_is_selected_group_variant
+        assign selected_group_media = selected_group_media | concat: found_media
+      else
+        assign generic_media = generic_media | concat: found_media
+      endif
     endfor
+
+    assign sorted_media = selected_group_media | concat: generic_media
+
+    if sorted_media.size == 0
+      assign has_selected_group_variant_media = false
+    endif
   elsif selected_variant_media
     assign sorted_media = sorted_media | concat: selected_product.media | where: 'id', selected_variant_media.id
 
@@ -220,6 +246,21 @@
     endfor
   else
     assign sorted_media = selected_product.media
+  endif
+
+  if sorted_media.size == 0
+    if selected_variant_media
+      assign sorted_media = selected_product.media | where: 'id', selected_variant_media.id
+
+      for media in selected_product.media
+        if media.id != selected_variant_media.id
+          assign found_media = selected_product.media | where: 'id', media.id
+          assign sorted_media = sorted_media | concat: found_media
+        endif
+      endfor
+    else
+      assign sorted_media = selected_product.media
+    endif
   endif
   assign has_image_drop = sorted_media | has: 'media_type', 'image'
 

@@ -222,6 +222,49 @@
               },
               "block_order": []
             },
+            "tooto_service_guarantee_J7pLm2": {
+              "type": "tooto-service-guarantee",
+              "name": "Tooto Service Guarantee",
+              "settings": {
+                "heading": "Service Guarantee:",
+                "tooltip_text": "Helpful information about your service guarantee.",
+                "open_by_default": true
+              },
+              "blocks": {
+                "service_item_1": {
+                  "type": "_tooto-service-guarantee-item",
+                  "settings": {
+                    "text": "100% Authentic Luxury",
+                    "icon": "lock",
+                    "icon_width": 28
+                  },
+                  "blocks": {}
+                },
+                "service_item_2": {
+                  "type": "_tooto-service-guarantee-item",
+                  "settings": {
+                    "text": "Free Shipping",
+                    "icon": "plane",
+                    "icon_width": 28
+                  },
+                  "blocks": {}
+                },
+                "service_item_3": {
+                  "type": "_tooto-service-guarantee-item",
+                  "settings": {
+                    "text": "7-day Free Return",
+                    "icon": "return",
+                    "icon_width": 28
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "service_item_1",
+                "service_item_2",
+                "service_item_3"
+              ]
+            },
             "accordion_qg3cFG": {
               "type": "accordion",
               "name": "t:names.accordion",
@@ -412,6 +455,7 @@
             "divider_VJhene",
             "variant_picker_R3rGDr",
             "buy_buttons_eYQEYi",
+            "tooto_service_guarantee_J7pLm2",
             "accordion_qg3cFG"
           ]
         }
