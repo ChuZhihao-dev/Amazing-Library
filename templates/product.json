@@ -716,7 +716,7 @@
           "settings": {
             "image": "{{ closest.product.metafields.custom.size_matching.value }}",
             "link": "",
-            "image_ratio": "adapt",
+            "image_ratio": "portrait",
             "width": "fill",
             "custom_width": 100,
             "width_mobile": "fill",
@@ -839,7 +839,7 @@
               "type": "_product-card-gallery",
               "name": "t:names.product_card_media",
               "settings": {
-                "image_ratio": "adapt",
+                "image_ratio": "portrait",
                 "border": "none",
                 "border_width": 1,
                 "border_opacity": 100,

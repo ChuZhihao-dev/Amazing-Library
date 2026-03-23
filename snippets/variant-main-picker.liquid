@@ -84,6 +84,10 @@
             endif
           endif
 
+          if request.page_type == 'product' and is_visual_option == false
+            continue
+          endif
+
           if variant_style == 'buttons' and settings.variant_button_width == 'equal-width-buttons'
             assign fieldset_id = section.id | append: '-' | append: product_resource.id | append: '-' | append: product_option.name | handleize
             assign option_id_attribute = 'data-option-id="' | append: fieldset_id | append: '"'
@@ -131,6 +135,7 @@
               {% liquid
                 assign featured_media = blank
                 assign featured_media_id = blank
+                assign swatch_card_image = blank
 
                 if variant_style == 'swatch'
                   assign featured_media = product_option_value.variant.featured_media
@@ -143,6 +148,12 @@
 
                   if featured_media
                     assign featured_media_id = featured_media.id
+                  endif
+
+                  if product_option_value.swatch.image
+                    assign swatch_card_image = product_option_value.swatch.image
+                  elsif featured_media
+                    assign swatch_card_image = featured_media.preview_image
                   endif
                 endif
               %}
@@ -178,12 +189,42 @@
                   {% endif %}
                 >
                 {% if variant_style == 'swatch' %}
-                  {% render 'swatch',
-                    swatch: product_option_value.swatch,
-                    variant_image: featured_media,
-                    force_variant_image: true,
-                    mode: 'unscaled'
-                  %}
+                  {% if swatch_card_class != blank and swatch_card_image != blank %}
+                    {%- liquid
+                      assign swatch_card_widths = '160, 240, 320'
+                      assign swatch_card_sizes = '150px'
+                      assign swatch_card_alt = swatch_card_image.alt | default: product_option_value.name
+                    -%}
+                    <div class="variant-option__swatch-card-media">
+                      {{
+                        swatch_card_image
+                        | image_url: width: 320
+                        | image_tag:
+                          widths: swatch_card_widths,
+                          sizes: swatch_card_sizes,
+                          alt: swatch_card_alt,
+                          class: 'variant-option__swatch-card-image',
+                          loading: 'lazy'
+                      }}
+                    </div>
+                  {% elsif swatch_card_class != blank %}
+                    <div class="variant-option__swatch-card-media variant-option__swatch-card-media--fallback">
+                      {% render 'swatch',
+                        swatch: product_option_value.swatch,
+                        variant_image: featured_media,
+                        force_variant_image: true,
+                        mode: 'unscaled'
+                      %}
+                    </div>
+                  {% else %}
+                    {% render 'swatch',
+                      swatch: product_option_value.swatch,
+                      variant_image: featured_media,
+                      force_variant_image: true,
+                      mode: 'unscaled'
+                    %}
+                  {% endif %}
+
                   <span class="variant-option__swatch-card-label">{{ product_option_value.name }}</span>
                 {% else %}
                   {% if product_option_value.available == true %}
@@ -366,11 +407,13 @@
   }
 
   .variant-picker .variant-option--swatch-cards {
-    gap: var(--gap-sm);
+    gap: 18px;
   }
 
   .variant-picker .variant-option--swatch-cards legend {
-    margin-block-end: var(--gap-sm);
+    margin-block-end: 14px;
+    font-size: 14px;
+    line-height: 20px;
   }
 
   .variant-picker .variant-option--swatch-cards .variant-option__swatch-value {
@@ -378,33 +421,87 @@
   }
 
   .variant-picker .variant-option--swatch-cards .variant-option__button-label--has-swatch {
+    --focus-outline-radius: 0;
+
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    gap: var(--gap-xs);
-    min-width: 80px;
-    padding: 4px;
-    border: 1px solid var(--color-variant-border);
+    gap: 4px;
+    flex: 0 0 80px;
+    width: 80px;
+    padding: 5px 5px 12px;
+    box-sizing: border-box;
+    border: 1px solid #D1D1CE;
     border-radius: 0;
-    background-color: var(--color-background);
+    background-color: transparent;
+    overflow: hidden;
+    outline: none;
+    box-shadow: none;
   }
 
   .variant-picker .variant-option--swatch-cards .variant-option__button-label--has-swatch:hover {
-    border-color: var(--color-variant-hover-border);
-    background-color: var(--color-variant-hover-background);
+    border-color: rgb(var(--color-foreground-rgb) / 0.32);
+    background-color: transparent;
+    outline: none;
+    box-shadow: none;
   }
 
   .variant-picker .variant-option--swatch-cards .variant-option__button-label--has-swatch:has(:checked) {
-    border-color: var(--color-selected-variant-border);
-    color: var(--color-selected-variant-text);
+    border-color: var(--color-foreground);
+    color: var(--color-foreground);
+    background-color: transparent;
+    outline: none;
+    box-shadow: none;
+  }
+
+  .variant-picker .variant-option--swatch-cards .variant-option__button-label--has-swatch:has(:focus-visible) {
+    outline: none;
+    border-color: var(--color-foreground);
+  }
+
+  .variant-picker .variant-option--swatch-cards .variant-option__button-label--has-swatch::after {
+    display: none;
+  }
+
+  .variant-picker .variant-option--swatch-cards .variant-option__button-label--has-swatch::before {
+    display: none;
   }
 
   .variant-picker .variant-option--swatch-cards .swatch {
-    --variant-picker-swatch-width: 72px;
-    --variant-picker-swatch-height: 72px;
+    display: none;
+  }
 
+  .variant-picker .variant-option--swatch-cards .variant-option__swatch-card-media {
+    width: 80px;
+    height: 72px;
+    overflow: hidden;
+  }
+
+  .variant-picker .variant-option--swatch-cards .variant-option__swatch-card-image {
+    width: 128px;
+    height: 128px;
+    display: block;
+    object-fit: cover;
     border-radius: 0;
+  }
+
+  .variant-picker .variant-option--swatch-cards .variant-option__swatch-card-media--fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .variant-picker .variant-option--swatch-cards .variant-option__swatch-card-media--fallback .swatch {
+    display: block;
+    --variant-picker-swatch-width: 128px;
+    --variant-picker-swatch-height: 128px;
+    width: 128px;
+    height: 128px;
+    border: none;
+    border-radius: 0;
+    background-size: cover;
+    background-position: center;
   }
 
   .variant-picker .variant-option--swatch-cards .variant-option__swatch-card-label {
@@ -412,5 +509,6 @@
     font-size: 14px;
     line-height: 1.4;
     text-align: center;
+    color: var(--color-foreground);
   }
 {% endstylesheet %}

@@ -13,8 +13,21 @@
 {% liquid
   assign swatch_value = null
   assign extra_classes = ''
-  if variant_image and (force_variant_image or settings.show_variant_image)
+  assign use_variant_image = false
+
+  if variant_image
+    if force_variant_image
+      assign use_variant_image = true
+    elsif settings.show_variant_image
+      assign use_variant_image = true
+    endif
+  endif
+
+  if use_variant_image
     assign swatch_image_width = settings.variant_swatch_width | times: 2
+    if force_variant_image
+      assign swatch_image_width = 320
+    endif
     assign swatch_image_url = variant_image | image_url: width: swatch_image_width
     assign swatch_value = 'url(' | append: swatch_image_url | append: ')'
     assign extra_classes = extra_classes | append: ' swatch--variant-image'

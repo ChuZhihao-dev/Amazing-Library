@@ -91,28 +91,52 @@
   assign selected_swatch_value = blank
   assign selected_group_variant_media_lookup = '||'
   assign has_selected_group_variant_media = false
+  assign color_anchor_media_ids = '' | split: ','
+  assign selected_anchor_media_id = blank
+  assign next_anchor_media_id = blank
+  assign selected_color_index = blank
 
   if request.page_type == 'product' and swatch_option_key != blank
     assign selected_swatch_value = selected_product.selected_or_first_available_variant[swatch_option_key]
 
-    if selected_swatch_value != blank
-      for image in selected_product.images
-        unless image.attached_to_variant?
-          continue
-        endunless
+    for product_option in selected_product.options_with_values
+      if product_option.position != swatch_option_position
+        continue
+      endif
 
-        assign image_matches_selected_group = false
+      for product_option_value in product_option.values
+        assign anchor_media = product_option_value.variant.featured_media
 
-        for variant in image.variants
-          if variant[swatch_option_key] == selected_swatch_value
-            assign image_matches_selected_group = true
-            break
-          endif
-        endfor
+        if anchor_media == blank and product_option_value.variant == blank
+          for variant in selected_product.variants
+            if variant[swatch_option_key] == product_option_value.name and variant.featured_media
+              assign anchor_media = variant.featured_media
+              break
+            endif
+          endfor
+        elsif anchor_media == blank and product_option_value.product_url
+          assign anchor_media = product_option_value.variant.product.featured_media
+        endif
 
-        if image_matches_selected_group
+        if anchor_media
+          assign color_anchor_media_ids = color_anchor_media_ids | concat: selected_product.media | where: 'id', anchor_media.id
+        endif
+
+        if selected_swatch_value != blank and product_option_value.name == selected_swatch_value and anchor_media
+          assign selected_anchor_media_id = anchor_media.id
+          assign selected_color_index = forloop.index0
           assign has_selected_group_variant_media = true
-          assign selected_group_variant_media_lookup = selected_group_variant_media_lookup | append: image.id | append: '||'
+        endif
+      endfor
+
+      break
+    endfor
+
+    if selected_color_index != blank
+      for anchor_media in color_anchor_media_ids
+        if forloop.index0 > selected_color_index
+          assign next_anchor_media_id = anchor_media.id
+          break
         endif
       endfor
     endif
@@ -188,45 +212,28 @@
 
   assign sorted_media = '' | split: ','
   if has_selected_group_variant_media
-    assign selected_variant_media_match_token = '||' | append: selected_variant_media.id | append: '||'
-    assign selected_group_media = '' | split: ','
-    assign generic_media = '' | split: ','
-
-    if selected_variant_media and selected_group_variant_media_lookup contains selected_variant_media_match_token
-      assign selected_group_media = selected_group_media | concat: selected_product.media | where: 'id', selected_variant_media.id
-    endif
+    assign has_started_group = false
 
     for media in selected_product.media
-      assign media_match_token = '||' | append: media.id | append: '||'
-      assign media_is_selected_group_variant = false
-      assign media_is_variant_specific = false
-
-      if selected_group_variant_media_lookup contains media_match_token
-        assign media_is_selected_group_variant = true
-      endif
-
-      if variant_image_id_lookup contains media_match_token
-        assign media_is_variant_specific = true
-      endif
-
-      if media_is_variant_specific and media_is_selected_group_variant == false
+      if request.page_type == 'product' and forloop.first
         continue
       endif
 
-      if selected_variant_media and media.id == selected_variant_media.id
-        continue
+      if has_started_group == false
+        if media.id == selected_anchor_media_id
+          assign has_started_group = true
+        else
+          continue
+        endif
+      endif
+
+      if next_anchor_media_id != blank and media.id == next_anchor_media_id
+        break
       endif
 
       assign found_media = selected_product.media | where: 'id', media.id
-
-      if media_is_selected_group_variant
-        assign selected_group_media = selected_group_media | concat: found_media
-      else
-        assign generic_media = generic_media | concat: found_media
-      endif
+      assign sorted_media = sorted_media | concat: found_media
     endfor
-
-    assign sorted_media = selected_group_media | concat: generic_media
 
     if sorted_media.size == 0
       assign has_selected_group_variant_media = false

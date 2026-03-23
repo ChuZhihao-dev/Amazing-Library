@@ -35,6 +35,8 @@
 {% enddoc %}
 
 {% liquid
+  assign product_resource = closest.product | default: product
+
   # Determine render order based on media position
   if settings.desktop_media_position == 'left'
     assign render_order = 'media,product-details'
@@ -74,6 +76,27 @@
     when 'content-full-width'
       assign content_width = 'full-width'
   endcase
+
+  assign series_name = blank
+  assign series_url = blank
+
+  if request.page_type == 'product' and product_resource != blank
+    if product_resource.metafields.custom.series.value != blank
+      assign series_name = product_resource.metafields.custom.series.value
+    elsif product_resource.metafields.custom.series != blank
+      assign series_name = product_resource.metafields.custom.series
+    else
+      for product_collection in product_resource.collections
+        if product_collection.handle == 'all'
+          continue
+        endif
+
+        assign series_name = product_collection.title
+        assign series_url = product_collection.url
+        break
+      endfor
+    endif
+  endif
 %}
 
 <div class="section-background color-{{ settings.color_scheme }}"></div>
@@ -96,6 +119,29 @@
         class="product-information__media"
         data-testid="product-information-media"
       >
+        {% if request.page_type == 'product' and product_resource != blank %}
+          <div class="product-information__breadcrumbs">
+            <a
+              href="{{ series_url | default: routes.root_url }}"
+              class="product-information__breadcrumb-link"
+              onclick="if (window.history.length > 1) { window.history.back(); return false; }"
+            >
+              <span class="svg-wrapper product-information__breadcrumb-icon" aria-hidden="true">
+                {{ 'icon-chevron-left.svg' | inline_asset_content }}
+              </span>
+              <span>Back</span>
+            </a>
+
+            {% if series_name != blank %}
+              <span class="product-information__breadcrumb-separator" aria-hidden="true">|</span>
+              <span class="product-information__breadcrumb-series">{{ series_name | escape }}</span>
+              <span class="product-information__breadcrumb-slash" aria-hidden="true">/</span>
+            {% endif %}
+
+            <span class="product-information__breadcrumb-current">{{ product_resource.title | escape }}</span>
+          </div>
+        {% endif %}
+
         {{ media_gallery }}
       </div>
     {% endcapture %}
@@ -115,6 +161,49 @@
 {% stylesheet %}
   .product-information {
     gap: var(--gap) 0;
+  }
+
+  .product-information__breadcrumbs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-block-end: 20px;
+    color: var(--color-foreground);
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .product-information__breadcrumb-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .product-information__breadcrumb-link:hover {
+    opacity: 0.7;
+  }
+
+  .product-information__breadcrumb-icon {
+    display: inline-flex;
+    width: 14px;
+    height: 14px;
+  }
+
+  .product-information__breadcrumb-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .product-information__breadcrumb-separator,
+  .product-information__breadcrumb-slash {
+    color: rgb(var(--color-foreground-rgb) / 0.45);
+  }
+
+  .product-information__breadcrumb-current {
+    color: var(--color-foreground);
   }
 
   /* Base grid layout */
