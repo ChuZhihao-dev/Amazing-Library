@@ -277,6 +277,7 @@ class TootoMegaMenuPanel extends HTMLElement {
 
     this.initialized = true;
     this.defaultPanel = this.dataset.defaultPanel || '';
+    this.addEventListener('pointerdown', this.onPointerDown);
     this.addEventListener('click', this.onClick);
     this.addEventListener('keydown', this.onKeydown);
     this.addEventListener('pointerleave', this.resetPanels);
@@ -284,10 +285,20 @@ class TootoMegaMenuPanel extends HTMLElement {
   }
 
   disconnectedCallback() {
+    this.removeEventListener('pointerdown', this.onPointerDown);
     this.removeEventListener('click', this.onClick);
     this.removeEventListener('keydown', this.onKeydown);
     this.removeEventListener('pointerleave', this.resetPanels);
   }
+
+  onPointerDown = (event) => {
+    if (!(event.target instanceof Element)) return;
+
+    const panelToggle = event.target.closest('[data-target-panel], [data-back-panel]');
+    if (panelToggle instanceof HTMLElement) {
+      event.preventDefault();
+    }
+  };
 
   onClick = (event) => {
     if (!(event.target instanceof Element)) return;
@@ -295,14 +306,14 @@ class TootoMegaMenuPanel extends HTMLElement {
     const targetPanelButton = event.target.closest('[data-target-panel]');
     if (targetPanelButton instanceof HTMLElement) {
       event.preventDefault();
-      this.showPanel(targetPanelButton.dataset.targetPanel || this.defaultPanel);
+      this.showPanel(targetPanelButton.dataset.targetPanel || this.defaultPanel, { moveFocus: true });
       return;
     }
 
     const backPanelButton = event.target.closest('[data-back-panel]');
     if (backPanelButton instanceof HTMLElement) {
       event.preventDefault();
-      this.showPanel(backPanelButton.dataset.backPanel || this.defaultPanel);
+      this.showPanel(backPanelButton.dataset.backPanel || this.defaultPanel, { moveFocus: true });
     }
   };
 
@@ -310,15 +321,18 @@ class TootoMegaMenuPanel extends HTMLElement {
     if (!(event instanceof KeyboardEvent)) return;
     if (event.key !== 'Escape') return;
 
-    this.showPanel(this.defaultPanel);
+    this.showPanel(this.defaultPanel, { moveFocus: true });
   };
 
   resetPanels = () => {
     this.showPanel(this.defaultPanel);
   };
 
-  showPanel(panelId) {
+  showPanel(panelId, options = {}) {
     if (!panelId) return;
+
+    const { moveFocus = false } = options;
+    let activePanel = null;
 
     this.querySelectorAll('[data-panel]').forEach((panel) => {
       if (!(panel instanceof HTMLElement)) return;
@@ -326,6 +340,10 @@ class TootoMegaMenuPanel extends HTMLElement {
       const isActive = panel.dataset.panel === panelId;
       panel.classList.toggle('is-active', isActive);
       panel.toggleAttribute('hidden', !isActive);
+
+      if (isActive) {
+        activePanel = panel;
+      }
     });
 
     this.querySelectorAll('[data-target-panel]').forEach((button) => {
@@ -335,6 +353,18 @@ class TootoMegaMenuPanel extends HTMLElement {
       button.classList.toggle('tooto-mega-menu__nav-btn--active', isActive);
       button.setAttribute('aria-expanded', isActive ? 'true' : 'false');
     });
+
+    if (moveFocus && activePanel instanceof HTMLElement) {
+      const focusTarget = activePanel.querySelector(
+        '[data-back-panel], [data-target-panel], a[href], button:not([disabled])'
+      );
+
+      if (focusTarget instanceof HTMLElement) {
+        requestAnimationFrame(() => {
+          focusTarget.focus({ preventScroll: true });
+        });
+      }
+    }
   }
 }
 

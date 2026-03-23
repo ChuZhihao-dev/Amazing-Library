@@ -6,6 +6,28 @@
     assign product = collections.all.products.first
   endif
 
+  assign is_product_page = false
+  if request.page_type == 'product'
+    assign is_product_page = true
+  endif
+  assign customize_page_url = '/pages/custom-size'
+  if block_settings.customize_page != blank
+    assign customize_page_url = block_settings.customize_page.url
+  endif
+
+  assign rug_sample_button_label = '+ Rug Sample $2'
+  assign rug_sample_product = block_settings.rug_sample_product
+  if rug_sample_product != blank
+    assign rug_sample_variant = rug_sample_product.selected_or_first_available_variant
+
+    if rug_sample_variant != blank
+      capture rug_sample_button_label
+        echo '+ Rug Sample '
+        echo rug_sample_variant.price | money_without_trailing_zeros
+      endcapture
+    endif
+  endif
+
   assign variant = closest.product.selected_or_first_available_variant
   assign inventory_quantity = variant.inventory_quantity
   assign inventory_policy = variant.inventory_policy
@@ -36,7 +58,7 @@
 %}
 
 <span
-  class="buy-buttons-block buy-buttons-block--{{ block.id }}"
+  class="buy-buttons-block buy-buttons-block--{{ block.id }}{% if is_product_page %} buy-buttons-block--product-page{% endif %}"
   {{ block.shopify_attributes }}
 >
   {%- if product != blank -%}
@@ -73,26 +95,24 @@
         >
           {%- liquid
             assign has_quantity_rules = false
+            assign cart_quantity = cart | item_count_for_variant: variant.id
             if variant.quantity_rule.min > 1 or variant.quantity_rule.increment > 1 or variant.quantity_rule.max != null
               assign has_quantity_rules = true
             endif
           -%}
 
-          {%- if has_quantity_rules -%}
-            {%- assign cart_quantity = cart | item_count_for_variant: variant.id -%}
-            <div
-              class="quantity-label"
-              ref="quantityLabel"
+          <div
+            class="quantity-label"
+            ref="quantityLabel"
+          >
+            {{ 'products.product.quantity' | t }}:
+            <span
+              class="quantity-label__cart-count{% if cart_quantity == 0 %} hidden{% endif %}"
+              ref="quantityLabelCartCount"
+              >({{ cart_quantity }}
+              {{ 'products.product.in_cart' | t }})</span
             >
-              {{ 'products.product.quantity' | t }}
-              <span
-                class="quantity-label__cart-count{% if cart_quantity == 0 %} hidden{% endif %}"
-                ref="quantityLabelCartCount"
-                >({{ cart_quantity }}
-                {{ 'products.product.in_cart' | t }})</span
-              >
-            </div>
-          {%- endif -%}
+          </div>
 
           {% content_for 'block', type: 'quantity', id: 'quantity' %}
 
@@ -223,12 +243,39 @@
             add_to_cart_text: add_to_cart_text
           %}
 
-          {% content_for 'block',
-            type: 'accelerated-checkout',
-            id: 'accelerated-checkout',
-            can_add_to_cart: can_add_to_cart,
-            form_obj: form
-          %}
+          {%- if is_product_page -%}
+            <div class="buy-buttons-block__secondary-actions">
+              <a
+                href="{{ customize_page_url }}"
+                class="button-secondary buy-buttons-block__secondary-button buy-buttons-block__customize-link"
+              >
+                Customize
+              </a>
+
+              <button
+                type="submit"
+                class="button-secondary buy-buttons-block__secondary-button buy-buttons-block__sample-button"
+                data-add-sample="true"
+                data-sample-variant-id="{% if rug_sample_variant != blank %}{{ rug_sample_variant.id }}{% endif %}"
+                data-sample-source-title="{{ product.title | escape }}"
+                formnovalidate
+                {% if rug_sample_variant == blank or rug_sample_variant.available == false %}
+                  disabled
+                {% endif %}
+              >
+                {{ rug_sample_button_label | strip }}
+              </button>
+            </div>
+          {%- endif -%}
+
+          {%- unless is_product_page -%}
+            {% content_for 'block',
+              type: 'accelerated-checkout',
+              id: 'accelerated-checkout',
+              can_add_to_cart: can_add_to_cart,
+              form_obj: form
+            %}
+          {%- endunless -%}
         </div>
       {%- endform -%}
     </product-form-component>
@@ -380,13 +427,25 @@
     }
   }
 
-  .product-form-buttons > *:not(.quantity-selector-wrapper, .quantity-rules, .quantity-label, .volume-pricing) {
+  .product-form-buttons > *:not(
+      .quantity-selector-wrapper,
+      .quantity-rules,
+      .quantity-label,
+      .volume-pricing,
+      .buy-buttons-block__secondary-actions
+    ) {
     flex: 1 1 var(--buy-button-preferred-width, 0);
     min-width: fit-content;
   }
 
   .product-form-buttons--stacked
-    > *:not(.quantity-selector-wrapper, .quantity-rules, .quantity-label, .volume-pricing) {
+    > *:not(
+        .quantity-selector-wrapper,
+        .quantity-rules,
+        .quantity-label,
+        .volume-pricing,
+        .buy-buttons-block__secondary-actions
+      ) {
     flex-basis: 51%;
   }
 
@@ -457,6 +516,60 @@
 
   .add-to-cart-button.button-secondary {
     text-transform: var(--button-text-case-secondary);
+  }
+
+  .buy-buttons-block--product-page .product-form-buttons {
+    gap: var(--gap-sm);
+  }
+
+  .buy-buttons-block--product-page .product-form-buttons > *:not(
+      .quantity-selector-wrapper,
+      .quantity-rules,
+      .quantity-label,
+      .volume-pricing,
+      .buy-buttons-block__secondary-actions
+    ) {
+    flex: 1 0 100%;
+    min-width: 0;
+  }
+
+  .buy-buttons-block--product-page .quantity-label {
+    margin-block-end: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+  }
+
+  .buy-buttons-block--product-page .quantity-selector-wrapper {
+    flex: 1 0 100%;
+    width: 100%;
+    gap: 0;
+  }
+
+  .buy-buttons-block--product-page .quantity-selector {
+    flex: 0 0 min(100%, 220px);
+    width: min(100%, 220px);
+    height: 48px;
+  }
+
+  .buy-buttons-block--product-page .add-to-cart-button {
+    height: 54px;
+    text-transform: none;
+  }
+
+  .buy-buttons-block--product-page .buy-buttons-block__secondary-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--gap-sm);
+    flex: 1 0 100%;
+    width: 100%;
+  }
+
+  .buy-buttons-block--product-page .buy-buttons-block__secondary-button {
+    height: 54px;
+    padding-block: 0;
+    text-decoration: none;
+    text-transform: none;
   }
 
   .product-form-text__error {
@@ -694,6 +807,17 @@
       "id": "gift_card_form",
       "label": "t:settings.gift_card_form",
       "default": true
+    },
+    {
+      "type": "page",
+      "id": "customize_page",
+      "label": "Customize page"
+    },
+    {
+      "type": "product",
+      "id": "rug_sample_product",
+      "label": "Rug sample product",
+      "info": "Used by the + Rug Sample button on product pages."
     },
     {
       "type": "paragraph",
