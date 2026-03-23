@@ -1,0 +1,252 @@
+{%- liquid
+  assign block_settings = block.settings
+  assign current_product = product | default: closest.product
+  assign made_to_measure_product = block_settings.made_to_measure_product
+  assign wall_to_wall_product = block_settings.wall_to_wall_product
+  assign selected_option = 'made-to-measure'
+  assign show_empty_state = false
+
+  if current_product != blank and wall_to_wall_product != blank and current_product.id == wall_to_wall_product.id
+    assign selected_option = 'wall-to-wall'
+  elsif current_product != blank and made_to_measure_product != blank and current_product.id == made_to_measure_product.id
+    assign selected_option = 'made-to-measure'
+  elsif made_to_measure_product == blank and wall_to_wall_product != blank
+    assign selected_option = 'wall-to-wall'
+  endif
+
+  if request.design_mode and made_to_measure_product == blank and wall_to_wall_product == blank
+    assign show_empty_state = true
+  endif
+-%}
+
+{%- if show_empty_state -%}
+  <div class="tooto-style-selector tooto-style-selector--empty" {{ block.shopify_attributes }}>
+    Add the two linked products in this block's settings.
+  </div>
+{%- else -%}
+  <div class="tooto-style-selector" {{ block.shopify_attributes }}>
+    <div class="tooto-style-selector__header">
+      <span class="tooto-style-selector__heading">Style:</span>
+      {%- if block_settings.tooltip_text != blank -%}
+        <span class="tooto-style-selector__info-wrap">
+          <span class="tooto-style-selector__info" tabindex="0" aria-label="More info">i</span>
+          <span class="tooto-style-selector__tooltip">{{ block_settings.tooltip_text | escape }}</span>
+        </span>
+      {%- endif -%}
+    </div>
+
+    <div class="tooto-style-selector__options" role="list">
+      <a
+        class="tooto-style-selector__option{% if selected_option == 'made-to-measure' %} is-selected{% endif %}{% if made_to_measure_product == blank %} is-disabled{% endif %}"
+        {% if made_to_measure_product != blank %}href="{{ made_to_measure_product.url }}"{% else %}aria-disabled="true"{% endif %}
+        role="listitem"
+      >
+        <span class="tooto-style-selector__checkbox" aria-hidden="true">
+          <svg class="tooto-style-selector__check" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M2.25 6.25L4.75 8.75L9.75 3.75" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="tooto-style-selector__label">
+          <span class="tooto-style-selector__title">Made-to-Measure</span>
+          <span class="tooto-style-selector__meta">(with edge binding)</span>
+        </span>
+      </a>
+
+      <a
+        class="tooto-style-selector__option{% if selected_option == 'wall-to-wall' %} is-selected{% endif %}{% if wall_to_wall_product == blank %} is-disabled{% endif %}"
+        {% if wall_to_wall_product != blank %}href="{{ wall_to_wall_product.url }}"{% else %}aria-disabled="true"{% endif %}
+        role="listitem"
+      >
+        <span class="tooto-style-selector__checkbox" aria-hidden="true">
+          <svg class="tooto-style-selector__check" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M2.25 6.25L4.75 8.75L9.75 3.75" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="tooto-style-selector__label">
+          <span class="tooto-style-selector__title">Wall-to-Wall</span>
+          <span class="tooto-style-selector__meta">(no edge binding)</span>
+        </span>
+      </a>
+    </div>
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  .tooto-style-selector {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .tooto-style-selector--empty {
+    padding: 16px 0;
+    color: var(--color-foreground);
+  }
+
+  .tooto-style-selector__header {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .tooto-style-selector__heading {
+    font-size: 16px;
+    line-height: 1.25;
+    font-weight: 400;
+    color: var(--color-foreground-heading);
+  }
+
+  .tooto-style-selector__info-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tooto-style-selector__info {
+    width: 32px;
+    height: 32px;
+    border: 1px solid rgb(var(--color-border-rgb) / 0.75);
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-background);
+    color: var(--color-foreground-heading);
+    font-size: 20px;
+    line-height: 1;
+    font-weight: 400;
+    box-sizing: border-box;
+  }
+
+  .tooto-style-selector__tooltip {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 220px;
+    max-width: 280px;
+    padding: 10px 12px;
+    border-radius: 4px;
+    background: rgb(var(--color-background-rgb, var(--color-background)));
+    color: var(--color-foreground);
+    border: 1px solid rgb(var(--color-border-rgb) / 0.2);
+    box-shadow: 0 8px 20px rgb(var(--color-foreground-rgb) / 0.08);
+    font-size: 12px;
+    line-height: 1.5;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 2;
+  }
+
+  .tooto-style-selector__info-wrap:hover .tooto-style-selector__tooltip,
+  .tooto-style-selector__info-wrap:focus-within .tooto-style-selector__tooltip {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .tooto-style-selector__options {
+    display: grid;
+    gap: 18px;
+  }
+
+  .tooto-style-selector__option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .tooto-style-selector__option.is-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .tooto-style-selector__checkbox {
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid rgb(var(--color-foreground-rgb) / 0.8);
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    background: var(--color-background);
+  }
+
+  .tooto-style-selector__check {
+    opacity: 0;
+  }
+
+  .tooto-style-selector__option.is-selected .tooto-style-selector__checkbox {
+    background: var(--color-foreground-heading);
+    border-color: var(--color-foreground-heading);
+    color: var(--color-background);
+  }
+
+  .tooto-style-selector__option.is-selected .tooto-style-selector__check {
+    opacity: 1;
+  }
+
+  .tooto-style-selector__label {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .tooto-style-selector__title {
+    font-size: 16px;
+    line-height: 1.4;
+    font-weight: 600;
+    color: var(--color-foreground-heading);
+  }
+
+  .tooto-style-selector__meta {
+    font-size: 16px;
+    line-height: 1.4;
+    font-weight: 400;
+    color: rgb(var(--color-foreground-rgb) / 0.72);
+  }
+
+  @media screen and (max-width: 749px) {
+    .tooto-style-selector__label {
+      gap: 4px;
+    }
+
+    .tooto-style-selector__title,
+    .tooto-style-selector__meta {
+      font-size: 15px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Tooto Style Selector",
+  "tag": null,
+  "settings": [
+    {
+      "type": "product",
+      "id": "made_to_measure_product",
+      "label": "Made-to-Measure Product"
+    },
+    {
+      "type": "product",
+      "id": "wall_to_wall_product",
+      "label": "Wall-to-Wall Product"
+    },
+    {
+      "type": "textarea",
+      "id": "tooltip_text",
+      "label": "Tooltip Text",
+      "default": "Helpful information about style options."
+    }
+  ]
+}
+{% endschema %}
