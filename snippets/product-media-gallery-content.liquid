@@ -269,6 +269,16 @@
       assign sorted_media = selected_product.media
     endif
   endif
+  assign color_anchor_media_id_lookup = '||'
+  for anchor_media in color_anchor_media_ids
+    assign color_anchor_media_id_lookup = color_anchor_media_id_lookup | append: anchor_media.id | append: '||'
+  endfor
+
+  assign sorted_media_id_lookup = '||'
+  for sorted_media_item in sorted_media
+    assign sorted_media_id_lookup = sorted_media_id_lookup | append: sorted_media_item.id | append: '||'
+  endfor
+
   assign has_image_drop = sorted_media | has: 'media_type', 'image'
 
   # Determine if we're in single column mode (carousel or grid with one column)
@@ -472,6 +482,67 @@
 
   :root { --gallery-media-border-radius: {{ block_settings.media_radius }}px; }
 {% endstyle %}
+
+{%- if block_settings.show_debug_media_grouping and selected_product != blank -%}
+  <div class="tooto-media-debug">
+    <div class="tooto-media-debug__summary">
+      <strong>Media Debug</strong>
+      <div>Selected swatch: {{ selected_swatch_value | default: 'blank' }}</div>
+      <div>Selected anchor id: {{ selected_anchor_media_id | default: 'blank' }}</div>
+      <div>Next anchor id: {{ next_anchor_media_id | default: 'blank' }}</div>
+      <div>Selected variant featured media: {% if selected_variant_media != blank %}{{ selected_variant_media.id }}{% else %}blank{% endif %}</div>
+      <div>Color anchor ids: {{ color_anchor_media_id_lookup }}</div>
+      <div>Sorted ids: {{ sorted_media_id_lookup }}</div>
+    </div>
+    <div class="tooto-media-debug__table-wrap">
+      <table class="tooto-media-debug__table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>ID</th>
+            <th>Type</th>
+            <th>Alt</th>
+            <th>VariantImg</th>
+            <th>Anchor</th>
+            <th>Selected</th>
+            <th>Next</th>
+            <th>Sorted</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for media in selected_product.media -%}
+            {%- liquid
+              assign variant_token = media.id | append: '||'
+              assign is_variant_image = false
+              if variant_image_id_lookup contains variant_token
+                assign is_variant_image = true
+              endif
+              assign is_anchor = false
+              if color_anchor_media_id_lookup contains variant_token
+                assign is_anchor = true
+              endif
+              assign is_sorted = false
+              if sorted_media_id_lookup contains variant_token
+                assign is_sorted = true
+              endif
+            -%}
+            <tr>
+              <td>{{ forloop.index }}</td>
+              <td>{{ media.id }}</td>
+              <td>{{ media.media_type }}</td>
+              <td>{{ media.alt | default: '-' }}</td>
+              <td>{% if is_variant_image %}yes{% else %}no{% endif %}</td>
+              <td>{% if is_anchor %}yes{% else %}no{% endif %}</td>
+              <td>{% if selected_anchor_media_id == media.id %}yes{% else %}no{% endif %}</td>
+              <td>{% if next_anchor_media_id == media.id %}yes{% else %}no{% endif %}</td>
+              <td>{% if is_sorted %}yes{% else %}no{% endif %}</td>
+            </tr>
+          {%- endfor -%}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{%- endif -%}
 
 {% if closest.product == blank %}
   <div
@@ -791,6 +862,42 @@
 {% endif %}
 
 {% stylesheet %}
+  .tooto-media-debug {
+    margin-bottom: 20px;
+    padding: 16px;
+    border: 1px dashed rgb(var(--color-border-rgb) / 0.5);
+    background: rgb(var(--color-background));
+    color: var(--color-foreground);
+    font-size: 12px;
+    line-height: 1.5;
+    overflow: auto;
+  }
+
+  .tooto-media-debug__summary {
+    display: grid;
+    gap: 4px;
+    margin-bottom: 12px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  .tooto-media-debug__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  .tooto-media-debug__table th,
+  .tooto-media-debug__table td {
+    border: 1px solid rgb(var(--color-border-rgb) / 0.28);
+    padding: 6px 8px;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .tooto-media-debug__table th {
+    font-weight: 700;
+  }
+
   .dialog-zoomed-gallery__dialog {
     background-color: var(--color-background);
   }
