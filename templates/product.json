@@ -256,49 +256,6 @@
               },
               "block_order": []
             },
-            "tooto_service_guarantee_J7pLm2": {
-              "type": "tooto-service-guarantee",
-              "name": "Tooto Service Guarantee",
-              "settings": {
-                "heading": "Service Guarantee:",
-                "tooltip_text": "Helpful information about your service guarantee.",
-                "open_by_default": true
-              },
-              "blocks": {
-                "service_item_1": {
-                  "type": "_tooto-service-guarantee-item",
-                  "settings": {
-                    "text": "100% Authentic Luxury",
-                    "icon": "lock",
-                    "icon_width": 28
-                  },
-                  "blocks": {}
-                },
-                "service_item_2": {
-                  "type": "_tooto-service-guarantee-item",
-                  "settings": {
-                    "text": "Free Shipping",
-                    "icon": "plane",
-                    "icon_width": 28
-                  },
-                  "blocks": {}
-                },
-                "service_item_3": {
-                  "type": "_tooto-service-guarantee-item",
-                  "settings": {
-                    "text": "7-day Free Return",
-                    "icon": "return",
-                    "icon_width": 28
-                  },
-                  "blocks": {}
-                }
-              },
-              "block_order": [
-                "service_item_1",
-                "service_item_2",
-                "service_item_3"
-              ]
-            },
             "accordion_qg3cFG": {
               "type": "accordion",
               "name": "t:names.accordion",
@@ -494,6 +451,49 @@
                 "accordion_row_7qdaqk",
                 "accordion_row_Td6aKd"
               ]
+            },
+            "tooto_service_guarantee_J7pLm2": {
+              "type": "tooto-service-guarantee",
+              "name": "Tooto Service Guarantee",
+              "settings": {
+                "heading": "Service Guarantee:",
+                "tooltip_text": "Helpful information about your service guarantee.",
+                "open_by_default": true
+              },
+              "blocks": {
+                "service_item_1": {
+                  "type": "_tooto-service-guarantee-item",
+                  "settings": {
+                    "text": "100% Authentic Luxury",
+                    "icon": "lock",
+                    "icon_width": 28
+                  },
+                  "blocks": {}
+                },
+                "service_item_2": {
+                  "type": "_tooto-service-guarantee-item",
+                  "settings": {
+                    "text": "Free Shipping",
+                    "icon": "plane",
+                    "icon_width": 28
+                  },
+                  "blocks": {}
+                },
+                "service_item_3": {
+                  "type": "_tooto-service-guarantee-item",
+                  "settings": {
+                    "text": "7-day Free Return",
+                    "icon": "return",
+                    "icon_width": 28
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "service_item_1",
+                "service_item_2",
+                "service_item_3"
+              ]
             }
           },
           "block_order": [
@@ -501,8 +501,8 @@
             "divider_VJhene",
             "variant_picker_R3rGDr",
             "buy_buttons_eYQEYi",
-            "tooto_service_guarantee_J7pLm2",
-            "accordion_qg3cFG"
+            "accordion_qg3cFG",
+            "tooto_service_guarantee_J7pLm2"
           ]
         }
       },
@@ -716,7 +716,7 @@
           "settings": {
             "image": "{{ closest.product.metafields.custom.size_matching.value }}",
             "link": "",
-            "image_ratio": "portrait",
+            "image_ratio": "adapt",
             "width": "fill",
             "custom_width": 100,
             "width_mobile": "fill",
@@ -789,24 +789,24 @@
     "product_recommendations_qggXJq": {
       "type": "product-recommendations",
       "blocks": {
-        "text_cbcgyb": {
+        "text_h6Ejit": {
           "type": "text",
-          "name": "t:names.header",
+          "name": "t:names.heading",
           "settings": {
-            "text": "<h3>You may also like </h3>",
+            "text": "<p>You May Also Like</p>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
-            "type_preset": "h4",
-            "font": "var(--font-primary--family)",
-            "font_size": "",
-            "font_size_mobile": "",
-            "weight": "",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "3rem",
+            "font_size_mobile": "1.5rem",
+            "weight": "600",
             "line_height": "normal",
             "letter_spacing": "normal",
             "case": "none",
             "wrap": "pretty",
-            "color": "",
+            "color": "var(--color-foreground)",
             "background": false,
             "background_color": "#00000026",
             "corner_radius": 0,
@@ -907,7 +907,7 @@
         }
       },
       "block_order": [
-        "text_cbcgyb"
+        "text_h6Ejit"
       ],
       "name": "t:names.product_recommendations",
       "settings": {
