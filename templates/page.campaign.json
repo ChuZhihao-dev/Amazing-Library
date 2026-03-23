@@ -177,6 +177,7 @@
       "name": "Tooto Campaign Card",
       "settings": {
         "media_type": "video",
+        "video": "shopify://files/videos/compressO-3月11日.mov",
         "video_cover": "shopify://shop_images/2_2x_3.webp",
         "overlay_text": "City of Gems",
         "overlay_text_weight": "regular",
