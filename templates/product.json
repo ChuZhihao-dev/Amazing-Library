@@ -561,18 +561,10 @@
           },
           "blocks": {}
         },
-        "spacer_mnwxMJ": {
-          "type": "spacer",
-          "name": "t:names.spacer",
-          "settings": {
-            "size": "pixel",
-            "percent_size": 100,
-            "pixel_size": 152,
-            "custom_mobile_size": true,
-            "size_mobile": "pixel",
-            "percent_size_mobile": 100,
-            "pixel_size_mobile": 48
-          },
+        "tooto_product_features_metafield_9rJdYD": {
+          "type": "tooto-product-features-metafield",
+          "name": "Tooto Product Features Metafield",
+          "settings": {},
           "blocks": {}
         }
       },
@@ -581,7 +573,7 @@
         "text_fXzHC4",
         "spacer_6tryRm",
         "text_ayHAQ7",
-        "spacer_mnwxMJ"
+        "tooto_product_features_metafield_9rJdYD"
       ],
       "name": "t:names.custom_section",
       "settings": {
@@ -697,12 +689,6 @@
           },
           "blocks": {}
         },
-        "tooto_product_features_metafield_k7N2xQ": {
-          "type": "tooto-product-features-metafield",
-          "name": "Tooto Product Features Metafield",
-          "settings": {},
-          "blocks": {}
-        },
         "spacer_ihny8D": {
           "type": "spacer",
           "name": "t:names.spacer",
@@ -722,7 +708,6 @@
         "text_V3kLK9",
         "text_c89FTN",
         "image_AxTRVt",
-        "tooto_product_features_metafield_k7N2xQ",
         "spacer_ihny8D"
       ],
       "name": "t:names.custom_section",
