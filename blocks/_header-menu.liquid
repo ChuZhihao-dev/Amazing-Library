@@ -79,6 +79,12 @@
 
     {% capture children %}
       {% for link in block_settings.menu.links %}
+        {% liquid
+          assign use_custom_mega_menu = false
+          if link.handle == 'products' or link.handle == 'inspiration'
+            assign use_custom_mega_menu = true
+          endif
+        %}
         <li
           role="presentation"
           class="menu-list__list-item"
@@ -116,17 +122,25 @@
                     class="mega-menu__grid"
                     data-menu-grid-id="{{ list_id }}"
                   >
-                    {% render 'mega-menu-list',
-                      parent_link: link,
-                      id: list_id,
-                      section: section,
-                      grid_columns_count: 6,
-                      grid_columns_count_tablet: 4,
-                      grid_columns_count_collection_images: 8,
-                      menu_content_type: menu_content_type,
-                      content_aspect_ratio: ratio,
-                      image_border_radius: image_border_radius
-                    %}
+                    {% if use_custom_mega_menu %}
+                      {% render 'tooto-mega-menu-panel',
+                        parent_link: link,
+                        menu_settings: block_settings,
+                        image_border_radius: image_border_radius
+                      %}
+                    {% else %}
+                      {% render 'mega-menu-list',
+                        parent_link: link,
+                        id: list_id,
+                        section: section,
+                        grid_columns_count: 6,
+                        grid_columns_count_tablet: 4,
+                        grid_columns_count_collection_images: 8,
+                        menu_content_type: menu_content_type,
+                        content_aspect_ratio: ratio,
+                        image_border_radius: image_border_radius
+                      %}
+                    {% endif %}
                   </div>
                 </div>
               </div>
@@ -514,6 +528,144 @@
     }
   }
 
+
+  .tooto-mega-menu {
+    grid-column: 1 / -1;
+    display: block;
+    width: 100%;
+    --tooto-mega-menu-image-radius: var(--menu-image-border-radius, 24px);
+  }
+
+  .tooto-mega-menu__panel {
+    display: none;
+    grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+    gap: 48px;
+    align-items: stretch;
+    width: 100%;
+    min-height: 460px;
+  }
+
+  .tooto-mega-menu__panel.is-active {
+    display: grid;
+  }
+
+  .tooto-mega-menu__copy {
+    min-width: 0;
+  }
+
+  .tooto-mega-menu__copy-inner {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    padding-inline-start: clamp(8px, 1.2vw, 16px);
+  }
+
+  .tooto-mega-menu__title,
+  .tooto-mega-menu__back {
+    margin: 0 0 36px;
+    font-family: var(--menu-parent-font-family);
+    font-style: var(--menu-parent-font-style);
+    font-weight: 700;
+    font-size: clamp(1.625rem, 2vw, 2.25rem);
+    line-height: 1.1;
+    color: var(--menu-parent-font-color);
+  }
+
+  .tooto-mega-menu__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .tooto-mega-menu__back-icon,
+  .tooto-mega-menu__cta-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .tooto-mega-menu__list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .tooto-mega-menu__list-item {
+    display: block;
+  }
+
+  .tooto-mega-menu__nav-btn,
+  .tooto-mega-menu__nav-link {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    text-decoration: none;
+    color: var(--menu-child-font-color);
+    font-family: var(--menu-child-font-family);
+    font-style: var(--menu-child-font-style);
+    font-weight: var(--menu-child-font-weight);
+    font-size: clamp(1.375rem, 1.5vw, 1.875rem);
+    line-height: 1.2;
+    cursor: pointer;
+    transition: opacity 0.2s ease, color 0.2s ease;
+    text-align: left;
+  }
+
+  .tooto-mega-menu__nav-btn:hover,
+  .tooto-mega-menu__nav-link:hover,
+  .tooto-mega-menu__nav-btn--active,
+  .tooto-mega-menu__nav-link--active {
+    color: var(--menu-child-active-font-color);
+  }
+
+  .tooto-mega-menu__cta {
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 48px;
+    text-decoration: none;
+    color: var(--menu-parent-font-color);
+    font-family: var(--menu-child-font-family);
+    font-style: var(--menu-child-font-style);
+    font-weight: 500;
+    font-size: 1rem;
+    line-height: 1.2;
+  }
+
+  .tooto-mega-menu__media {
+    position: relative;
+    min-width: 0;
+    overflow: hidden;
+    border-radius: var(--tooto-mega-menu-image-radius);
+    background-color: rgb(var(--color-foreground-rgb) / 0.06);
+  }
+
+  .tooto-mega-menu__media-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .tooto-mega-menu__image {
+    width: 100%;
+    height: 100%;
+    min-height: 460px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .tooto-mega-menu__image--placeholder {
+    width: 100%;
+    height: 100%;
+  }
+
   @media screen and (max-width: 989px) {
     .mega-menu__content-list-item--hidden-tablet {
       display: none;
@@ -858,6 +1010,54 @@
       "unit": "px",
       "default": 0,
       "visible_if": "{{ block.settings.menu_style != 'text' }}"
+    },
+    {
+      "type": "header",
+      "content": "Products Mega Menu"
+    },
+    {
+      "type": "image_picker",
+      "id": "products_panel_image",
+      "label": "Products Image"
+    },
+    {
+      "type": "url",
+      "id": "products_panel_image_link",
+      "label": "Products Image Link"
+    },
+    {
+      "type": "image_picker",
+      "id": "products_material_panel_image",
+      "label": "Shop By Material Image"
+    },
+    {
+      "type": "url",
+      "id": "products_material_panel_image_link",
+      "label": "Shop By Material Image Link"
+    },
+    {
+      "type": "image_picker",
+      "id": "products_style_panel_image",
+      "label": "Shop By Style Image"
+    },
+    {
+      "type": "url",
+      "id": "products_style_panel_image_link",
+      "label": "Shop By Style Image Link"
+    },
+    {
+      "type": "header",
+      "content": "Inspiration Mega Menu"
+    },
+    {
+      "type": "image_picker",
+      "id": "inspiration_panel_image",
+      "label": "Inspiration Image"
+    },
+    {
+      "type": "url",
+      "id": "inspiration_panel_image_link",
+      "label": "Inspiration Image Link"
     },
     {
       "type": "header",

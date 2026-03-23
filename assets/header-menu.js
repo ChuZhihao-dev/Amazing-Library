@@ -271,6 +271,77 @@ if (!customElements.get('header-menu')) {
   customElements.define('header-menu', HeaderMenu);
 }
 
+class TootoMegaMenuPanel extends HTMLElement {
+  connectedCallback() {
+    if (this.initialized) return;
+
+    this.initialized = true;
+    this.defaultPanel = this.dataset.defaultPanel || '';
+    this.addEventListener('click', this.onClick);
+    this.addEventListener('keydown', this.onKeydown);
+    this.addEventListener('pointerleave', this.resetPanels);
+    this.showPanel(this.defaultPanel);
+  }
+
+  disconnectedCallback() {
+    this.removeEventListener('click', this.onClick);
+    this.removeEventListener('keydown', this.onKeydown);
+    this.removeEventListener('pointerleave', this.resetPanels);
+  }
+
+  onClick = (event) => {
+    if (!(event.target instanceof Element)) return;
+
+    const targetPanelButton = event.target.closest('[data-target-panel]');
+    if (targetPanelButton instanceof HTMLElement) {
+      event.preventDefault();
+      this.showPanel(targetPanelButton.dataset.targetPanel || this.defaultPanel);
+      return;
+    }
+
+    const backPanelButton = event.target.closest('[data-back-panel]');
+    if (backPanelButton instanceof HTMLElement) {
+      event.preventDefault();
+      this.showPanel(backPanelButton.dataset.backPanel || this.defaultPanel);
+    }
+  };
+
+  onKeydown = (event) => {
+    if (!(event instanceof KeyboardEvent)) return;
+    if (event.key !== 'Escape') return;
+
+    this.showPanel(this.defaultPanel);
+  };
+
+  resetPanels = () => {
+    this.showPanel(this.defaultPanel);
+  };
+
+  showPanel(panelId) {
+    if (!panelId) return;
+
+    this.querySelectorAll('[data-panel]').forEach((panel) => {
+      if (!(panel instanceof HTMLElement)) return;
+
+      const isActive = panel.dataset.panel === panelId;
+      panel.classList.toggle('is-active', isActive);
+      panel.toggleAttribute('hidden', !isActive);
+    });
+
+    this.querySelectorAll('[data-target-panel]').forEach((button) => {
+      if (!(button instanceof HTMLElement)) return;
+
+      const isActive = button.dataset.targetPanel === panelId;
+      button.classList.toggle('tooto-mega-menu__nav-btn--active', isActive);
+      button.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+    });
+  }
+}
+
+if (!customElements.get('tooto-mega-menu-panel')) {
+  customElements.define('tooto-mega-menu-panel', TootoMegaMenuPanel);
+}
+
 /**
  * Find the closest menu item.
  * @param {Element | null | undefined} element

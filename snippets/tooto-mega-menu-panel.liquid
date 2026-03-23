@@ -1,0 +1,176 @@
+{%- liquid
+  assign panel_img_widths = '400, 600, 900, 1200, 1600'
+  assign panel_img_sizes = '(min-width: 990px) 58vw, 100vw'
+  assign root_panel_handle = parent_link.handle
+  assign root_panel_title = parent_link.title
+  assign root_panel_view_all_label = 'View All'
+  assign root_panel_image = blank
+  assign root_panel_image_link = parent_link.url
+
+  case parent_link.handle
+    when 'products'
+      assign root_panel_image = menu_settings.products_panel_image
+      assign root_panel_image_link = menu_settings.products_panel_image_link | default: parent_link.url
+    when 'inspiration'
+      assign root_panel_image = menu_settings.inspiration_panel_image
+      assign root_panel_image_link = menu_settings.inspiration_panel_image_link | default: parent_link.url
+  endcase
+-%}
+
+<tooto-mega-menu-panel class="tooto-mega-menu" data-default-panel="{{ root_panel_handle }}" style="--tooto-mega-menu-image-radius: {{ image_border_radius | default: 24 }}px;">
+  <div class="tooto-mega-menu__panel is-active" data-panel="{{ root_panel_handle }}">
+    <div class="tooto-mega-menu__copy">
+      <div class="tooto-mega-menu__copy-inner">
+        <h3 class="tooto-mega-menu__title">{{ root_panel_title | escape }}</h3>
+
+        <ul class="tooto-mega-menu__list list-unstyled" role="list">
+          {%- for child_link in parent_link.links -%}
+            {%- assign child_panel_handle = parent_link.handle | append: '__' | append: child_link.handle -%}
+            <li class="tooto-mega-menu__list-item">
+              {%- if child_link.links != blank -%}
+                <button
+                  class="tooto-mega-menu__nav-btn{% if child_link.current or child_link.active %} tooto-mega-menu__nav-btn--active{% endif %}"
+                  type="button"
+                  data-target-panel="{{ child_panel_handle }}"
+                  aria-controls="{{ child_panel_handle }}"
+                  aria-expanded="false"
+                >
+                  <span>{{ child_link.title | escape }}</span>
+                </button>
+              {%- else -%}
+                <a
+                  class="tooto-mega-menu__nav-link{% if child_link.current or child_link.active %} tooto-mega-menu__nav-link--active{% endif %}"
+                  href="{{ child_link.url }}"
+                >
+                  <span>{{ child_link.title | escape }}</span>
+                </a>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+
+        <a class="tooto-mega-menu__cta" href="{{ parent_link.url }}">
+          <span>{{ root_panel_view_all_label }}</span>
+          <span class="tooto-mega-menu__cta-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M2.25 9H15.75" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 2.25L15.75 9L9 15.75" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </a>
+      </div>
+    </div>
+
+    <div class="tooto-mega-menu__media">
+      {%- if root_panel_image_link != blank -%}
+        <a class="tooto-mega-menu__media-link" href="{{ root_panel_image_link }}">
+      {%- endif -%}
+
+      {%- if root_panel_image != blank -%}
+        {{
+          root_panel_image
+          | image_url: width: 1600
+          | image_tag:
+            widths: panel_img_widths,
+            sizes: panel_img_sizes,
+            alt: root_panel_image.alt,
+            loading: 'lazy',
+            class: 'tooto-mega-menu__image'
+        }}
+      {%- else -%}
+        {{ 'collection-1' | placeholder_svg_tag: 'tooto-mega-menu__image tooto-mega-menu__image--placeholder' }}
+      {%- endif -%}
+
+      {%- if root_panel_image_link != blank -%}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- for child_link in parent_link.links -%}
+    {%- if child_link.links != blank -%}
+      {%- liquid
+        assign child_panel_handle = parent_link.handle | append: '__' | append: child_link.handle
+        assign child_panel_title = child_link.title
+        assign child_panel_view_all_label = 'View All'
+        assign child_panel_image = root_panel_image
+        assign child_panel_image_link = child_link.url
+
+        if parent_link.handle == 'products'
+          case child_link.handle
+            when 'shop-by-material'
+              assign child_panel_image = menu_settings.products_material_panel_image | default: root_panel_image
+              assign child_panel_image_link = menu_settings.products_material_panel_image_link | default: child_link.url
+            when 'shop-by-style'
+              assign child_panel_image = menu_settings.products_style_panel_image | default: root_panel_image
+              assign child_panel_image_link = menu_settings.products_style_panel_image_link | default: child_link.url
+          endcase
+        endif
+      -%}
+
+      <div class="tooto-mega-menu__panel" id="{{ child_panel_handle }}" data-panel="{{ child_panel_handle }}" hidden>
+        <div class="tooto-mega-menu__copy">
+          <div class="tooto-mega-menu__copy-inner">
+            <button class="tooto-mega-menu__back" type="button" data-back-panel="{{ root_panel_handle }}">
+              <span class="tooto-mega-menu__back-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <path d="M15.75 9H2.25" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M9 15.75L2.25 9L9 2.25" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span>{{ child_panel_title | escape }}</span>
+            </button>
+
+            <ul class="tooto-mega-menu__list list-unstyled" role="list">
+              {%- for grandchild_link in child_link.links -%}
+                <li class="tooto-mega-menu__list-item">
+                  <a
+                    class="tooto-mega-menu__nav-link{% if grandchild_link.current or grandchild_link.active %} tooto-mega-menu__nav-link--active{% endif %}"
+                    href="{{ grandchild_link.url }}"
+                  >
+                    <span>{{ grandchild_link.title | escape }}</span>
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+
+            <a class="tooto-mega-menu__cta" href="{{ child_link.url }}">
+              <span>{{ child_panel_view_all_label }}</span>
+              <span class="tooto-mega-menu__cta-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <path d="M2.25 9H15.75" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M9 2.25L15.75 9L9 15.75" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </a>
+          </div>
+        </div>
+
+        <div class="tooto-mega-menu__media">
+          {%- if child_panel_image_link != blank -%}
+            <a class="tooto-mega-menu__media-link" href="{{ child_panel_image_link }}">
+          {%- endif -%}
+
+          {%- if child_panel_image != blank -%}
+            {{
+              child_panel_image
+              | image_url: width: 1600
+              | image_tag:
+                widths: panel_img_widths,
+                sizes: panel_img_sizes,
+                alt: child_panel_image.alt,
+                loading: 'lazy',
+                class: 'tooto-mega-menu__image'
+            }}
+          {%- else -%}
+            {{ 'collection-1' | placeholder_svg_tag: 'tooto-mega-menu__image tooto-mega-menu__image--placeholder' }}
+          {%- endif -%}
+
+          {%- if child_panel_image_link != blank -%}
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+  {%- endfor -%}
+</tooto-mega-menu-panel>

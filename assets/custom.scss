@@ -52,3 +52,10 @@
         }
     }
 }
+.section:has(.product-archive) {
+    margin: 50px 0 110px;
+}
+.product-archive .group-block-content{
+    padding: 100px 0;
+    position: relative;
+}
