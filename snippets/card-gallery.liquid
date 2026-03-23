@@ -12,6 +12,23 @@
   assign product = closest.product
   assign block_settings = block.settings
   assign image_sizes = '(min-width: 750px) 50vw, 100vw'
+  assign product_has_swatches = false
+
+  if product != blank
+    for product_option in product.options_with_values
+      assign swatch_count = product_option.values | map: 'swatch' | compact | size
+
+      if swatch_count > 0
+        assign product_has_swatches = true
+        break
+      endif
+    endfor
+  endif
+
+  assign has_existing_swatches = false
+  if children != blank and children contains 'swatches-variant-picker-component'
+    assign has_existing_swatches = true
+  endif
 
   # Check if product has badges and determine position
   assign has_badges = false
@@ -193,6 +210,13 @@
       render 'slideshow', ref: 'slideshow', slides: placeholder_slide, slide_count: 1, attributes: 'disabled="true"'
     %}
   {%- endif -%}
+
+  {% if product_has_swatches and has_existing_swatches == false %}
+    <div class="card-gallery__swatches">
+      {% render 'variant-swatches', product_resource: product, has_option_selected: true %}
+    </div>
+  {% endif %}
+
   {{ children }}
 </div>
 
@@ -201,6 +225,21 @@
     overflow: hidden;
     container-type: inline-size; /* Make card-gallery a container */
     container-name: card-gallery-container; /* Optional: name the container */
+  }
+
+  .card-gallery__swatches {
+    --product-swatches-alignment: flex-start;
+    --product-swatches-alignment-mobile: flex-start;
+    --product-swatches-padding-block-start: 0px;
+    --product-swatches-padding-block-end: 0px;
+    --product-swatches-padding-inline-start: 0px;
+    --product-swatches-padding-inline-end: 0px;
+
+    margin-top: var(--gap-sm);
+  }
+
+  .card-gallery__swatches swatches-variant-picker-component {
+    justify-content: flex-start;
   }
 
   /* Slideshow scroll container layout */

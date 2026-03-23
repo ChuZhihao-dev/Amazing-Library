@@ -36,9 +36,34 @@
       {%- for product_option in product_resource.options_with_values -%}
         {%- liquid
           assign swatch_count = product_option.values | map: 'swatch' | compact | size
+          assign option_has_visual_values = false
+          assign option_key = 'option' | append: product_option.position
+
+          if swatch_count == 0
+            for product_option_value in product_option.values
+              assign option_value_media = product_option_value.variant.featured_media
+
+              if option_value_media == blank and product_option_value.variant == blank
+                for variant in product_resource.variants
+                  if variant[option_key] == product_option_value.name and variant.featured_media
+                    assign option_value_media = variant.featured_media
+                    break
+                  endif
+                endfor
+              elsif option_value_media == blank and product_option_value.product_url
+                assign option_value_media = product_option_value.variant.product.featured_media
+              endif
+
+              if option_value_media
+                assign option_has_visual_values = true
+                break
+              endif
+            endfor
+          endif
+
           assign variant_style = block_settings.variant_style
 
-          if swatch_count > 0 and block_settings.show_swatches
+          if block_settings.show_swatches and (swatch_count > 0 or option_has_visual_values)
             if block_settings.variant_style == 'dropdown'
               assign variant_style = 'swatch_dropdown'
             else
@@ -68,8 +93,14 @@
           </div>
         {%- elsif variant_style == 'swatch' or block_settings.variant_style == 'buttons' -%}
           {%- assign fieldset_index = forloop.index0 -%}
+          {%- liquid
+            assign swatch_card_class = ''
+            if variant_style == 'swatch' and request.page_type == 'product'
+              assign swatch_card_class = ' variant-option--swatch-cards'
+            endif
+          -%}
           <fieldset
-            class="variant-option variant-option--buttons{% if variant_style == 'swatch' %} variant-option--swatches{% else %} variant-option--{{ settings.variant_button_width }}{% endif %}"
+            class="variant-option variant-option--buttons{% if variant_style == 'swatch' %} variant-option--swatches{{ swatch_card_class }}{% else %} variant-option--{{ settings.variant_button_width }}{% endif %}"
             data-fieldset-index="{{ fieldset_index }}"
             ref="fieldsets[]"
             {{ option_id_attribute }}
@@ -84,6 +115,24 @@
               {% if product_option_value.size > longest_value and option_id_attribute %}
                 {% assign longest_value = product_option_value.size %}
               {% endif %}
+              {% liquid
+                assign featured_media = blank
+                assign featured_media_id = blank
+
+                if variant_style == 'swatch'
+                  assign featured_media = product_option_value.variant.featured_media
+
+                  # If the variant has no featured media, and we have a combined listing product, then fall back to
+                  # using the featured media of the child product that is linked to this option value.
+                  if featured_media == blank and product_option_value.product_url
+                    assign featured_media = product_option_value.variant.product.featured_media
+                  endif
+
+                  if featured_media
+                    assign featured_media_id = featured_media.id
+                  endif
+                endif
+              %}
               <label
                 class="variant-option__button-label{% if variant_style == 'swatch' %} variant-option__button-label--has-swatch{% endif %}"
               >
@@ -102,6 +151,9 @@
                   data-option-value-id="{{ product_option_value.id }}"
                   data-option-available="{{ product_option_value.available }}"
                   data-connected-product-url="{{ product_option_value.product_url }}"
+                  {% if featured_media_id != blank %}
+                    data-option-media-id="{{ featured_media_id }}"
+                  {% endif %}
                   {% if product_option_value.variant.id %}
                     data-variant-id="{{ product_option_value.variant.id }}"
                   {% endif %}
@@ -113,21 +165,13 @@
                   {% endif %}
                 >
                 {% if variant_style == 'swatch' %}
-                  {% liquid
-                    assign featured_media = product_option_value.variant.featured_media
-
-                    # If the variant has no featured media, and we have a combined listing product, then fall back to
-                    # using the featured media of the child product that is linked to this option value.
-                    if featured_media == blank and product_option_value.product_url
-                      assign featured_media = product_option_value.variant.product.featured_media
-                    endif
-                  %}
-
                   {% render 'swatch',
                     swatch: product_option_value.swatch,
                     variant_image: featured_media,
+                    force_variant_image: true,
                     mode: 'unscaled'
                   %}
+                  <span class="variant-option__swatch-card-label">{{ product_option_value.name }}</span>
                 {% else %}
                   {% if product_option_value.available == true %}
                     <span
@@ -306,5 +350,50 @@
   .variant-picker--right .variant-option {
     text-align: right;
     justify-content: right;
+  }
+
+  .variant-picker .variant-option--swatch-cards {
+    gap: var(--gap-sm);
+  }
+
+  .variant-picker .variant-option--swatch-cards legend {
+    margin-block-end: var(--gap-sm);
+  }
+
+  .variant-picker .variant-option--swatch-cards .variant-option__button-label--has-swatch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--gap-xs);
+    min-width: 80px;
+    padding: 4px;
+    border: 1px solid var(--color-variant-border);
+    border-radius: 0;
+    background-color: var(--color-background);
+  }
+
+  .variant-picker .variant-option--swatch-cards .variant-option__button-label--has-swatch:hover {
+    border-color: var(--color-variant-hover-border);
+    background-color: var(--color-variant-hover-background);
+  }
+
+  .variant-picker .variant-option--swatch-cards .variant-option__button-label--has-swatch:has(:checked) {
+    border-color: var(--color-selected-variant-border);
+    color: var(--color-selected-variant-text);
+  }
+
+  .variant-picker .variant-option--swatch-cards .swatch {
+    --variant-picker-swatch-width: 72px;
+    --variant-picker-swatch-height: 72px;
+
+    border-radius: 0;
+  }
+
+  .variant-picker .variant-option--swatch-cards .variant-option__swatch-card-label {
+    display: block;
+    font-size: 14px;
+    line-height: 1.4;
+    text-align: center;
   }
 {% endstylesheet %}

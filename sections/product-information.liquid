@@ -21,7 +21,7 @@
 {% endcapture %}
 
 {% capture additional_blocks %}
-  {% content_for 'blocks' %}
+  {% content_for 'blocks', closest.product: closest.product %}
 {% endcapture %}
 
 {% if section.settings.enable_sticky_add_to_cart %}
@@ -366,6 +366,9 @@
   "blocks": [
     {
       "type": "@app"
+    },
+    {
+      "type": "tooto-product-features-metafield"
     }
   ],
   "disabled_on": {

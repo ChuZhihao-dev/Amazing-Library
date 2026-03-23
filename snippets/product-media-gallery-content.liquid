@@ -26,9 +26,79 @@
   assign selected_product = closest.product
   assign selected_variant_media = selected_product.selected_or_first_available_variant.featured_media
   assign first_3d_model = selected_product.media | where: 'media_type', 'model' | first
+  assign variant_images = selected_product.images | where: 'attached_to_variant?', true | map: 'src'
+  assign variant_image_lookup = '||'
 
-  if block_settings.hide_variants
-    assign variant_images = selected_product.images | where: 'attached_to_variant?', true | map: 'src'
+  for variant_image in variant_images
+    assign variant_image_lookup = variant_image_lookup | append: variant_image | append: '||'
+  endfor
+
+  assign swatch_option_position = blank
+  assign swatch_option_key = blank
+
+  for product_option in selected_product.options_with_values
+    assign swatch_count = product_option.values | map: 'swatch' | compact | size
+    assign option_has_visual_values = false
+
+    if swatch_count == 0
+      assign option_key = 'option' | append: product_option.position
+
+      for product_option_value in product_option.values
+        assign option_value_media = product_option_value.variant.featured_media
+
+        if option_value_media == blank and product_option_value.variant == blank
+          for variant in selected_product.variants
+            if variant[option_key] == product_option_value.name and variant.featured_media
+              assign option_value_media = variant.featured_media
+              break
+            endif
+          endfor
+        elsif option_value_media == blank and product_option_value.product_url
+          assign option_value_media = product_option_value.variant.product.featured_media
+        endif
+
+        if option_value_media
+          assign option_has_visual_values = true
+          break
+        endif
+      endfor
+    endif
+
+    if swatch_count > 0 or option_has_visual_values
+      assign swatch_option_position = product_option.position
+      assign swatch_option_key = 'option' | append: swatch_option_position
+      break
+    endif
+  endfor
+
+  assign selected_swatch_value = blank
+  assign selected_group_variant_media_lookup = '||'
+  assign has_selected_group_variant_media = false
+
+  if request.page_type == 'product' and swatch_option_key != blank
+    assign selected_swatch_value = selected_product.selected_or_first_available_variant[swatch_option_key]
+
+    if selected_swatch_value != blank
+      for image in selected_product.images
+        unless image.attached_to_variant?
+          continue
+        endunless
+
+        assign image_matches_selected_group = false
+
+        for variant in image.variants
+          if variant[swatch_option_key] == selected_swatch_value
+            assign image_matches_selected_group = true
+            break
+          endif
+        endfor
+
+        if image_matches_selected_group
+          assign has_selected_group_variant_media = true
+          assign selected_group_variant_media_lookup = selected_group_variant_media_lookup | append: image.src | append: '||'
+        endif
+      endfor
+    endif
   endif
 
   if block_settings.slideshow_controls_style == 'thumbnails'
@@ -100,7 +170,42 @@
   endif
 
   assign sorted_media = '' | split: ','
-  if selected_variant_media
+  if has_selected_group_variant_media
+    assign selected_variant_media_src = selected_variant_media.src | default: selected_variant_media.preview_image.src
+    assign selected_variant_media_match_token = '||' | append: selected_variant_media_src | append: '||'
+
+    if selected_variant_media and selected_group_variant_media_lookup contains selected_variant_media_match_token
+      assign sorted_media = sorted_media | concat: selected_product.media | where: 'id', selected_variant_media.id
+    endif
+
+    for media in selected_product.media
+      assign media_src = media.src | default: media.preview_image.src
+      assign media_match_token = '||' | append: media_src | append: '||'
+      assign media_is_selected_group_variant = false
+      assign media_is_variant_specific = false
+
+      if media_src != blank
+        if selected_group_variant_media_lookup contains media_match_token
+          assign media_is_selected_group_variant = true
+        endif
+
+        if variant_image_lookup contains media_match_token
+          assign media_is_variant_specific = true
+        endif
+      endif
+
+      if media_is_variant_specific and media_is_selected_group_variant == false
+        continue
+      endif
+
+      if selected_variant_media and media.id == selected_variant_media.id
+        continue
+      endif
+
+      assign found_media = selected_product.media | where: 'id', media.id
+      assign sorted_media = sorted_media | concat: found_media
+    endfor
+  elsif selected_variant_media
     assign sorted_media = sorted_media | concat: selected_product.media | where: 'id', selected_variant_media.id
 
     for media in selected_product.media

@@ -1,0 +1,172 @@
+{%- liquid
+  assign feature_items = closest.product.metafields.custom.tooto_product_features.value
+  assign feature_img_widths = '400, 600, 900, 1200'
+  assign feature_img_sizes = '(min-width: 750px) 50vw, 100vw'
+  assign show_empty_state = false
+
+  if feature_items == blank and request.design_mode
+    assign show_empty_state = true
+  endif
+-%}
+
+{%- if feature_items != blank or show_empty_state -%}
+  <div class="tooto-product-features-metafield" {{ block.shopify_attributes }}>
+    {%- if feature_items != blank -%}
+      <div class="tooto-product-features-metafield__list">
+        {%- for feature_item in feature_items -%}
+          {%- liquid
+            assign feature_image = feature_item.feature_image.value
+            assign feature_heading = feature_item.heading.value
+            assign feature_body = feature_item.body.value
+            assign layout_index = forloop.index0 | modulo: 2
+            assign reverse_layout = false
+            if layout_index == 1
+              assign reverse_layout = true
+            endif
+          -%}
+          <article class="tooto-product-features-metafield__item{% if reverse_layout %} tooto-product-features-metafield__item--reverse{% endif %}">
+            <div class="tooto-product-features-metafield__media">
+              {%- if feature_image != blank -%}
+                {{
+                  feature_image
+                  | image_url: width: 1200
+                  | image_tag:
+                    widths: feature_img_widths,
+                    sizes: feature_img_sizes,
+                    alt: feature_image.alt,
+                    loading: 'lazy',
+                    class: 'tooto-product-features-metafield__image'
+                }}
+              {%- else -%}
+                {{ 'collection-1' | placeholder_svg_tag: 'tooto-product-features-metafield__image tooto-product-features-metafield__image--placeholder' }}
+              {%- endif -%}
+            </div>
+
+            <div class="tooto-product-features-metafield__content">
+              {%- if feature_heading != blank -%}
+                <h2 class="tooto-product-features-metafield__heading">{{ feature_heading | escape }}</h2>
+              {%- endif -%}
+              {%- if feature_body != blank -%}
+                <div class="tooto-product-features-metafield__body">{{ feature_body | escape | newline_to_br }}</div>
+              {%- endif -%}
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="tooto-product-features-metafield__empty">
+        Add product metafield entries to `custom.tooto_product_features` to show this content.
+      </div>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  .tooto-product-features-metafield {
+    width: 100%;
+  }
+
+  .tooto-product-features-metafield__list {
+    display: grid;
+    gap: 80px;
+  }
+
+  .tooto-product-features-metafield__item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 48px;
+  }
+
+  .tooto-product-features-metafield__item--reverse .tooto-product-features-metafield__media {
+    order: 2;
+  }
+
+  .tooto-product-features-metafield__item--reverse .tooto-product-features-metafield__content {
+    order: 1;
+  }
+
+  .tooto-product-features-metafield__media {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background-color: rgb(var(--color-foreground-rgb) / 0.06);
+  }
+
+  .tooto-product-features-metafield__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .tooto-product-features-metafield__image--placeholder {
+    width: 100%;
+    height: 100%;
+  }
+
+  .tooto-product-features-metafield__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 24px;
+    min-width: 0;
+  }
+
+  .tooto-product-features-metafield__heading {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    line-height: 1.05;
+    font-weight: 700;
+    color: var(--color-foreground-heading);
+    text-wrap: balance;
+  }
+
+  .tooto-product-features-metafield__body {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-foreground);
+    max-width: 48ch;
+  }
+
+  .tooto-product-features-metafield__empty {
+    padding: 24px;
+    border: 1px dashed rgb(var(--color-border-rgb) / 0.5);
+    color: var(--color-foreground);
+  }
+
+  @media screen and (max-width: 749px) {
+    .tooto-product-features-metafield__list {
+      gap: 48px;
+    }
+
+    .tooto-product-features-metafield__item,
+    .tooto-product-features-metafield__item--reverse {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .tooto-product-features-metafield__item--reverse .tooto-product-features-metafield__media,
+    .tooto-product-features-metafield__item--reverse .tooto-product-features-metafield__content {
+      order: initial;
+    }
+
+    .tooto-product-features-metafield__heading {
+      font-size: clamp(1.75rem, 8vw, 2.5rem);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Tooto Product Metafield",
+  "tag": null,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Reads product metafield: custom.tooto_product_features"
+    }
+  ]
+}
+{% endschema %}
