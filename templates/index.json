@@ -179,7 +179,7 @@
     "tooto_series_hero_pathof_shule": {
       "type": "tooto-series-hero",
       "settings": {
-        "image": "shopify://shop_images/160_2x_1.webp",
+        "image": "shopify://shop_images/160_2x_4.webp",
         "image_mobile": "shopify://shop_images/160_2x_3.webp",
         "heading_bold": "Pathof",
         "heading_light": "Shule",
