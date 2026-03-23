@@ -121,7 +121,7 @@
   .tooto-product-features-metafield__heading {
     margin: 0;
     font-size: 48px;
-    line-height: 56px;
+    line-height: 1.4;
     font-weight: 700;
     color: #A78776;
     text-wrap: balance;
@@ -143,9 +143,14 @@
 
   @media screen and (max-width: 749px) {
     .tooto-product-features-metafield__list {
-      gap: 48px;
-    }
+      gap: 28px;
+      max-width: 90%;
+      margin: auto;
 
+    }
+    .tooto-product-features-metafield {
+      padding-block: 48px;
+    }
     .tooto-product-features-metafield__item,
     .tooto-product-features-metafield__item--reverse {
       grid-template-columns: 1fr;
@@ -158,7 +163,15 @@
     }
 
     .tooto-product-features-metafield__heading {
-      font-size: clamp(1.75rem, 8vw, 2.5rem);
+      font-size: 24px;
+    }
+    .tooto-product-features-metafield__content {
+      gap: 12px;
+      text-align: center;
+    }
+    .tooto-product-features-metafield__body {
+      font-size: 13px;
+      line-height: 17px;
     }
   }
 {% endstylesheet %}

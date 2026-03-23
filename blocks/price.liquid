@@ -135,6 +135,16 @@
     text-transform: none;
     color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
   }
+
+  @media(max-width: 768px) {
+      .product-price--product-page .price-range__values,
+      .product-price--product-page .price {
+        font-size: 16px;
+      }
+      .product-price--product-page .price-range__prefix {
+        font-size: 12px;
+      }
+  }
 {% endstylesheet %}
 
 {% schema %}

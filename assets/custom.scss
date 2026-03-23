@@ -65,3 +65,11 @@ details.details[open] {
         font-weight: 500;
     }
 } 
+
+@media (max-width: 768px) {
+    .product-details {
+        >.group-block {
+            padding-block: 40px;
+        }
+    }
+}

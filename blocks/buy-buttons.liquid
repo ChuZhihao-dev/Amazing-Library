@@ -877,6 +877,19 @@
   .volume-pricing--expanded .volume-pricing__show-less {
     display: inline;
   }
+
+  @media(max-width: 768px) {
+    .buy-buttons-block--product-page .quantity-selector {
+      height: 36px;
+      width: 168px;
+      flex: 0 0 168px;
+    }
+    .buy-buttons-block--product-page .add-to-cart-button,
+    .buy-buttons-block--product-page .buy-buttons-block__secondary-button {
+      height: 43px;
+      padding: 0;
+    }
+  }
 {% endstylesheet %}
 
 {% schema %}
