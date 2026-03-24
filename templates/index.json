@@ -251,9 +251,9 @@
       ],
       "settings": {
         "cta_label": "SEE MORE",
-        "cta_url": "",
+        "cta_url": "shopify://collections/all",
         "section_width": "page-width",
-        "color_scheme": "scheme-1",
+        "color_scheme": "scheme-3",
         "padding-block-start": 64,
         "padding-block-end": 64
       }
@@ -368,7 +368,7 @@
       "settings": {
         "heading": "Woo Story",
         "cta_label": "More Story",
-        "cta_url": "",
+        "cta_url": "shopify://pages/stories",
         "section_width": "full-width",
         "color_scheme": "scheme-497cfa6d-34bd-4263-89f1-12eaaaa2ae47",
         "padding-block-start": 80,
