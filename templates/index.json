@@ -225,10 +225,13 @@
             "product_url": "",
             "swatch_color_1": "#C8BFB0",
             "swatch_label_1": "Beige",
+            "swatch_image_1": "shopify://shop_images/234_2x_3a3c1ec9-425c-4c3e-9e17-a44a9793f07d.webp",
             "swatch_color_2": "#D4C5B0",
             "swatch_label_2": "Sand",
+            "swatch_image_2": "shopify://shop_images/230_2x_1.webp",
             "swatch_color_3": "#2E3A5C",
-            "swatch_label_3": "Navy"
+            "swatch_label_3": "Navy",
+            "swatch_image_3": "shopify://shop_images/4429_2x_a97f6854-159a-4911-ada1-e2169394b5e1.webp"
           }
         },
         "card_3": {
@@ -240,10 +243,13 @@
             "product_url": "",
             "swatch_color_1": "#C8BFB0",
             "swatch_label_1": "Beige",
+            "swatch_image_1": "shopify://shop_images/231_2x_f067496e-18f6-4d33-b9e8-299bb6b34a67.webp",
             "swatch_color_2": "#D4C5B0",
             "swatch_label_2": "Sand",
+            "swatch_image_2": "shopify://shop_images/4429_2x_a97f6854-159a-4911-ada1-e2169394b5e1.webp",
             "swatch_color_3": "#2E3A5C",
-            "swatch_label_3": "Navy"
+            "swatch_label_3": "Navy",
+            "swatch_image_3": "shopify://shop_images/4430_2x_0c6b08c2-30bc-4ed2-8a8d-19a684a5b5ef.webp"
           }
         }
       },
