@@ -46,6 +46,19 @@ class ProductTitle extends Component {
     const textElement = this.refs.text || this.querySelector('.title-text') || this;
     if (!textElement.textContent) return;
 
+    const forceSingleLine =
+      this.classList.contains('product-card-gallery__title-placeholder') || Boolean(this.closest('product-card'));
+
+    if (forceSingleLine) {
+      textElement.style.display = 'block';
+      textElement.style.overflow = 'hidden';
+      textElement.style.textOverflow = 'ellipsis';
+      textElement.style.whiteSpace = 'nowrap';
+      textElement.style.removeProperty('-webkit-box-orient');
+      textElement.style.removeProperty('-webkit-line-clamp');
+      return;
+    }
+
     const containerHeight = this.clientHeight;
 
     const computedStyle = window.getComputedStyle(this);

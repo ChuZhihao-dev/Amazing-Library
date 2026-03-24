@@ -1084,6 +1084,11 @@
   .header-menu .menu-list__list-item[slot='overflow'] .menu-list__submenu {
     content-visibility: visible;
   }
+
+  .header-menu .menu-list__submenu:has(.tooto-mega-menu) {
+    content-visibility: visible;
+    contain-intrinsic-size: auto;
+  }
   /* Dropdown Localization Styles */
   .dropdown-localization__button {
     display: flex;

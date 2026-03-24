@@ -115,6 +115,22 @@
     height: 100%;
   }
 
+  product-card a[ref='productTitleLink'] .text-block {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  product-card a[ref='productTitleLink'] .text-block > * {
+    width: 100%;
+    max-inline-size: 100%;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-wrap: nowrap;
+  }
+
   @media screen and (max-width: 749px) {
     .product-card slideshow-arrows .slideshow-control {
       display: none;
