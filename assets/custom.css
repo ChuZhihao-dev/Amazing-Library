@@ -101,33 +101,33 @@ details.details[open] .details__header {
   background: #F6F6F6;
 }
 
-.tooto-configurator {
+#avpoptions-container__v2 .tooto-configurator {
   display: flex;
   flex-direction: column;
   gap: 40px;
   width: 100%;
 }
-.tooto-configurator__group {
+#avpoptions-container__v2 .tooto-configurator__group {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
-.tooto-configurator__row {
+#avpoptions-container__v2 .tooto-configurator__row {
   display: flex;
   align-items: center;
   gap: 16px;
 }
-.tooto-configurator__row--between {
+#avpoptions-container__v2 .tooto-configurator__row--between {
   justify-content: space-between;
 }
-.tooto-configurator__label, .tooto-configurator__dimension-heading {
+#avpoptions-container__v2 .tooto-configurator__label, #avpoptions-container__v2 .tooto-configurator__dimension-heading {
   margin: 0;
   color: var(--color-foreground);
-  font-size: 14px;
+  font-size: 14px !important;
   font-weight: 400;
   line-height: 20px;
 }
-.tooto-configurator__help-link {
+#avpoptions-container__v2 .tooto-configurator__help-link {
   color: var(--color-foreground);
   opacity: 0.65;
   font-size: 14px;
@@ -135,14 +135,14 @@ details.details[open] .details__header {
   text-decoration: underline;
   text-underline-offset: 4px;
 }
-.tooto-configurator__help-link:hover {
+#avpoptions-container__v2 .tooto-configurator__help-link:hover {
   opacity: 1;
 }
-.tooto-configurator__select-card {
+#avpoptions-container__v2 .tooto-configurator__select-card {
   position: relative;
   width: 100%;
 }
-.tooto-configurator__select-trigger {
+#avpoptions-container__v2 .tooto-configurator__select-trigger {
   display: flex;
   align-items: center;
   gap: 16px;
@@ -155,43 +155,43 @@ details.details[open] .details__header {
   cursor: pointer;
   text-align: left;
 }
-.tooto-configurator__select-thumb, .tooto-configurator__select-option-thumb {
+#avpoptions-container__v2 .tooto-configurator__select-thumb, #avpoptions-container__v2 .tooto-configurator__select-option-thumb {
   width: 48px;
   height: 48px;
   flex: 0 0 48px;
   overflow: hidden;
 }
-.tooto-configurator__select-thumb img, .tooto-configurator__select-option-thumb img {
+#avpoptions-container__v2 .tooto-configurator__select-thumb img, #avpoptions-container__v2 .tooto-configurator__select-option-thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
-.tooto-configurator__select-value {
+#avpoptions-container__v2 .tooto-configurator__select-value {
   flex: 1 1 auto;
   font-size: 16px;
   line-height: 1.4;
   color: var(--color-foreground);
 }
-.tooto-configurator__select-icon, .tooto-configurator__field-icon {
+#avpoptions-container__v2 .tooto-configurator__select-icon, #avpoptions-container__v2 .tooto-configurator__field-icon {
   margin-left: auto;
   font-size: 20px;
   line-height: 1;
   opacity: 0.7;
   color: var(--color-foreground);
 }
-.tooto-configurator__select-menu {
+#avpoptions-container__v2 .tooto-configurator__select-menu {
   position: absolute;
   inset-inline: 0;
   top: calc(100% + 8px);
   z-index: 20;
   display: flex;
   flex-direction: column;
-  background-color: var(--color-background) !important;
+  background-color: var(--color-background);
   border: 1px solid rgba(var(--color-border-rgb), 0.45);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
-.tooto-configurator__select-option {
+#avpoptions-container__v2 .tooto-configurator__select-option {
   display: flex;
   align-items: center;
   gap: 16px;
@@ -199,31 +199,31 @@ details.details[open] .details__header {
   cursor: pointer;
   border-bottom: 1px solid rgba(var(--color-border-rgb), 0.3);
 }
-.tooto-configurator__select-option:last-child {
+#avpoptions-container__v2 .tooto-configurator__select-option:last-child {
   border-bottom: 0;
 }
-.tooto-configurator__select-option input {
+#avpoptions-container__v2 .tooto-configurator__select-option input {
   position: absolute;
   opacity: 0;
   pointer-events: none;
 }
-.tooto-configurator__select-option-text {
+#avpoptions-container__v2 .tooto-configurator__select-option-text {
   font-size: 16px;
   line-height: 1.4;
   color: var(--color-foreground);
 }
-.tooto-configurator__dimension-group {
+#avpoptions-container__v2 .tooto-configurator__dimension-group {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
-.tooto-configurator__dimension-fields {
+#avpoptions-container__v2 .tooto-configurator__dimension-fields {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   gap: 12px;
   align-items: center;
 }
-.tooto-configurator__field {
+#avpoptions-container__v2 .tooto-configurator__field {
   position: relative;
   display: flex;
   align-items: center;
@@ -231,7 +231,7 @@ details.details[open] .details__header {
   border: 1px solid rgba(var(--color-border-rgb), 0.45);
   background: var(--color-background);
 }
-.tooto-configurator__field select {
+#avpoptions-container__v2 .tooto-configurator__field select {
   width: 100%;
   min-height: 74px;
   padding: 0 56px 0 18px;
@@ -242,18 +242,19 @@ details.details[open] .details__header {
   line-height: 1.4;
   appearance: none;
   cursor: pointer;
+  background-image: none !important;
 }
-.tooto-configurator__field-icon {
+#avpoptions-container__v2 .tooto-configurator__field-icon {
   position: absolute;
   inset-inline-end: 18px;
   pointer-events: none;
 }
-.tooto-configurator__dash {
+#avpoptions-container__v2 .tooto-configurator__dash {
   color: var(--color-foreground);
   font-size: 18px;
   line-height: 1;
 }
-.tooto-configurator__info-button {
+#avpoptions-container__v2 .tooto-configurator__info-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -261,29 +262,29 @@ details.details[open] .details__header {
   height: 22px;
   margin-left: 8px;
   padding: 0;
-  border: 1px solid var(--color-foreground);
+  border: 1px solid #BCA68F;
   border-radius: 50%;
   background: transparent;
-  color: var(--color-foreground);
-  font-size: 14px;
+  color: #BCA68F;
+  font-size: 12px;
   line-height: 1;
   cursor: pointer;
 }
-.tooto-configurator__cards {
+#avpoptions-container__v2 .tooto-configurator__cards {
   display: flex;
   flex-wrap: wrap;
   gap: 18px;
 }
-.tooto-configurator__card {
+#avpoptions-container__v2 .tooto-configurator__card {
   display: block;
   cursor: pointer;
 }
-.tooto-configurator__card-input {
+#avpoptions-container__v2 .tooto-configurator__card-input {
   position: absolute;
   opacity: 0;
   pointer-events: none;
 }
-.tooto-configurator__card-frame {
+#avpoptions-container__v2 .tooto-configurator__card-frame {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -295,44 +296,44 @@ details.details[open] .details__header {
   transition: border-color 0.2s ease;
   box-sizing: border-box;
 }
-.tooto-configurator__card-input:checked + .tooto-configurator__card-frame {
+#avpoptions-container__v2 .tooto-configurator__card-input:checked + .tooto-configurator__card-frame {
   border-color: var(--color-foreground);
 }
-.tooto-configurator__card-media {
+#avpoptions-container__v2 .tooto-configurator__card-media {
   width: 118px;
   height: 118px;
   overflow: hidden;
 }
-.tooto-configurator__card-media img {
+#avpoptions-container__v2 .tooto-configurator__card-media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
-.tooto-configurator__card-title {
+#avpoptions-container__v2 .tooto-configurator__card-title {
   color: var(--color-foreground);
   font-size: 16px;
   line-height: 1.25;
   text-align: center;
 }
 @media screen and (max-width: 749px) {
-  .tooto-configurator {
+  #avpoptions-container__v2 .tooto-configurator {
     gap: 32px;
   }
-  .tooto-configurator__row--between {
+  #avpoptions-container__v2 .tooto-configurator__row--between {
     align-items: flex-start;
     flex-direction: column;
   }
-  .tooto-configurator__dimension-fields {
+  #avpoptions-container__v2 .tooto-configurator__dimension-fields {
     grid-template-columns: 1fr;
   }
-  .tooto-configurator__dash {
+  #avpoptions-container__v2 .tooto-configurator__dash {
     display: none;
   }
-  .tooto-configurator__card-frame {
+  #avpoptions-container__v2 .tooto-configurator__card-frame {
     width: 132px;
   }
-  .tooto-configurator__card-media {
+  #avpoptions-container__v2 .tooto-configurator__card-media {
     width: 108px;
     height: 108px;
   }
@@ -422,9 +423,9 @@ details.details[open] .details__header {
   width: 22px;
   height: 22px;
   margin-left: 10px;
-  border: 1px solid #000000;
-  color: #000000;
-  font-size: 14px;
+  border: 1px solid #BCA68F;
+  color: #BCA68F;
+  font-size: 12px;
   font-weight: 500;
 }
 .product-details .tooto-configurator__cards {
@@ -574,8 +575,8 @@ details.details[open] .details__header {
   gap: 16px !important;
 }
 .product-details .tooto-configurator__card-frame {
-  width: 128px !important;
-  padding: 10px 10px 14px !important;
+  width: 90px !important;
+  padding: 7px !important;
   gap: 10px !important;
   border: 1px solid #D8D8D8 !important;
 }
@@ -583,16 +584,17 @@ details.details[open] .details__header {
   border-color: #000000 !important;
 }
 .product-details .tooto-configurator__card-media {
-  width: 106px !important;
-  height: 106px !important;
+  width: 80px !important;
+  height: 70px !important;
 }
 .product-details .tooto-configurator__card-title {
-  font-size: 15px !important;
-  line-height: 1.22 !important;
+  font-size: 14px !important;
+  line-height: 1.3 !important;
+  min-height: 38px;
 }
 .product-details .tooto-configurator__info-button {
-  width: 20px !important;
-  height: 20px !important;
+  width: 17px !important;
+  height: 17px !important;
   font-size: 13px !important;
 }
 @media screen and (max-width: 749px) {
@@ -613,6 +615,23 @@ details.details[open] .details__header {
   }
 }
 
+.product-details .tooto-configurator__field-icon {
+  display: none !important;
+}
+.product-details .tooto-configurator__field::after {
+  content: "";
+  position: absolute;
+  inset-inline-end: 16px;
+  top: 50%;
+  width: 16px;
+  height: 8px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-size: 16px 8px;
+  background-position: center;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 16 8'%3E%3Cpath d='M8 .293.354 7.94l.707.707L8 1.707l6.94 6.94.707-.707L8 .293Z' fill='%233B3B3B'/%3E%3C/svg%3E");
+}
 .product-details .tooto-configurator__field > *:not(select):not(.tooto-configurator__field-icon) {
   display: none !important;
 }
@@ -626,6 +645,47 @@ details.details[open] .details__header {
   -webkit-appearance: none !important;
   -moz-appearance: none !important;
 }
+.product-details .tooto-configurator__field::before {
+  display: none !important;
+}
 .product-details .tooto-configurator__field select::-ms-expand {
+  display: none !important;
+}
+
+#avpoptions-container__v2 .tooto-configurator__field {
+  position: relative !important;
+}
+#avpoptions-container__v2 .tooto-configurator__field::after {
+  content: "";
+  position: absolute;
+  inset-inline-end: 16px;
+  top: 50%;
+  width: 16px;
+  height: 8px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-size: 16px 8px;
+  background-position: center;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 16 8'%3E%3Cg transform='matrix(1,0,0,-1,0,16)'%3E%3Cpath d='M8.000001 7.29289323L-0.35355335 15.6464467L0.35355335 16.3535538L8.000001 8.70710695L15.646446 16.3535538L16.353554 15.6464467L8.000001 7.29289323Z' fill='%233B3B3B'/%3E%3C/g%3E%3C/svg%3E");
+}
+#avpoptions-container__v2 .tooto-configurator__field > svg,
+#avpoptions-container__v2 .tooto-configurator__field > i,
+#avpoptions-container__v2 .tooto-configurator__field > .icon,
+#avpoptions-container__v2 .tooto-configurator__field > .tooto-configurator__field-icon {
+  display: none !important;
+}
+#avpoptions-container__v2 .tooto-configurator__field select,
+#avpoptions-container__v2 .tooto-configurator__field select:focus,
+#avpoptions-container__v2 .tooto-configurator__field select:active {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  padding-right: 44px !important;
+}
+#avpoptions-container__v2 .tooto-configurator__field select::-ms-expand {
   display: none !important;
 }
