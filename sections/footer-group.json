@@ -66,22 +66,22 @@
         "menu_7q4GE4": {
           "type": "menu",
           "settings": {
-            "menu_title": "",
-            "menu": "about"
-          }
-        },
-        "menu_A7kinM": {
-          "type": "menu",
-          "settings": {
-            "menu_title": "Support",
-            "menu": "support"
+            "menu_title": "Shop by material",
+            "menu": "shop-by-material"
           }
         },
         "menu_ML9PyW": {
           "type": "menu",
           "settings": {
-            "menu_title": "",
-            "menu": "about"
+            "menu_title": "Shop by style",
+            "menu": "shop-by-style"
+          }
+        },
+        "menu_CAkMbr": {
+          "type": "menu",
+          "settings": {
+            "menu_title": "Custom Size",
+            "menu": "custom-size"
           }
         },
         "menu_G9YK9V": {
@@ -91,20 +91,20 @@
             "menu": "inspiration"
           }
         },
-        "menu_CAkMbr": {
+        "menu_A7kinM": {
           "type": "menu",
           "settings": {
-            "menu_title": "About Us",
-            "menu": "about"
+            "menu_title": "Support",
+            "menu": "support"
           }
         }
       },
       "block_order": [
         "menu_7q4GE4",
-        "menu_A7kinM",
         "menu_ML9PyW",
+        "menu_CAkMbr",
         "menu_G9YK9V",
-        "menu_CAkMbr"
+        "menu_A7kinM"
       ],
       "settings": {
         "logo": "shopify://shop_images/54.svg",
