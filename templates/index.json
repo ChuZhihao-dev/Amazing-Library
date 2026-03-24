@@ -123,7 +123,7 @@
         "variant_rC6BxL": {
           "type": "variant",
           "settings": {
-            "product_image": "shopify://shop_images/image_2x_13.webp",
+            "product_image": "shopify://shop_images/image_2x_15.webp",
             "swatch_color": "#C5B39E",
             "color_label": "Burgundy"
           }
@@ -131,7 +131,7 @@
         "variant_gkydmR": {
           "type": "variant",
           "settings": {
-            "product_image": "shopify://shop_images/image_2x_13.webp",
+            "product_image": "shopify://shop_images/224_2x_1.webp",
             "swatch_color": "#0A508C",
             "color_label": "Burgundy"
           }
@@ -174,6 +174,78 @@
         "color_scheme": "scheme-1",
         "padding-block-start": 0,
         "padding-block-end": 0
+      }
+    },
+    "tooto_product_grid_V3YpQT": {
+      "type": "tooto-product-grid",
+      "blocks": {
+        "product_card_MeyDpp": {
+          "type": "product_card",
+          "settings": {
+            "product_image": "shopify://shop_images/225_2x_db7b2418-12a7-4b9e-9371-674677f52ef6.webp",
+            "product_name": "Woven Serenity Wool Rug  0981",
+            "product_price": "$240",
+            "product_url": "shopify://products/woven-serenity-wool-rug-0981",
+            "swatch_color_1": "#C8BFB0",
+            "swatch_label_1": "Beige",
+            "swatch_image_1": "shopify://shop_images/4429_2x_a97f6854-159a-4911-ada1-e2169394b5e1.webp",
+            "swatch_color_2": "#D4C5B0",
+            "swatch_label_2": "Sand",
+            "swatch_image_2": "shopify://shop_images/233_2x_b1b2cb3a-4e64-4151-921a-3e90eb1cf4da.webp",
+            "swatch_color_3": "#2E3A5C",
+            "swatch_label_3": "Navy",
+            "swatch_image_3": "shopify://shop_images/231_2x_1.webp"
+          }
+        },
+        "product_card_QKXNRR": {
+          "type": "product_card",
+          "settings": {
+            "product_image": "shopify://shop_images/226_2x_871869d9-30fc-4bee-86cc-de5efea24457.webp",
+            "product_name": "Woven Serenity Wool Rug  0981",
+            "product_price": "$240",
+            "product_url": "",
+            "swatch_color_1": "#C8BFB0",
+            "swatch_label_1": "Beige",
+            "swatch_image_1": "shopify://shop_images/234_2x_3a3c1ec9-425c-4c3e-9e17-a44a9793f07d.webp",
+            "swatch_color_2": "#D4C5B0",
+            "swatch_label_2": "Sand",
+            "swatch_image_2": "shopify://shop_images/230_2x_1.webp",
+            "swatch_color_3": "#2E3A5C",
+            "swatch_label_3": "Navy",
+            "swatch_image_3": "shopify://shop_images/4429_2x_a97f6854-159a-4911-ada1-e2169394b5e1.webp"
+          }
+        },
+        "product_card_jyf9Fr": {
+          "type": "product_card",
+          "settings": {
+            "product_image": "shopify://shop_images/227_2x_3fac9b0b-9da4-4e74-9bac-799d1605f3f5.webp",
+            "product_name": "Woven Serenity Wool Rug  0981",
+            "product_price": "$240",
+            "product_url": "",
+            "swatch_color_1": "#C8BFB0",
+            "swatch_label_1": "Beige",
+            "swatch_image_1": "shopify://shop_images/231_2x_f067496e-18f6-4d33-b9e8-299bb6b34a67.webp",
+            "swatch_color_2": "#D4C5B0",
+            "swatch_label_2": "Sand",
+            "swatch_image_2": "shopify://shop_images/4429_2x_a97f6854-159a-4911-ada1-e2169394b5e1.webp",
+            "swatch_color_3": "#2E3A5C",
+            "swatch_label_3": "Navy",
+            "swatch_image_3": "shopify://shop_images/4430_2x_0c6b08c2-30bc-4ed2-8a8d-19a684a5b5ef.webp"
+          }
+        }
+      },
+      "block_order": [
+        "product_card_MeyDpp",
+        "product_card_QKXNRR",
+        "product_card_jyf9Fr"
+      ],
+      "settings": {
+        "cta_label": "SEE MORE",
+        "cta_url": "shopify://collections/all",
+        "section_width": "page-width",
+        "color_scheme": "scheme-3",
+        "padding-block-start": 64,
+        "padding-block-end": 64
       }
     },
     "tooto_series_hero_pathof_shule": {
@@ -390,6 +462,7 @@
     "tooto_series_slider_1",
     "tooto_product_showcase_1",
     "tooto_series_hero_cityofgems",
+    "tooto_product_grid_V3YpQT",
     "tooto_series_hero_pathof_shule",
     "tooto_product_grid_1",
     "tooto_promo_banner_1",
