@@ -296,6 +296,9 @@
           ]
         }
       },
+      "custom_css": [
+        ".resource-list__item slideshow-component{background: #f7f7f7;}"
+      ],
       "name": "t:names.products_carousel",
       "settings": {
         "collection": "frontpage",
