@@ -14,48 +14,111 @@
     {%- comment -%} ── 产品卡片网格 ── {%- endcomment -%}
     <div class="tooto-product-grid__grid">
       {%- for block in section.blocks -%}
+        {%- liquid
+          assign initial_media_index = 0
+          if block.settings.swatch_image_1 != blank
+            assign initial_media_index = 1
+          elsif block.settings.swatch_image_2 != blank
+            assign initial_media_index = 2
+          elsif block.settings.swatch_image_3 != blank
+            assign initial_media_index = 3
+          endif
+        -%}
         <div class="tooto-product-grid__card" {{ block.shopify_attributes }}>
 
-          {%- comment -%} 产品图 {%- endcomment -%}
-          <div class="tooto-product-grid__image-wrapper">
+          <div class="tooto-product-grid__image-wrapper" data-initial-media-index="{{ initial_media_index }}">
             {%- if block.settings.product_image != blank -%}
-              {{
-                block.settings.product_image
-                | image_url: width: 800
-                | image_tag:
-                  widths: card_img_widths,
-                  sizes: card_img_sizes,
-                  alt: block.settings.product_image.alt,
-                  loading: 'lazy',
-                  class: 'tooto-product-grid__image'
-              }}
-            {%- else -%}
+              <div class="tooto-product-grid__media{% if initial_media_index == 0 %} is-active{% endif %}" data-media-index="0" {% if initial_media_index != 0 %}hidden{% endif %}>
+                {{
+                  block.settings.product_image
+                  | image_url: width: 800
+                  | image_tag:
+                    widths: card_img_widths,
+                    sizes: card_img_sizes,
+                    alt: block.settings.product_image.alt,
+                    loading: 'lazy',
+                    class: 'tooto-product-grid__image'
+                }}
+              </div>
+            {%- endif -%}
+
+            {%- if block.settings.swatch_image_1 != blank -%}
+              <div class="tooto-product-grid__media{% if initial_media_index == 1 %} is-active{% endif %}" data-media-index="1" {% if initial_media_index != 1 %}hidden{% endif %}>
+                {{
+                  block.settings.swatch_image_1
+                  | image_url: width: 800
+                  | image_tag:
+                    widths: card_img_widths,
+                    sizes: card_img_sizes,
+                    alt: block.settings.swatch_image_1.alt,
+                    loading: 'lazy',
+                    class: 'tooto-product-grid__image'
+                }}
+              </div>
+            {%- endif -%}
+
+            {%- if block.settings.swatch_image_2 != blank -%}
+              <div class="tooto-product-grid__media{% if initial_media_index == 2 %} is-active{% endif %}" data-media-index="2" {% if initial_media_index != 2 %}hidden{% endif %}>
+                {{
+                  block.settings.swatch_image_2
+                  | image_url: width: 800
+                  | image_tag:
+                    widths: card_img_widths,
+                    sizes: card_img_sizes,
+                    alt: block.settings.swatch_image_2.alt,
+                    loading: 'lazy',
+                    class: 'tooto-product-grid__image'
+                }}
+              </div>
+            {%- endif -%}
+
+            {%- if block.settings.swatch_image_3 != blank -%}
+              <div class="tooto-product-grid__media{% if initial_media_index == 3 %} is-active{% endif %}" data-media-index="3" {% if initial_media_index != 3 %}hidden{% endif %}>
+                {{
+                  block.settings.swatch_image_3
+                  | image_url: width: 800
+                  | image_tag:
+                    widths: card_img_widths,
+                    sizes: card_img_sizes,
+                    alt: block.settings.swatch_image_3.alt,
+                    loading: 'lazy',
+                    class: 'tooto-product-grid__image'
+                }}
+              </div>
+            {%- endif -%}
+
+            {%- if block.settings.product_image == blank and block.settings.swatch_image_1 == blank and block.settings.swatch_image_2 == blank and block.settings.swatch_image_3 == blank -%}
               {{ 'product-1' | placeholder_svg_tag: 'tooto-product-grid__image tooto-product-grid__image--placeholder' }}
             {%- endif -%}
           </div>
 
-          {%- comment -%} 色板 {%- endcomment -%}
           <div class="tooto-product-grid__swatches">
             {%- if block.settings.swatch_color_1 != blank -%}
-              <span
-                class="tooto-product-grid__swatch"
+              <button
+                type="button"
+                class="tooto-product-grid__swatch{% if initial_media_index == 1 %} is-active{% endif %}"
                 style="background-color: {{ block.settings.swatch_color_1 }};"
                 aria-label="{{ block.settings.swatch_label_1 | escape }}"
-              ></span>
+                data-image-index="{% if block.settings.swatch_image_1 != blank %}1{% else %}{{ initial_media_index }}{% endif %}"
+              ></button>
             {%- endif -%}
             {%- if block.settings.swatch_color_2 != blank -%}
-              <span
-                class="tooto-product-grid__swatch"
+              <button
+                type="button"
+                class="tooto-product-grid__swatch{% if initial_media_index == 2 %} is-active{% endif %}"
                 style="background-color: {{ block.settings.swatch_color_2 }};"
                 aria-label="{{ block.settings.swatch_label_2 | escape }}"
-              ></span>
+                data-image-index="{% if block.settings.swatch_image_2 != blank %}2{% else %}{{ initial_media_index }}{% endif %}"
+              ></button>
             {%- endif -%}
             {%- if block.settings.swatch_color_3 != blank -%}
-              <span
-                class="tooto-product-grid__swatch"
+              <button
+                type="button"
+                class="tooto-product-grid__swatch{% if initial_media_index == 3 %} is-active{% endif %}"
                 style="background-color: {{ block.settings.swatch_color_3 }};"
                 aria-label="{{ block.settings.swatch_label_3 | escape }}"
-              ></span>
+                data-image-index="{% if block.settings.swatch_image_3 != blank %}3{% else %}{{ initial_media_index }}{% endif %}"
+              ></button>
             {%- endif -%}
           </div>
 
@@ -91,6 +154,40 @@
 
   </div>
 </div>
+
+<script>
+  (function () {
+    const sectionEl = document.getElementById('tooto-product-grid-{{ section.id }}');
+    if (!sectionEl) return;
+
+    sectionEl.querySelectorAll('.tooto-product-grid__card').forEach(function (cardEl) {
+      const mediaItems = Array.from(cardEl.querySelectorAll('.tooto-product-grid__media'));
+      const swatchButtons = Array.from(cardEl.querySelectorAll('.tooto-product-grid__swatch[data-image-index]'));
+
+      if (!mediaItems.length || !swatchButtons.length) return;
+
+      function setActiveMedia(targetIndex) {
+        mediaItems.forEach(function (mediaEl) {
+          const isActive = mediaEl.dataset.mediaIndex === targetIndex;
+          mediaEl.hidden = !isActive;
+          mediaEl.classList.toggle('is-active', isActive);
+        });
+
+        swatchButtons.forEach(function (buttonEl) {
+          buttonEl.classList.toggle('is-active', buttonEl.dataset.imageIndex === targetIndex);
+        });
+      }
+
+      swatchButtons.forEach(function (buttonEl) {
+        buttonEl.addEventListener('click', function () {
+          const targetIndex = buttonEl.dataset.imageIndex;
+          if (!targetIndex) return;
+          setActiveMedia(targetIndex);
+        });
+      });
+    });
+  })();
+</script>
 
 {% stylesheet %}
   /* ── 脱离主题 section grid ── */
@@ -130,6 +227,12 @@
     aspect-ratio: 1 / 1;
     overflow: hidden;
     display: block;
+    position: relative;
+  }
+
+  .tooto-product-grid__media {
+    width: 100%;
+    height: 100%;
   }
 
   .tooto-product-grid__image {
@@ -164,6 +267,13 @@
     border-radius: 50%;
     border: 1.5px solid rgba(var(--color-border-rgb), 0.3);
     flex-shrink: 0;
+    padding: 0;
+    cursor: pointer;
+    background-clip: padding-box;
+  }
+
+  .tooto-product-grid__swatch.is-active {
+    border-color: var(--color-foreground);
   }
 
   /* ── 产品信息 ── */
@@ -236,19 +346,27 @@
 
   @media (max-width: 749px) {
     .tooto-product-grid__grid {
-      grid-template-columns: repeat(2, 1fr);
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
       gap: 16px;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .tooto-product-grid__grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tooto-product-grid__card {
+      flex: 0 0 min(72vw, 280px);
+      min-width: min(72vw, 280px);
+      scroll-snap-align: start;
     }
 
     .tooto-product-grid__inner {
       gap: 32px;
-    }
-  }
-
-  @media (max-width: 479px) {
-    .tooto-product-grid__grid {
-      grid-template-columns: 1fr;
-      gap: 24px;
     }
   }
 {% endstylesheet %}
@@ -363,6 +481,11 @@
           "default": "Beige"
         },
         {
+          "type": "image_picker",
+          "id": "swatch_image_1",
+          "label": "Swatch 1 Main Image"
+        },
+        {
           "type": "text",
           "id": "swatch_color_2",
           "label": "Swatch 2 Color",
@@ -376,6 +499,11 @@
           "default": "Sand"
         },
         {
+          "type": "image_picker",
+          "id": "swatch_image_2",
+          "label": "Swatch 2 Main Image"
+        },
+        {
           "type": "text",
           "id": "swatch_color_3",
           "label": "Swatch 3 Color",
@@ -387,6 +515,11 @@
           "id": "swatch_label_3",
           "label": "Swatch 3 Label",
           "default": "Navy"
+        },
+        {
+          "type": "image_picker",
+          "id": "swatch_image_3",
+          "label": "Swatch 3 Main Image"
         }
       ]
     }

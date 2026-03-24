@@ -296,6 +296,17 @@
     scrollbar-width: none;
   }
 
+  .card-gallery slideshow-component[disabled='true'] slideshow-slides {
+    overflow-x: hidden !important;
+    scroll-snap-type: none;
+    touch-action: pan-y;
+  }
+
+  .card-gallery slideshow-component[disabled='true'] slideshow-slide,
+  .card-gallery slideshow-component[disabled='true'] slideshow-container {
+    pointer-events: none;
+  }
+
   slideshow-slides::-webkit-scrollbar {
     display: none;
   }

@@ -3248,7 +3248,7 @@ label:has(input[type='checkbox']:disabled) {
 .cart-bubble__background {
   position: absolute;
   inset: 0;
-  background-color: var(--color-primary-button-background);
+  background-color: #F7CF76;
   border-radius: var(--style-border-radius-lg);
 }
 
@@ -3259,6 +3259,7 @@ label:has(input[type='checkbox']:disabled) {
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #000;
 }
 
 /* Cart typography */
