@@ -61,7 +61,7 @@
             "image": "shopify://shop_images/2548_2x_8168ec64-a1da-4e19-be1e-397f24b51277.webp",
             "badge": "Cloud Series",
             "title": "Woo Carpet Series 1",
-            "link": ""
+            "link": "shopify://collections/cloud-scape"
           }
         },
         "card_2": {
@@ -70,7 +70,7 @@
             "image": "shopify://shop_images/2550_2x_05e202b7-a75b-45ad-b493-8d4f1228ee5c.webp",
             "badge": "CityofGems",
             "title": "Woo Carpet Series 2",
-            "link": ""
+            "link": "shopify://collections/cityofgems"
           }
         },
         "card_3": {
@@ -79,7 +79,7 @@
             "image": "shopify://shop_images/2549_2x_efe11d3e-a41e-434c-8d3f-b16ec7106e77.webp",
             "badge": "Pathof Style",
             "title": "Woo Carpet Series 3",
-            "link": ""
+            "link": "shopify://collections/pathof-shule"
           }
         },
         "card_AypMNG": {
