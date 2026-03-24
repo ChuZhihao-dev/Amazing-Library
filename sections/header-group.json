@@ -44,12 +44,12 @@
             "products_material_panel_image_link": "",
             "products_style_panel_image_link": "",
             "inspiration_panel_image_link": "",
+            "mobile_menu": "",
             "navigation_bar": false,
             "color_scheme_navigation_bar": "",
             "drawer_accordion": false,
             "drawer_accordion_expand_first": false,
-            "drawer_dividers": false,
-            "mobile_menu": ""
+            "drawer_dividers": false
           },
           "blocks": {}
         },
@@ -75,12 +75,12 @@
             "products_style_panel_image_link": "",
             "inspiration_panel_image": "shopify://shop_images/4396_2x_2.webp",
             "inspiration_panel_image_link": "",
+            "mobile_menu": "main-menu",
             "navigation_bar": false,
             "color_scheme_navigation_bar": "",
             "drawer_accordion": false,
             "drawer_accordion_expand_first": false,
-            "drawer_dividers": false,
-            "mobile_menu": ""
+            "drawer_dividers": false
           },
           "blocks": {}
         }
