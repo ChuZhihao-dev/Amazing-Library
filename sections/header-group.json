@@ -48,7 +48,8 @@
             "color_scheme_navigation_bar": "",
             "drawer_accordion": false,
             "drawer_accordion_expand_first": false,
-            "drawer_dividers": false
+            "drawer_dividers": false,
+            "mobile_menu": ""
           },
           "blocks": {}
         },
@@ -78,7 +79,8 @@
             "color_scheme_navigation_bar": "",
             "drawer_accordion": false,
             "drawer_accordion_expand_first": false,
-            "drawer_dividers": false
+            "drawer_dividers": false,
+            "mobile_menu": ""
           },
           "blocks": {}
         }

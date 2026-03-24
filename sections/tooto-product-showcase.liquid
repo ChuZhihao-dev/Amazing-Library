@@ -107,7 +107,13 @@
       {%- comment -%} 产品名 + 副标题 {%- endcomment -%}
       <div class="tooto-product-showcase__product-info">
         <p class="tooto-product-showcase__product-name">
+          {%- if section.settings.product_url != blank -%}
+            <a class="tooto-product-showcase__product-name-link" href="{{ section.settings.product_url }}">
+          {%- endif -%}
           <strong>{{ section.settings.product_name_bold | escape }}</strong>{{ section.settings.product_name_light | escape }}
+          {%- if section.settings.product_url != blank -%}
+            </a>
+          {%- endif -%}
         </p>
         {%- if section.settings.product_subtitle != blank -%}
           <p class="tooto-product-showcase__product-subtitle">{{ section.settings.product_subtitle | escape }}</p>
@@ -405,6 +411,11 @@
     font-size: 24px;
     margin: 0;
     color: var(--color-foreground-heading);
+  }
+
+  .tooto-product-showcase__product-name-link {
+    color: inherit;
+    text-decoration: none;
   }
 
   .tooto-product-showcase__product-subtitle {

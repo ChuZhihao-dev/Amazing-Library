@@ -8,6 +8,7 @@
 
 {% liquid
   assign block_settings = block.settings
+  assign mobile_menu = block_settings.mobile_menu | default: block_settings.menu
 %}
 
 {% case variant %}
@@ -18,7 +19,7 @@
       data-hydration-key="header-drawer-mobile"
       {{ block.shopify_attributes }}
     >
-      {% render 'header-drawer', linklist: block_settings.menu, data_header_drawer_type: 'mobile-drawer' %}
+      {% render 'header-drawer', linklist: mobile_menu, data_header_drawer_type: 'mobile-drawer' %}
     </div>
 
   {% when 'navigation_bar' %}
@@ -33,7 +34,7 @@
             class="menu-list__list list-unstyled"
             role="list"
           >
-            {% for link in block_settings.menu.links %}
+            {% for link in mobile_menu.links %}
               <li>
                 <a
                   href="{{ link.url }}"
@@ -1080,6 +1081,12 @@
     {
       "type": "header",
       "content": "t:content.mobile_layout"
+    },
+    {
+      "type": "link_list",
+      "id": "mobile_menu",
+      "label": "Mobile Menu",
+      "info": "Optional. Falls back to Menu when empty."
     },
     {
       "type": "checkbox",
