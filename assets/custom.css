@@ -174,7 +174,19 @@ details.details[open] .details__header {
   display: block;
 }
 #avpoptions-container__v2 .tooto-configurator__select-option-thumb {
-  display: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  overflow: hidden;
+}
+#avpoptions-container__v2 .tooto-configurator__select-option-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 #avpoptions-container__v2 .tooto-configurator__select-value {
   flex: 1 1 auto;
@@ -206,7 +218,8 @@ details.details[open] .details__header {
 #avpoptions-container__v2 .tooto-configurator__select-option {
   display: flex;
   align-items: center;
-  min-height: 44px;
+  gap: 14px;
+  min-height: 56px;
   padding: 10px 16px;
   border-bottom: 1px solid #D8D8D8;
   cursor: pointer;
@@ -220,6 +233,7 @@ details.details[open] .details__header {
   pointer-events: none;
 }
 #avpoptions-container__v2 .tooto-configurator__select-option-text {
+  flex: 1 1 auto;
   color: var(--color-foreground);
   font-size: 15px;
   line-height: 1.2;
@@ -293,6 +307,12 @@ details.details[open] .details__header {
   font-size: 18px;
   line-height: 1;
 }
+#avpoptions-container__v2 .tooto-configurator__info-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
 #avpoptions-container__v2 .tooto-configurator__info-button {
   display: inline-flex;
   align-items: center;
@@ -301,13 +321,41 @@ details.details[open] .details__header {
   height: 17px;
   margin-left: 8px;
   padding: 0;
-  border: 1px solid #BCA68F;
+  border: 1px solid rgb(var(--color-border-rgb)/0.6);
   border-radius: 50%;
   background: transparent;
-  color: #BCA68F;
+  color: var(--color-foreground);
   font-size: 12px;
   line-height: 1;
   cursor: pointer;
+}
+#avpoptions-container__v2 .tooto-configurator__tooltip {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 180px;
+  max-width: 220px;
+  padding: 10px 12px;
+  border: 1px solid rgb(var(--color-border-rgb)/0.18);
+  background: var(--color-background);
+  color: var(--color-foreground);
+  box-shadow: 0 8px 20px rgb(var(--color-foreground-rgb)/0.08);
+  font-size: 12px;
+  line-height: 1.5;
+  font-weight: 400;
+  text-align: left;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 2;
+  box-sizing: border-box;
+}
+#avpoptions-container__v2 .tooto-configurator__info-wrap:hover .tooto-configurator__tooltip,
+#avpoptions-container__v2 .tooto-configurator__info-wrap:focus-within .tooto-configurator__tooltip {
+  opacity: 1;
+  visibility: visible;
 }
 #avpoptions-container__v2 .tooto-configurator__cards {
   display: flex;

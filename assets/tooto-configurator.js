@@ -92,6 +92,33 @@
     }
   }
 
+  function setupInfoTooltips(root) {
+    root.querySelectorAll('.tooto-configurator__info-button').forEach(function (button) {
+      if (!(button instanceof HTMLElement) || button.dataset.tootoTooltipReady === 'true') return;
+
+      var tooltipText = button.getAttribute('data-tooltip') || button.getAttribute('aria-label') || button.getAttribute('title');
+      if (!tooltipText) return;
+
+      var wrapper = button.parentElement;
+      if (!wrapper || !wrapper.classList.contains('tooto-configurator__info-wrap')) {
+        wrapper = document.createElement('span');
+        wrapper.className = 'tooto-configurator__info-wrap';
+        button.parentNode.insertBefore(wrapper, button);
+        wrapper.appendChild(button);
+      }
+
+      var tooltip = wrapper.querySelector('.tooto-configurator__tooltip');
+      if (!tooltip) {
+        tooltip = document.createElement('span');
+        tooltip.className = 'tooto-configurator__tooltip';
+        wrapper.appendChild(tooltip);
+      }
+
+      tooltip.textContent = tooltipText;
+      button.dataset.tootoTooltipReady = 'true';
+    });
+  }
+
   function setupConfigurator(root) {
     if (root.dataset.tootoConfiguratorReady === 'true') return;
     root.dataset.tootoConfiguratorReady = 'true';
@@ -112,6 +139,7 @@
     });
 
     setupShapePicker(root);
+    setupInfoTooltips(root);
   }
 
   function initAll(scope) {
