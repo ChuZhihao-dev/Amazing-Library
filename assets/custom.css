@@ -187,7 +187,7 @@ details.details[open] .details__header {
   z-index: 20;
   display: flex;
   flex-direction: column;
-  background: var(--color-background);
+  background-color: var(--color-background) !important;
   border: 1px solid rgba(var(--color-border-rgb), 0.45);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
@@ -338,281 +338,294 @@ details.details[open] .details__header {
   }
 }
 
-.tooto-configurator {
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-  width: 100%;
+.product-details .tooto-configurator {
+  gap: 44px;
 }
-
-.tooto-configurator__group {
-  display: flex;
-  flex-direction: column;
+.product-details .tooto-configurator__group {
+  gap: 18px;
+}
+.product-details .tooto-configurator__row {
   gap: 16px;
 }
-
-.tooto-configurator__row {
-  display: flex;
-  align-items: center;
-  gap: 16px;
+.product-details .tooto-configurator__row--between {
+  align-items: flex-end;
 }
-
-.tooto-configurator__row--between {
-  justify-content: space-between;
-}
-
-.tooto-configurator__label,
-.tooto-configurator__dimension-heading {
-  margin: 0;
-  color: var(--color-foreground);
-  font-size: 14px;
+.product-details .tooto-configurator__label, .product-details .tooto-configurator__dimension-heading {
+  font-size: 18px;
   font-weight: 400;
-  line-height: 20px;
-}
-
-.tooto-configurator__help-link {
+  line-height: 1.2;
   color: var(--color-foreground);
-  opacity: 0.65;
+}
+.product-details .tooto-configurator__help-link {
   font-size: 14px;
   line-height: 20px;
+  color: #b79f6a;
+  opacity: 1;
   text-decoration: underline;
   text-underline-offset: 4px;
 }
-
-.tooto-configurator__help-link:hover {
-  opacity: 1;
-}
-
-.tooto-configurator__select-card {
-  position: relative;
-  width: 100%;
-}
-
-.tooto-configurator__select-trigger {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  width: 100%;
+.product-details .tooto-configurator__select-trigger {
   min-height: 74px;
-  padding: 12px 20px;
-  border: 1px solid rgba(var(--color-border-rgb), 0.45);
-  background: var(--color-background);
-  color: var(--color-foreground);
-  cursor: pointer;
-  text-align: left;
-}
-
-.tooto-configurator__select-thumb,
-.tooto-configurator__select-option-thumb {
-  width: 48px;
-  height: 48px;
-  flex: 0 0 48px;
-  overflow: hidden;
-}
-
-.tooto-configurator__select-thumb img,
-.tooto-configurator__select-option-thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.tooto-configurator__select-value {
-  flex: 1 1 auto;
-  font-size: 16px;
-  line-height: 1.4;
-  color: var(--color-foreground);
-}
-
-.tooto-configurator__select-icon,
-.tooto-configurator__field-icon {
-  margin-left: auto;
-  font-size: 20px;
-  line-height: 1;
-  opacity: 0.7;
-  color: var(--color-foreground);
-}
-
-.tooto-configurator__select-menu {
-  position: absolute;
-  inset-inline: 0;
-  top: calc(100% + 8px);
-  z-index: 20;
-  display: flex;
-  flex-direction: column;
-  background: var(--color-background);
-  border: 1px solid rgba(var(--color-border-rgb), 0.45);
-  box-shadow: 0 10px 30px rgb(0 0 0 / 0.08);
-}
-
-.tooto-configurator__select-option {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 12px 20px;
-  cursor: pointer;
-  border-bottom: 1px solid rgba(var(--color-border-rgb), 0.3);
-}
-
-.tooto-configurator__select-option:last-child {
-  border-bottom: 0;
-}
-
-.tooto-configurator__select-option input {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.tooto-configurator__select-option-text {
-  font-size: 16px;
-  line-height: 1.4;
-  color: var(--color-foreground);
-}
-
-.tooto-configurator__dimension-group {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.tooto-configurator__dimension-fields {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-  gap: 12px;
-  align-items: center;
-}
-
-.tooto-configurator__field {
-  position: relative;
-  display: flex;
-  align-items: center;
-  min-height: 74px;
-  border: 1px solid rgba(var(--color-border-rgb), 0.45);
-  background: var(--color-background);
-}
-
-.tooto-configurator__field select {
-  width: 100%;
-  min-height: 74px;
-  padding: 0 56px 0 18px;
-  border: 0;
-  background: transparent;
-  color: var(--color-foreground);
-  font-size: 16px;
-  line-height: 1.4;
-  appearance: none;
-  cursor: pointer;
-}
-
-.tooto-configurator__field-icon {
-  position: absolute;
-  inset-inline-end: 18px;
-  pointer-events: none;
-}
-
-.tooto-configurator__dash {
-  color: var(--color-foreground);
-  font-size: 18px;
-  line-height: 1;
-}
-
-.tooto-configurator__info-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 22px;
-  height: 22px;
-  margin-left: 8px;
-  padding: 0;
-  border: 1px solid var(--color-foreground);
-  border-radius: 50%;
-  background: transparent;
-  color: var(--color-foreground);
-  font-size: 14px;
-  line-height: 1;
-  cursor: pointer;
-}
-
-.tooto-configurator__cards {
-  display: flex;
-  flex-wrap: wrap;
+  padding: 10px 22px;
+  border: 1px solid #D8D8D8;
+  border-radius: 0;
+  box-shadow: none;
   gap: 18px;
 }
-
-.tooto-configurator__card {
-  display: block;
-  cursor: pointer;
+.product-details .tooto-configurator__select-thumb {
+  width: 64px;
+  height: 64px;
+  flex: 0 0 64px;
 }
-
-.tooto-configurator__card-input {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
+.product-details .tooto-configurator__select-option-thumb {
+  display: none;
 }
-
-.tooto-configurator__card-frame {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  width: 144px;
-  padding: 12px 12px 14px;
-  border: 1px solid rgba(var(--color-border-rgb), 0.45);
-  background: var(--color-background);
-  transition: border-color 0.2s ease;
-  box-sizing: border-box;
+.product-details .tooto-configurator__select-option {
+  padding: 14px 20px;
+  border-bottom-color: #D8D8D8;
 }
-
-.tooto-configurator__card-input:checked + .tooto-configurator__card-frame {
-  border-color: var(--color-foreground);
-}
-
-.tooto-configurator__card-media {
-  width: 118px;
-  height: 118px;
-  overflow: hidden;
-}
-
-.tooto-configurator__card-media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.tooto-configurator__card-title {
-  color: var(--color-foreground);
+.product-details .tooto-configurator__select-value {
   font-size: 16px;
-  line-height: 1.25;
-  text-align: center;
+  line-height: 1.3;
 }
-
+.product-details .tooto-configurator__select-icon, .product-details .tooto-configurator__field-icon {
+  font-size: 22px;
+  opacity: 1;
+}
+.product-details .tooto-configurator__dimension-group {
+  gap: 14px;
+}
+.product-details .tooto-configurator__dimension-fields {
+  gap: 16px;
+}
+.product-details .tooto-configurator__field {
+  min-height: 76px;
+  border: 1px solid #D8D8D8;
+  border-radius: 0;
+  box-shadow: none;
+}
+.product-details .tooto-configurator__field select {
+  min-height: 76px;
+  padding: 0 62px 0 22px;
+  font-size: 16px;
+  line-height: 1.3;
+  border-radius: 0;
+}
+.product-details .tooto-configurator__field-icon {
+  inset-inline-end: 20px;
+}
+.product-details .tooto-configurator__dash {
+  font-size: 22px;
+  color: var(--color-foreground);
+}
+.product-details .tooto-configurator__info-button {
+  width: 22px;
+  height: 22px;
+  margin-left: 10px;
+  border: 1px solid #000000;
+  color: #000000;
+  font-size: 14px;
+  font-weight: 500;
+}
+.product-details .tooto-configurator__cards {
+  gap: 20px;
+}
+.product-details .tooto-configurator__card-frame {
+  width: 208px;
+  padding: 12px 12px 18px;
+  gap: 16px;
+  border: 1px solid #D8D8D8;
+  border-radius: 0;
+  box-shadow: none;
+}
+.product-details .tooto-configurator__card-input:checked + .tooto-configurator__card-frame {
+  border-color: #000000;
+}
+.product-details .tooto-configurator__card-media {
+  width: 182px;
+  height: 182px;
+}
+.product-details .tooto-configurator__card-title {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.25;
+  color: var(--color-foreground);
+}
 @media screen and (max-width: 749px) {
-  .tooto-configurator {
+  .product-details .tooto-configurator {
     gap: 32px;
   }
-
-  .tooto-configurator__row--between {
-    align-items: flex-start;
-    flex-direction: column;
+  .product-details .tooto-configurator__label, .product-details .tooto-configurator__dimension-heading {
+    font-size: 16px;
   }
-
-  .tooto-configurator__dimension-fields {
-    grid-template-columns: 1fr;
+  .product-details .tooto-configurator__select-trigger, .product-details .tooto-configurator__field, .product-details .tooto-configurator__field select {
+    min-height: 64px;
   }
-
-  .tooto-configurator__dash {
-    display: none;
+  .product-details .tooto-configurator__select-trigger {
+    padding: 8px 16px;
   }
-
-  .tooto-configurator__card-frame {
-    width: 132px;
+  .product-details .tooto-configurator__select-thumb {
+    width: 52px;
+    height: 52px;
+    flex-basis: 52px;
   }
-
-  .tooto-configurator__card-media {
-    width: 108px;
-    height: 108px;
+  .product-details .tooto-configurator__cards {
+    gap: 14px;
   }
+  .product-details .tooto-configurator__card-frame {
+    width: 150px;
+    padding: 10px 10px 14px;
+    gap: 12px;
+  }
+  .product-details .tooto-configurator__card-media {
+    width: 128px;
+    height: 128px;
+  }
+  .product-details .tooto-configurator__card-title {
+    font-size: 15px;
+  }
+}
+
+.product-details .tooto-configurator__select-menu[hidden] {
+  display: none !important;
+}
+.product-details .tooto-configurator__row--between {
+  align-items: center;
+}
+.product-details .tooto-configurator__label, .product-details .tooto-configurator__dimension-heading {
+  font-size: 16px !important;
+  line-height: 1.2 !important;
+}
+.product-details .tooto-configurator__help-link {
+  font-size: 14px !important;
+  line-height: 20px !important;
+}
+.product-details .tooto-configurator__select-trigger {
+  justify-content: flex-start !important;
+  min-height: 50px !important;
+  height: 50px !important;
+  padding: 0 16px !important;
+  gap: 16px !important;
+  border: 1px solid #D8D8D8 !important;
+}
+.product-details .tooto-configurator__select-thumb {
+  width: 38px !important;
+  height: 38px !important;
+  flex: 0 0 38px !important;
+}
+.product-details .tooto-configurator__select-value {
+  font-size: 15px !important;
+  line-height: 1.2 !important;
+}
+.product-details .tooto-configurator__select-icon, .product-details .tooto-configurator__field-icon {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-left: auto !important;
+  font-size: 18px !important;
+  line-height: 1 !important;
+  opacity: 1 !important;
+}
+.product-details .tooto-configurator__select-menu {
+  margin-top: 6px;
+}
+.product-details .tooto-configurator__select-option {
+  min-height: 44px;
+  padding: 10px 16px !important;
+}
+.product-details .tooto-configurator__select-option-thumb {
+  display: none !important;
+}
+.product-details .tooto-configurator__dimension-group {
+  gap: 10px !important;
+}
+.product-details .tooto-configurator__dimension-fields {
+  gap: 10px !important;
+}
+.product-details .tooto-configurator__field {
+  justify-content: flex-start !important;
+  min-height: 50px !important;
+  height: 50px !important;
+  border: 1px solid #D8D8D8 !important;
+}
+.product-details .tooto-configurator__field select {
+  min-height: 48px !important;
+  height: 48px !important;
+  padding: 0 44px 0 16px !important;
+  font-size: 15px !important;
+  line-height: 1.2 !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  background-image: none !important;
+}
+.product-details .tooto-configurator__field select::-ms-expand {
+  display: none;
+}
+.product-details .tooto-configurator__field-icon {
+  inset-inline-end: 14px !important;
+}
+.product-details .tooto-configurator__dash {
+  font-size: 18px !important;
+}
+.product-details .tooto-configurator__cards {
+  gap: 16px !important;
+}
+.product-details .tooto-configurator__card-frame {
+  width: 128px !important;
+  padding: 10px 10px 14px !important;
+  gap: 10px !important;
+  border: 1px solid #D8D8D8 !important;
+}
+.product-details .tooto-configurator__card-input:checked + .tooto-configurator__card-frame {
+  border-color: #000000 !important;
+}
+.product-details .tooto-configurator__card-media {
+  width: 106px !important;
+  height: 106px !important;
+}
+.product-details .tooto-configurator__card-title {
+  font-size: 15px !important;
+  line-height: 1.22 !important;
+}
+.product-details .tooto-configurator__info-button {
+  width: 20px !important;
+  height: 20px !important;
+  font-size: 13px !important;
+}
+@media screen and (max-width: 749px) {
+  .product-details .tooto-configurator__select-trigger, .product-details .tooto-configurator__field {
+    min-height: 50px !important;
+    height: 50px !important;
+  }
+  .product-details .tooto-configurator__field select {
+    min-height: 48px !important;
+    height: 48px !important;
+  }
+  .product-details .tooto-configurator__card-frame {
+    width: 116px !important;
+  }
+  .product-details .tooto-configurator__card-media {
+    width: 94px !important;
+    height: 94px !important;
+  }
+}
+
+.product-details .tooto-configurator__field > *:not(select):not(.tooto-configurator__field-icon) {
+  display: none !important;
+}
+.product-details .tooto-configurator__field select,
+.product-details .tooto-configurator__field select:focus,
+.product-details .tooto-configurator__field select:active {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+}
+.product-details .tooto-configurator__field select::-ms-expand {
+  display: none !important;
 }

@@ -206,7 +206,7 @@ details.details[open] {
         z-index: 20;
         display: flex;
         flex-direction: column;
-        background: var(--color-background);
+        background-color: var(--color-background);
         border: 1px solid rgba(var(--color-border-rgb), 0.45);
         box-shadow: 0 10px 30px rgb(0 0 0 / 0.08);
     }
@@ -377,6 +377,377 @@ details.details[open] {
         &__card-media {
             width: 108px;
             height: 108px;
+        }
+    }
+}
+
+.product-details {
+    .tooto-configurator {
+        gap: 44px;
+
+        &__group {
+            gap: 18px;
+        }
+
+        &__row {
+            gap: 16px;
+
+            &--between {
+                align-items: flex-end;
+            }
+        }
+
+        &__label,
+        &__dimension-heading {
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 1.2;
+            color: var(--color-foreground);
+        }
+
+        &__help-link {
+            font-size: 14px;
+            line-height: 20px;
+            color: #b79f6a;
+            opacity: 1;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+        }
+
+        &__select-trigger {
+            min-height: 74px;
+            padding: 10px 22px;
+            border: 1px solid #D8D8D8;
+            border-radius: 0;
+            box-shadow: none;
+            gap: 18px;
+        }
+
+        &__select-thumb {
+            width: 64px;
+            height: 64px;
+            flex: 0 0 64px;
+        }
+
+        &__select-option-thumb {
+            display: none;
+        }
+
+        &__select-option {
+            padding: 14px 20px;
+            border-bottom-color: #D8D8D8;
+        }
+
+        &__select-value {
+            font-size: 16px;
+            line-height: 1.3;
+        }
+
+        &__select-icon,
+        &__field-icon {
+            font-size: 22px;
+            opacity: 1;
+        }
+
+        &__dimension-group {
+            gap: 14px;
+        }
+
+        &__dimension-fields {
+            gap: 16px;
+        }
+
+        &__field {
+            min-height: 76px;
+            border: 1px solid #D8D8D8;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        &__field select {
+            min-height: 76px;
+            padding: 0 62px 0 22px;
+            font-size: 16px;
+            line-height: 1.3;
+            border-radius: 0;
+        }
+
+        &__field-icon {
+            inset-inline-end: 20px;
+        }
+
+        &__dash {
+            font-size: 22px;
+            color: var(--color-foreground);
+        }
+
+        &__info-button {
+            width: 22px;
+            height: 22px;
+            margin-left: 10px;
+            border: 1px solid #000000;
+            color: #000000;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        &__cards {
+            gap: 20px;
+        }
+
+        &__card-frame {
+            width: 208px;
+            padding: 12px 12px 18px;
+            gap: 16px;
+            border: 1px solid #D8D8D8;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        &__card-input:checked + .tooto-configurator__card-frame {
+            border-color: #000000;
+        }
+
+        &__card-media {
+            width: 182px;
+            height: 182px;
+        }
+
+        &__card-title {
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.25;
+            color: var(--color-foreground);
+        }
+
+        @media screen and (max-width: 749px) {
+            gap: 32px;
+
+            &__label,
+            &__dimension-heading {
+                font-size: 16px;
+            }
+
+            &__select-trigger,
+            &__field,
+            &__field select {
+                min-height: 64px;
+            }
+
+            &__select-trigger {
+                padding: 8px 16px;
+            }
+
+            &__select-thumb {
+                width: 52px;
+                height: 52px;
+                flex-basis: 52px;
+            }
+
+            &__cards {
+                gap: 14px;
+            }
+
+            &__card-frame {
+                width: 150px;
+                padding: 10px 10px 14px;
+                gap: 12px;
+            }
+
+            &__card-media {
+                width: 128px;
+                height: 128px;
+            }
+
+            &__card-title {
+                font-size: 15px;
+            }
+        }
+    }
+}
+
+.product-details {
+    .tooto-configurator {
+        &__select-menu[hidden] {
+            display: none !important;
+        }
+
+        &__row--between {
+            align-items: center;
+        }
+
+        &__label,
+        &__dimension-heading {
+            font-size: 16px !important;
+            line-height: 1.2 !important;
+        }
+
+        &__help-link {
+            font-size: 14px !important;
+            line-height: 20px !important;
+        }
+
+        &__select-trigger {
+            justify-content: flex-start !important;
+            min-height: 50px !important;
+            height: 50px !important;
+            padding: 0 16px !important;
+            gap: 16px !important;
+            border: 1px solid #D8D8D8 !important;
+        }
+
+        &__select-thumb {
+            width: 38px !important;
+            height: 38px !important;
+            flex: 0 0 38px !important;
+        }
+
+        &__select-value {
+            font-size: 15px !important;
+            line-height: 1.2 !important;
+        }
+
+        &__select-icon,
+        &__field-icon {
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            margin-left: auto !important;
+            font-size: 18px !important;
+            line-height: 1 !important;
+            opacity: 1 !important;
+        }
+
+        &__select-menu {
+            margin-top: 6px;
+        }
+
+        &__select-option {
+            min-height: 44px;
+            padding: 10px 16px !important;
+        }
+
+        &__select-option-thumb {
+            display: none !important;
+        }
+
+        &__dimension-group {
+            gap: 10px !important;
+        }
+
+        &__dimension-fields {
+            gap: 10px !important;
+        }
+
+        &__field {
+            justify-content: flex-start !important;
+            min-height: 50px !important;
+            height: 50px !important;
+            border: 1px solid #D8D8D8 !important;
+        }
+
+        &__field select {
+            min-height: 48px !important;
+            height: 48px !important;
+            padding: 0 44px 0 16px !important;
+            font-size: 15px !important;
+            line-height: 1.2 !important;
+            appearance: none !important;
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            background-image: none !important;
+        }
+
+        &__field select::-ms-expand {
+            display: none;
+        }
+
+        &__field-icon {
+            inset-inline-end: 14px !important;
+        }
+
+        &__dash {
+            font-size: 18px !important;
+        }
+
+        &__cards {
+            gap: 16px !important;
+        }
+
+        &__card-frame {
+            width: 128px !important;
+            padding: 10px 10px 14px !important;
+            gap: 10px !important;
+            border: 1px solid #D8D8D8 !important;
+        }
+
+        &__card-input:checked + .tooto-configurator__card-frame {
+            border-color: #000000 !important;
+        }
+
+        &__card-media {
+            width: 106px !important;
+            height: 106px !important;
+        }
+
+        &__card-title {
+            font-size: 15px !important;
+            line-height: 1.22 !important;
+        }
+
+        &__info-button {
+            width: 20px !important;
+            height: 20px !important;
+            font-size: 13px !important;
+        }
+
+        @media screen and (max-width: 749px) {
+            &__select-trigger,
+            &__field {
+                min-height: 50px !important;
+                height: 50px !important;
+            }
+
+            &__field select {
+                min-height: 48px !important;
+                height: 48px !important;
+            }
+
+            &__card-frame {
+                width: 116px !important;
+            }
+
+            &__card-media {
+                width: 94px !important;
+                height: 94px !important;
+            }
+        }
+    }
+}
+
+.product-details {
+    .tooto-configurator {
+        &__field {
+            > *:not(select):not(.tooto-configurator__field-icon) {
+                display: none !important;
+            }
+
+            select,
+            select:focus,
+            select:active {
+                background: transparent !important;
+                background-image: none !important;
+                box-shadow: none !important;
+                appearance: none !important;
+                -webkit-appearance: none !important;
+                -moz-appearance: none !important;
+            }
+
+            select::-ms-expand {
+                display: none !important;
+            }
         }
     }
 }
