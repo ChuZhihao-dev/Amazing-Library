@@ -88,7 +88,7 @@
             "image": "shopify://shop_images/2548_2x_8168ec64-a1da-4e19-be1e-397f24b51277.webp",
             "badge": "Cloud Series",
             "title": "Woo Carpet Series 1",
-            "link": ""
+            "link": "shopify://collections/cloud-scape"
           }
         },
         "card_8NiVBE": {
@@ -360,7 +360,7 @@
         "heading": "Personalised For\nYour Home",
         "description": "With Our Tailored To Fit Wool Rugs, You Can Personalise Your Rug By Choosing The Style, Colour, Size, Shape & Edging Best Suited To Your Home.",
         "cta_label": "Customize now",
-        "cta_url": "shopify://collections",
+        "cta_url": "shopify://pages/custom-size",
         "section_width": "page-width",
         "color_scheme": "scheme-429a4d18-4ece-4636-b431-d088edd96e7a",
         "padding-block-start": 0,
