@@ -970,6 +970,34 @@
     contain: style;
   }
 
+  @media screen and (max-width: 749px) {
+    #header-component[data-menu-style='drawer']:has(#Details-menu-drawer-container[open]) {
+      --header-logo-display: block;
+      --header-logo-inverse-display: none;
+      --color-foreground: inherit;
+      --color-foreground-rgb: inherit;
+      --color-background: inherit;
+      --color-background-rgb: inherit;
+      --color-border: inherit;
+      --color-border-rgb: inherit;
+      --closed-underlay-height: 100%;
+    }
+
+    #header-component[data-menu-style='drawer']:has(#Details-menu-drawer-container[open]) .header__row--top {
+      --color-foreground: inherit;
+      --color-foreground-rgb: inherit;
+      --color-border: inherit;
+      --color-border-rgb: inherit;
+      --color-primary-button-background: inherit;
+      --color-primary-button-text: inherit;
+      background-color: var(--color-background);
+    }
+
+    #header-component[data-menu-style='drawer']:has(#Details-menu-drawer-container[open]) .header__row--top .header__columns {
+      background-color: var(--color-background);
+    }
+  }
+
   .header.header--compact {
     --header-padding: var(--padding-2xs);
   }
