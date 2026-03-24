@@ -204,13 +204,16 @@
             "product_image": "shopify://shop_images/4602_2x_5a584673-0982-446c-864c-19a5e81b59aa.webp",
             "product_name": "Woven Serenity Wool Rug  0981",
             "product_price": "$240",
-            "product_url": "",
+            "product_url": "shopify://products/woven-serenity-wool-rug-0981",
             "swatch_color_1": "#C8BFB0",
             "swatch_label_1": "Beige",
+            "swatch_image_1": "shopify://shop_images/4429_2x_a97f6854-159a-4911-ada1-e2169394b5e1.webp",
             "swatch_color_2": "#D4C5B0",
             "swatch_label_2": "Sand",
+            "swatch_image_2": "shopify://shop_images/233_2x_b1b2cb3a-4e64-4151-921a-3e90eb1cf4da.webp",
             "swatch_color_3": "#2E3A5C",
-            "swatch_label_3": "Navy"
+            "swatch_label_3": "Navy",
+            "swatch_image_3": "shopify://shop_images/231_2x_1.webp"
           }
         },
         "card_2": {
