@@ -134,7 +134,7 @@
               {%- endfor -%}
             </ul>
 
-            <a class="tooto-mega-menu__cta" href="{{ child_link.url }}">
+            {% comment %} <a class="tooto-mega-menu__cta" href="{{ child_link.url }}">
               <span>{{ child_panel_view_all_label }}</span>
               <span class="tooto-mega-menu__cta-icon" aria-hidden="true">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -142,7 +142,7 @@
                   <path d="M9 2.25L15.75 9L9 15.75" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </span>
-            </a>
+            </a> {% endcomment %}
           </div>
         </div>
 

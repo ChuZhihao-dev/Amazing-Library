@@ -21,6 +21,7 @@ class ProductPrice extends Component {
     super.connectedCallback();
     const closestSection = this.closest('.shopify-section, dialog');
     if (!closestSection) return;
+    this.#setInitialSelectionState();
     closestSection.addEventListener(ThemeEvents.variantUpdate, this.updatePrice);
   }
 
@@ -41,6 +42,8 @@ class ProductPrice extends Component {
     } else if (event.target instanceof HTMLElement && event.target.dataset.productId !== this.dataset.productId) {
       return;
     }
+
+    this.dataset.userSelected = 'true';
 
     const { priceContainer, volumePricingNote } = this.refs;
     // Find the new product-price element in the updated HTML
@@ -67,6 +70,15 @@ class ProductPrice extends Component {
       volumePricingNote.replaceWith(newNote);
     }
   };
+
+  #setInitialSelectionState() {
+    if (this.dataset.priceVaries !== 'true') return;
+
+    const params = new URL(window.location.href).searchParams;
+    const hasExplicitVariant = params.has('variant') || params.has('option_values');
+    this.dataset.userSelected = hasExplicitVariant ? 'true' : 'false';
+  }
+
 }
 
 if (!customElements.get('product-price')) {

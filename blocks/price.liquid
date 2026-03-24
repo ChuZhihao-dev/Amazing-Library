@@ -40,6 +40,7 @@
   class="text-block {{ text_block_classes }} text-{{ block_settings.alignment }} {{ block_settings.type_preset | default: 'paragraph' }} spacing-style{% if request.page_type == 'product' %} product-price--product-page{% endif %}"
   data-block-id="{{ block.id }}"
   data-product-id="{{ product_resource.id }}"
+  data-price-varies="{{ product_resource.price_varies }}"
   style="
     {% render 'typography-style', settings: block_settings %}
     {% render 'spacing-style', settings: block_settings %}
@@ -90,11 +91,28 @@
     display: none;
   }
 
-  .product-price--product-page .price-range {
+  .product-price--product-page .price-range,
+  .product-price--product-page .price-single {
     display: inline-flex;
     align-items: baseline;
     gap: 10px;
     flex-wrap: wrap;
+  }
+
+  .product-price--product-page[data-price-varies='true'][data-user-selected='false'] .price-single {
+    display: none;
+  }
+
+  .product-price--product-page[data-price-varies='true'][data-user-selected='true'] .price-range {
+    display: none;
+  }
+
+  .product-price--product-page[data-price-varies='true'][data-user-selected='true'] .price-single {
+    display: inline-flex;
+  }
+
+  .product-price--product-page[data-price-varies='true'][data-user-selected='false'] .price-range {
+    display: inline-flex;
   }
 
   .product-price--product-page .price-range__prefix {

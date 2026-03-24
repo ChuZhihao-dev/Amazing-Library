@@ -78,11 +78,15 @@
 -%}
 
 <div ref="priceContainer">
-  {% if has_price_range %}
+  {% if template.name == 'product' and product_resource.price_varies %}
     <span class="price-range" role="group">
       <span class="visually-hidden">{{ 'content.price_range' | t }}&nbsp;</span>
       <span class="price-range__prefix">FROM</span>
       <span class="price price-range__values">{{ price_min }} - {{ price_max }}</span>
+    </span>
+    <span class="price-single" role="group">
+      <span class="visually-hidden">{{ 'content.price_sale' | t }}&nbsp;</span>
+      <span class="price">{{ price | default: '&nbsp;' }}</span>
     </span>
   {% elsif has_volume_pricing %}
     {% comment %} Volume pricing display {% endcomment %}

@@ -139,28 +139,28 @@
             {% liquid
               assign first_available_variant = blank
               comment
-                Identify the most relevant variant image to show in a card-gallery, and optionally as the swatch content.
-                The `product_option_value.variant` can be nil when no valid variant is associated with the combination of the current option-value and the other option values.
-                e.g. a product option Color: "Red" does not exist for the product option Size: "Small".
-                In this case, we look for the first available variant in that option (e.g. Color) that has a featured media.
+                Prefer the first available variant image for the current visual option value.
+                This avoids picking an image tied to another selected attribute in multi-option products.
               endcomment
 
-              assign featured_media = product_option_value.variant.featured_media
+              assign featured_media = blank
+
+              for variant in product_resource.variants
+                if variant.available and variant[swatch_option_key] == product_option_value.name and variant.featured_media
+                  assign featured_media = variant.featured_media
+                  assign first_available_variant = variant
+                  break
+                endif
+              endfor
 
               if featured_media == blank
-                if product_option_value.variant == blank
-                  for variant in product_resource.variants
-                    if variant.available and variant[swatch_option_key] == product_option_value.name and variant.featured_media
-                      assign featured_media = variant.featured_media
-                      assign first_available_variant = variant
-                      break
-                    endif
-                  endfor
-                elsif product_option_value.product_url
-                  # If the variant has no featured media, and we have a combined listing product (product_url exists),
-                  # then fall back to using the featured media of the child product that is linked to this option value.
-                  assign featured_media = product_option_value.variant.product.featured_media
-                endif
+                assign featured_media = product_option_value.variant.featured_media
+              endif
+
+              if featured_media == blank and product_option_value.product_url
+                # If the variant has no featured media, and we have a combined listing product (product_url exists),
+                # then fall back to using the featured media of the child product that is linked to this option value.
+                assign featured_media = product_option_value.variant.product.featured_media
               endif
             %}
 
@@ -187,11 +187,17 @@
                   data-variant-id="{{ first_available_variant.id | default: product_option_value.variant.id }}"
                   data-first-available-or-first-variant-id="{{ first_available_variant.id | default: product_option_value.variant.id }}"
                 >
-                {% render 'swatch',
-                  swatch: product_option_value.swatch,
-                  variant_image: featured_media,
-                  force_variant_image: true
-                %}
+                {% if product_option_value.swatch.image %}
+                  {% render 'swatch',
+                    swatch: product_option_value.swatch
+                  %}
+                {% else %}
+                  {% render 'swatch',
+                    swatch: product_option_value.swatch,
+                    variant_image: featured_media,
+                    force_variant_image: true
+                  %}
+                {% endif %}
                 {% render 'strikethrough-variant', product_option: product_option_value %}
               </label>
             </li>
