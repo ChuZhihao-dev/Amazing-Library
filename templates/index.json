@@ -90,13 +90,23 @@
             "title": "Woo Carpet Series 1",
             "link": ""
           }
+        },
+        "card_8NiVBE": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/2550_2x_05e202b7-a75b-45ad-b493-8d4f1228ee5c.webp",
+            "badge": "CityofGems",
+            "title": "Woo Carpet Series 2",
+            "link": "shopify://collections/cityofgems"
+          }
         }
       },
       "block_order": [
         "card_1",
         "card_2",
         "card_3",
-        "card_AypMNG"
+        "card_AypMNG",
+        "card_8NiVBE"
       ],
       "settings": {
         "heading": "Woo Cityofgems Slogn",
