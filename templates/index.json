@@ -447,13 +447,21 @@
             "image": "shopify://shop_images/2135_2x_c2261bed-a792-4611-a935-bff1b6300046.webp",
             "caption": "Suitable for medieval style"
           }
+        },
+        "slide_jnYhrw": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/2134_2x_08a0fb54-043b-43b3-a61e-c9b5d66ff2c5.webp",
+            "caption": "Suitable for cream style"
+          }
         }
       },
       "block_order": [
         "slide_kk7kwW",
         "slide_Up7qpk",
         "slide_tmbcPa",
-        "slide_fXTyjn"
+        "slide_fXTyjn",
+        "slide_jnYhrw"
       ],
       "name": "Tooto Story Slider",
       "settings": {
