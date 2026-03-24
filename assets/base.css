@@ -3028,17 +3028,18 @@ product-price.text-block:is(.h1, .h2, .h3, .h4, .h5, .h6) > *:not(.tax-note) {
 .checkbox__label {
   position: relative;
   display: inline-flex;
+  align-items: center;
   cursor: var(--checkbox-cursor);
   line-height: var(--checkbox-size);
   min-width: var(--minimum-touch-target);
 }
 
 .checkbox .icon-checkmark {
-  height: var(--checkbox-size);
-  width: var(--checkbox-size);
+  height: 12px;
+  width: 12px;
   flex-shrink: 0;
   border: var(--checkbox-border);
-  border-radius: var(--checkbox-border-radius);
+  border-radius: 2px;
   background-color: var(--color-background);
 }
 
