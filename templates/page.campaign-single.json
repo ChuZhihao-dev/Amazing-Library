@@ -250,6 +250,8 @@
                 "type_preset": "rte",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
+                "font_size_mobile": "",
+                "weight": "",
                 "line_height": "normal",
                 "letter_spacing": "normal",
                 "case": "none",
@@ -277,6 +279,8 @@
                 "alignment": "left",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
+                "font_size_mobile": "",
+                "weight": "",
                 "line_height": "normal",
                 "letter_spacing": "normal",
                 "case": "none",
@@ -297,7 +301,7 @@
         }
       },
       "custom_css": [
-        ".resource-list__item slideshow-component{background: #f7f7f7;}"
+        ".resource-list__item slideshow-component {background: #f7f7f7;}"
       ],
       "name": "t:names.products_carousel",
       "settings": {
@@ -312,7 +316,7 @@
         "rows_gap": 24,
         "icons_style": "none",
         "icons_shape": "circle",
-        "carousel_pagination_style": "progress",
+        "carousel_pagination_style": "none",
         "section_width": "page-width",
         "horizontal_alignment": "flex-start",
         "gap": 28,
