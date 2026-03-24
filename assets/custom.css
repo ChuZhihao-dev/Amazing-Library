@@ -100,3 +100,519 @@ details.details[open] .details__header {
 .product-information__media media-gallery.media-gallery--grid .media-gallery__grid .product-media-container :is(img, .deferred-media__poster-image) {
   background: #F6F6F6;
 }
+
+.tooto-configurator {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+}
+.tooto-configurator__group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.tooto-configurator__row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.tooto-configurator__row--between {
+  justify-content: space-between;
+}
+.tooto-configurator__label, .tooto-configurator__dimension-heading {
+  margin: 0;
+  color: var(--color-foreground);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+.tooto-configurator__help-link {
+  color: var(--color-foreground);
+  opacity: 0.65;
+  font-size: 14px;
+  line-height: 20px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.tooto-configurator__help-link:hover {
+  opacity: 1;
+}
+.tooto-configurator__select-card {
+  position: relative;
+  width: 100%;
+}
+.tooto-configurator__select-trigger {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  min-height: 74px;
+  padding: 12px 20px;
+  border: 1px solid rgba(var(--color-border-rgb), 0.45);
+  background: var(--color-background);
+  color: var(--color-foreground);
+  cursor: pointer;
+  text-align: left;
+}
+.tooto-configurator__select-thumb, .tooto-configurator__select-option-thumb {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  overflow: hidden;
+}
+.tooto-configurator__select-thumb img, .tooto-configurator__select-option-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.tooto-configurator__select-value {
+  flex: 1 1 auto;
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--color-foreground);
+}
+.tooto-configurator__select-icon, .tooto-configurator__field-icon {
+  margin-left: auto;
+  font-size: 20px;
+  line-height: 1;
+  opacity: 0.7;
+  color: var(--color-foreground);
+}
+.tooto-configurator__select-menu {
+  position: absolute;
+  inset-inline: 0;
+  top: calc(100% + 8px);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-background);
+  border: 1px solid rgba(var(--color-border-rgb), 0.45);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+.tooto-configurator__select-option {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 20px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(var(--color-border-rgb), 0.3);
+}
+.tooto-configurator__select-option:last-child {
+  border-bottom: 0;
+}
+.tooto-configurator__select-option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.tooto-configurator__select-option-text {
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--color-foreground);
+}
+.tooto-configurator__dimension-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.tooto-configurator__dimension-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+}
+.tooto-configurator__field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 74px;
+  border: 1px solid rgba(var(--color-border-rgb), 0.45);
+  background: var(--color-background);
+}
+.tooto-configurator__field select {
+  width: 100%;
+  min-height: 74px;
+  padding: 0 56px 0 18px;
+  border: 0;
+  background: transparent;
+  color: var(--color-foreground);
+  font-size: 16px;
+  line-height: 1.4;
+  appearance: none;
+  cursor: pointer;
+}
+.tooto-configurator__field-icon {
+  position: absolute;
+  inset-inline-end: 18px;
+  pointer-events: none;
+}
+.tooto-configurator__dash {
+  color: var(--color-foreground);
+  font-size: 18px;
+  line-height: 1;
+}
+.tooto-configurator__info-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  margin-left: 8px;
+  padding: 0;
+  border: 1px solid var(--color-foreground);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-foreground);
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+.tooto-configurator__cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+.tooto-configurator__card {
+  display: block;
+  cursor: pointer;
+}
+.tooto-configurator__card-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.tooto-configurator__card-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 144px;
+  padding: 12px 12px 14px;
+  border: 1px solid rgba(var(--color-border-rgb), 0.45);
+  background: var(--color-background);
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+.tooto-configurator__card-input:checked + .tooto-configurator__card-frame {
+  border-color: var(--color-foreground);
+}
+.tooto-configurator__card-media {
+  width: 118px;
+  height: 118px;
+  overflow: hidden;
+}
+.tooto-configurator__card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.tooto-configurator__card-title {
+  color: var(--color-foreground);
+  font-size: 16px;
+  line-height: 1.25;
+  text-align: center;
+}
+@media screen and (max-width: 749px) {
+  .tooto-configurator {
+    gap: 32px;
+  }
+  .tooto-configurator__row--between {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .tooto-configurator__dimension-fields {
+    grid-template-columns: 1fr;
+  }
+  .tooto-configurator__dash {
+    display: none;
+  }
+  .tooto-configurator__card-frame {
+    width: 132px;
+  }
+  .tooto-configurator__card-media {
+    width: 108px;
+    height: 108px;
+  }
+}
+
+.tooto-configurator {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+}
+
+.tooto-configurator__group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tooto-configurator__row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.tooto-configurator__row--between {
+  justify-content: space-between;
+}
+
+.tooto-configurator__label,
+.tooto-configurator__dimension-heading {
+  margin: 0;
+  color: var(--color-foreground);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.tooto-configurator__help-link {
+  color: var(--color-foreground);
+  opacity: 0.65;
+  font-size: 14px;
+  line-height: 20px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.tooto-configurator__help-link:hover {
+  opacity: 1;
+}
+
+.tooto-configurator__select-card {
+  position: relative;
+  width: 100%;
+}
+
+.tooto-configurator__select-trigger {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  min-height: 74px;
+  padding: 12px 20px;
+  border: 1px solid rgba(var(--color-border-rgb), 0.45);
+  background: var(--color-background);
+  color: var(--color-foreground);
+  cursor: pointer;
+  text-align: left;
+}
+
+.tooto-configurator__select-thumb,
+.tooto-configurator__select-option-thumb {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  overflow: hidden;
+}
+
+.tooto-configurator__select-thumb img,
+.tooto-configurator__select-option-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.tooto-configurator__select-value {
+  flex: 1 1 auto;
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--color-foreground);
+}
+
+.tooto-configurator__select-icon,
+.tooto-configurator__field-icon {
+  margin-left: auto;
+  font-size: 20px;
+  line-height: 1;
+  opacity: 0.7;
+  color: var(--color-foreground);
+}
+
+.tooto-configurator__select-menu {
+  position: absolute;
+  inset-inline: 0;
+  top: calc(100% + 8px);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-background);
+  border: 1px solid rgba(var(--color-border-rgb), 0.45);
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.08);
+}
+
+.tooto-configurator__select-option {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 20px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(var(--color-border-rgb), 0.3);
+}
+
+.tooto-configurator__select-option:last-child {
+  border-bottom: 0;
+}
+
+.tooto-configurator__select-option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tooto-configurator__select-option-text {
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--color-foreground);
+}
+
+.tooto-configurator__dimension-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tooto-configurator__dimension-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+}
+
+.tooto-configurator__field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 74px;
+  border: 1px solid rgba(var(--color-border-rgb), 0.45);
+  background: var(--color-background);
+}
+
+.tooto-configurator__field select {
+  width: 100%;
+  min-height: 74px;
+  padding: 0 56px 0 18px;
+  border: 0;
+  background: transparent;
+  color: var(--color-foreground);
+  font-size: 16px;
+  line-height: 1.4;
+  appearance: none;
+  cursor: pointer;
+}
+
+.tooto-configurator__field-icon {
+  position: absolute;
+  inset-inline-end: 18px;
+  pointer-events: none;
+}
+
+.tooto-configurator__dash {
+  color: var(--color-foreground);
+  font-size: 18px;
+  line-height: 1;
+}
+
+.tooto-configurator__info-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  margin-left: 8px;
+  padding: 0;
+  border: 1px solid var(--color-foreground);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-foreground);
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.tooto-configurator__cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.tooto-configurator__card {
+  display: block;
+  cursor: pointer;
+}
+
+.tooto-configurator__card-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tooto-configurator__card-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 144px;
+  padding: 12px 12px 14px;
+  border: 1px solid rgba(var(--color-border-rgb), 0.45);
+  background: var(--color-background);
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.tooto-configurator__card-input:checked + .tooto-configurator__card-frame {
+  border-color: var(--color-foreground);
+}
+
+.tooto-configurator__card-media {
+  width: 118px;
+  height: 118px;
+  overflow: hidden;
+}
+
+.tooto-configurator__card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.tooto-configurator__card-title {
+  color: var(--color-foreground);
+  font-size: 16px;
+  line-height: 1.25;
+  text-align: center;
+}
+
+@media screen and (max-width: 749px) {
+  .tooto-configurator {
+    gap: 32px;
+  }
+
+  .tooto-configurator__row--between {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .tooto-configurator__dimension-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .tooto-configurator__dash {
+    display: none;
+  }
+
+  .tooto-configurator__card-frame {
+    width: 132px;
+  }
+
+  .tooto-configurator__card-media {
+    width: 108px;
+    height: 108px;
+  }
+}

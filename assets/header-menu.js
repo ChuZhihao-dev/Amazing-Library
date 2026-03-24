@@ -21,6 +21,7 @@ class HeaderMenu extends Component {
    * @type {MutationObserver | null}
    */
   #submenuMutationObserver = null;
+  #submenuResizeObserver = null;
 
   connectedCallback() {
     super.connectedCallback();
@@ -134,6 +135,17 @@ class HeaderMenu extends Component {
       setTimeout(() => {
         this.#cleanupMutationObserver();
       }, 500);
+
+      this.#cleanupResizeObserver();
+      this.#submenuResizeObserver = new ResizeObserver(() => {
+        requestAnimationFrame(() => {
+          const liveHeight = submenu?.offsetHeight || 0;
+          if (!liveHeight) return;
+          this.headerComponent?.style.setProperty('--submenu-height', `${liveHeight}px`);
+          this.#setFullOpenHeaderHeight(liveHeight);
+        });
+      });
+      this.#submenuResizeObserver.observe(submenu);
     }
 
     let finalHeight = submenu?.offsetHeight || 0;
@@ -194,6 +206,7 @@ class HeaderMenu extends Component {
     this.#setFullOpenHeaderHeight(0);
     this.style.setProperty('--submenu-opacity', '0');
     this.dataset.overflowExpanded = 'false';
+    this.#cleanupResizeObserver();
 
     const submenu = findSubmenu(item);
 
@@ -264,6 +277,11 @@ class HeaderMenu extends Component {
   #cleanupMutationObserver() {
     this.#submenuMutationObserver?.disconnect();
     this.#submenuMutationObserver = null;
+  }
+
+  #cleanupResizeObserver() {
+    this.#submenuResizeObserver?.disconnect();
+    this.#submenuResizeObserver = null;
   }
 }
 

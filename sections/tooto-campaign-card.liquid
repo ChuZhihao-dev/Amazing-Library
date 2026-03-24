@@ -177,13 +177,22 @@
     var playBtn = sectionEl.querySelector('.tooto-campaign-card__play-btn');
     var cover = document.getElementById('video-cover-{{ section.id }}');
     var player = document.getElementById('video-player-{{ section.id }}');
-    if (playBtn && cover && player) {
-      playBtn.addEventListener('click', function () {
+    if (cover && player) {
+      var playVideo = function () {
         cover.style.display = 'none';
         player.style.display = 'block';
         var videoEl = player.querySelector('video');
         if (videoEl) videoEl.play();
-      });
+      };
+
+      cover.addEventListener('click', playVideo);
+
+      if (playBtn) {
+        playBtn.addEventListener('click', function (event) {
+          event.stopPropagation();
+          playVideo();
+        });
+      }
     }
     {%- endif -%}
 
