@@ -995,12 +995,17 @@
     #header-component[data-menu-style='drawer']:has(#Details-menu-drawer-container[open]) {
       --header-logo-display: block;
       --header-logo-inverse-display: none;
-      --color-foreground: inherit;
-      --color-foreground-rgb: inherit;
-      --color-background: inherit;
-      --color-background-rgb: inherit;
-      --color-border: inherit;
-      --color-border-rgb: inherit;
+      --color-background: rgb({{ section.settings.color_scheme_top.settings.background.rgba }});
+      --color-background-rgb: {{ section.settings.color_scheme_top.settings.background.rgb }};
+      --color-foreground: rgb({{ section.settings.color_scheme_top.settings.foreground.rgba }});
+      --color-foreground-rgb: {{ section.settings.color_scheme_top.settings.foreground.rgb }};
+      --color-foreground-heading: rgb({{ section.settings.color_scheme_top.settings.foreground_heading.rgba }});
+      --color-foreground-heading-rgb: {{ section.settings.color_scheme_top.settings.foreground_heading.rgb }};
+      --color-border: rgb({{ section.settings.color_scheme_top.settings.border.rgba }});
+      --color-border-rgb: {{ section.settings.color_scheme_top.settings.border.rgb }};
+      --color-primary-button-text: rgb({{ section.settings.color_scheme_top.settings.primary_button_text.rgba }});
+      --color-primary-button-background: rgb({{ section.settings.color_scheme_top.settings.primary_button_background.rgba }});
+      --color-primary-button-border: rgb({{ section.settings.color_scheme_top.settings.primary_button_border.rgba }});
       --closed-underlay-height: 100%;
     }
 
