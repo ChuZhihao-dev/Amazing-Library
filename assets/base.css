@@ -2138,7 +2138,7 @@ deferred-media[class] :is(.deferred-media__poster-button img, .deferred-media__p
   background: var(--swatch-background);
   background-position: var(--swatch-focal-point, center);
   border-radius: var(--variant-picker-swatch-radius);
-  border: var(--style-border-swatch-width) var(--style-border-swatch-style) var(--color-border);
+  border: 1px solid #DBDBCD;
   width: var(--swatch-width);
   height: var(--swatch-height);
 
@@ -2492,10 +2492,10 @@ deferred-media[class] :is(.deferred-media__poster-button img, .deferred-media__p
 }
 
 .variant-option__button-label--has-swatch:has(:checked) {
-  --focus-outline: var(--focus-outline-width) solid var(--color-foreground);
+  --focus-outline: var(--focus-outline-width) solid rgba(190, 190, 190, 0.3);
 
   outline: var(--focus-outline);
-  outline-offset: var(--focus-outline-offset);
+  outline-offset: 1px;
 }
 
 /* This triggers iOS < 16.4. The outline bug is not recognized as a lack of @supports */
@@ -3047,6 +3047,7 @@ product-price.text-block:is(.h1, .h2, .h3, .h4, .h5, .h6) > *:not(.tax-note) {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-weight: 500;
 }
 
 .checkbox .icon-checkmark path {

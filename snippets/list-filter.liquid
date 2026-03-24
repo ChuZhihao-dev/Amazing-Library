@@ -13,6 +13,7 @@
 {% liquid
   assign is_swatch = false
   assign swatch_index = filter.values | find_index: 'swatch'
+  assign total_value_count = 0
 
   if swatch_index != null
     assign is_swatch = true
@@ -22,6 +23,10 @@
   if filter.presentation == 'image'
     assign is_image = true
   endif
+
+  for filter_value in filter.values
+    assign total_value_count = total_value_count | plus: filter_value.count
+  endfor
 %}
 
 <accordion-custom
@@ -49,7 +54,7 @@
     {% endif %}
   >
     <summary class="facets__summary">
-      <span class="facets__label">{{ filter.label }}</span>
+      <span class="facets__label">{{ filter.label }}{% if total_value_count > 0 %} ({{ total_value_count }}){% endif %}</span>
 
       <div class="facets__status-wrapper">
         {% if is_swatch %}
@@ -272,7 +277,7 @@
                       for="{{ input_id }}"
                       tabindex="-1"
                     >
-                      {{- value.label }}
+                      {{- value.label -}}({{ value.count }})
                     </label>
                   </fieldset>
                 {% elsif is_swatch %}
@@ -322,7 +327,7 @@
                         for="{{ input_id }}"
                         tabindex="-1"
                       >
-                        {{- value.label }}
+                        {{- value.label -}}({{ value.count }})
                       </label>
                     </label>
                   </fieldset>
@@ -353,7 +358,7 @@
                         for="{{ input_id }}"
                         tabindex="0"
                       >
-                        {{- value.label }}
+                        {{- value.label -}}({{ value.count }})
                         {% if is_disabled %}
                           <svg
                             aria-hidden="true"
@@ -368,10 +373,11 @@
                       </label>
                     </div>
                   {% else %}
+                    {% capture checkbox_label %}{{ value.label }}({{ value.count }}){% endcapture %}
                     {% render 'checkbox',
                       name: value.param_name,
                       value: value.value,
-                      label: value.label,
+                      label: checkbox_label,
                       checked: value.active,
                       id: input_id,
                       disabled: is_disabled,

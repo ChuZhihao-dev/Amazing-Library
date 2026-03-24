@@ -261,6 +261,17 @@
       "visible_if": "{{ section.settings.icons_style != 'none' and section.settings.layout_type == 'carousel' or section.settings.carousel_on_mobile == true }}"
     },
     {
+      "type": "select",
+      "id": "carousel_pagination_style",
+      "label": "Carousel Pagination",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "progress", "label": "Progress Bar" }
+      ],
+      "default": "none",
+      "visible_if": "{{ section.settings.layout_type == 'carousel' or section.settings.carousel_on_mobile == true }}"
+    },
+    {
       "type": "header",
       "content": "t:content.section_layout"
     },

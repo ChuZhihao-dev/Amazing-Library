@@ -26,6 +26,8 @@
   if settings.icons_style != 'none'
     assign show_arrows = true
   endif
+
+  assign pagination_style = settings.carousel_pagination_style | default: 'none'
 %}
 
 {% capture slides %}
@@ -37,6 +39,16 @@
     %}
   {% endfor %}
 {% endcapture %}
+
+{% if pagination_style != 'none' %}
+  {% capture controls %}
+    {% render 'slideshow-controls',
+      style: pagination_style,
+      item_count: slide_count,
+      pagination_position: 'center'
+    %}
+  {% endcapture %}
+{% endif %}
 
 <div
   class="resource-list__carousel"
@@ -53,6 +65,7 @@
     infinite: false,
     initial_slide: 0,
     slide_count: slide_count,
-    slideshow_gutters: slideshow_gutters
+    slideshow_gutters: slideshow_gutters,
+    controls: controls
   %}
 </div>

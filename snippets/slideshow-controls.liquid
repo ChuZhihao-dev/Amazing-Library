@@ -1,7 +1,7 @@
 {%- doc -%}
   Renders controls for a slider component
 
-  @param {string} [style] - { 'dots' | 'counter' | 'thumbnails' | 'none' } The display style of the controls
+  @param {string} [style] - { 'dots' | 'counter' | 'thumbnails' | 'progress' | 'none' } The display style of the controls
   @param {boolean} [autoplay] - Whether the controls will display an autoplay option
   @param {number} [item_count] - The total number of slides
   @param {boolean} [show_arrows] - Whether the controls will display arrows
@@ -175,6 +175,25 @@
             </li>
           {% endfor %}
         </ol>
+      {% when 'progress' %}
+        <ol class="slideshow-controls__progress">
+          {% for i in (1..item_count) %}
+            <li>
+              <button
+                class="slideshow-control button button-unstyled"
+                aria-label="{{ 'accessibility.slide_status' | t: index: forloop.index, length: forloop.length }}"
+                on:click="/select/{{ forloop.index0 }}"
+                ref="dots[]"
+                {% if forloop.first %}
+                  aria-selected="true"
+                {% endif %}
+              >
+                <span class="visually-hidden">{{ forloop.index }}</span>
+                <span class="slideshow-controls__progress-bar" aria-hidden="true"></span>
+              </button>
+            </li>
+          {% endfor %}
+        </ol>
     {% endcase %}
 
     {% if show_arrows_separately == false and show_arrows and pagination_position != 'right' %}
@@ -339,7 +358,8 @@
   }
 
   .slideshow-controls__dots,
-  .slideshow-controls__counter {
+  .slideshow-controls__counter,
+  .slideshow-controls__progress {
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -356,6 +376,10 @@
   slideshow-controls:has(.slideshow-controls__dots),
   slideshow-component[autoplay] slideshow-controls {
     mix-blend-mode: difference;
+  }
+
+  slideshow-controls:has(.slideshow-controls__progress) {
+    mix-blend-mode: normal;
   }
 
   .slideshow-controls__dots {
@@ -403,9 +427,56 @@
   }
 
   .slideshow-controls__dots,
-  .slideshow-controls__counter {
+  .slideshow-controls__counter,
+  .slideshow-controls__progress {
     &:only-child {
       margin-inline: auto;
+    }
+  }
+
+  .slideshow-controls__progress {
+    padding-left: 0;
+    gap: 8px;
+    display: flex;
+  }
+
+  .slideshow-controls__progress button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+    height: 24px;
+    padding: 0;
+    font-size: 0;
+  }
+
+  .slideshow-controls__progress-bar {
+    display: block;
+    width: 70px;
+    height: 2px;
+    background-color: rgb(var(--color-foreground-rgb) / 0.18);
+    transition: background-color var(--animation-speed) var(--animation-easing);
+  }
+
+  .slideshow-controls__progress button:hover .slideshow-controls__progress-bar {
+    background-color: rgb(var(--color-foreground-rgb) / 0.35);
+  }
+
+  .slideshow-controls__progress button[aria-selected='true'] .slideshow-controls__progress-bar {
+    background-color: var(--color-foreground);
+  }
+
+  @media screen and (max-width: 749px) {
+    .slideshow-controls__progress {
+      gap: 6px;
+    }
+
+    .slideshow-controls__progress button {
+      width: 35px;
+    }
+
+    .slideshow-controls__progress-bar {
+      width: 35px;
     }
   }
 
