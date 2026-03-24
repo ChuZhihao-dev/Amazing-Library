@@ -987,12 +987,12 @@
     height: var(--icon-size-md);
   }
 
-  .header:has(#Details-menu-drawer-container[open]) {
+  .header:has(#Details-menu-drawer-container.menu-open) {
     contain: style;
   }
 
   @media screen and (max-width: 749px) {
-    #header-component[data-menu-style='drawer']:has(#Details-menu-drawer-container[open]) {
+    #header-component[data-menu-style='drawer']:has(#Details-menu-drawer-container.menu-open) {
       --header-logo-display: block;
       --header-logo-inverse-display: none;
       --color-background: rgb({{ section.settings.color_scheme_top.settings.background.rgba }});
@@ -1009,7 +1009,7 @@
       --closed-underlay-height: 100%;
     }
 
-    #header-component[data-menu-style='drawer']:has(#Details-menu-drawer-container[open]) .header__row--top {
+    #header-component[data-menu-style='drawer']:has(#Details-menu-drawer-container.menu-open) .header__row--top {
       --color-foreground: inherit;
       --color-foreground-rgb: inherit;
       --color-border: inherit;
@@ -1019,7 +1019,7 @@
       background-color: var(--color-background);
     }
 
-    #header-component[data-menu-style='drawer']:has(#Details-menu-drawer-container[open]) .header__row--top .header__columns {
+    #header-component[data-menu-style='drawer']:has(#Details-menu-drawer-container.menu-open) .header__row--top .header__columns {
       background-color: var(--color-background);
     }
   }
@@ -1324,6 +1324,12 @@
         }
       ],
       "default": "top"
+    },
+    {
+      "type": "link_list",
+      "id": "mobile_menu",
+      "label": "Mobile Menu",
+      "info": "Optional. Used by the mobile drawer and mobile navigation bar. Falls back to the main menu block when empty."
     },
     {
       "type": "header",
