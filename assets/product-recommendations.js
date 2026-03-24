@@ -1,6 +1,9 @@
 import { Component } from '@theme/component';
 
 class ProductRecommendations extends Component {
+  /** @type {any[]} */
+  #swipers = [];
+
   /**
    * The observer for the product recommendations
    * @type {IntersectionObserver}
@@ -59,12 +62,17 @@ class ProductRecommendations extends Component {
     super.connectedCallback();
     this.#intersectionObserver.observe(this);
     this.#mutationObserver.observe(this, { attributes: true });
+
+    if (this.dataset.recommendationsPerformed === 'true') {
+      this.#initializeSwipers();
+    }
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     this.#intersectionObserver.disconnect();
     this.#mutationObserver.disconnect();
+    this.#destroySwipers();
   }
 
   /**
@@ -102,6 +110,7 @@ class ProductRecommendations extends Component {
         if (recommendations?.innerHTML && recommendations.innerHTML.trim().length) {
           this.dataset.recommendationsPerformed = 'true';
           this.innerHTML = recommendations.innerHTML;
+          this.#initializeSwipers();
         } else {
           this.#handleError(new Error('No recommendations available'));
         }
@@ -151,6 +160,59 @@ class ProductRecommendations extends Component {
     console.error('Product recommendations error:', error.message);
     this.classList.add('hidden');
     this.dataset.error = 'Error loading product recommendations';
+  }
+
+  #destroySwipers() {
+    this.#swipers.forEach((swiper) => swiper?.destroy?.(true, true));
+    this.#swipers = [];
+  }
+
+  #initializeSwipers() {
+    this.#destroySwipers();
+
+    if (typeof window.Swiper === 'undefined') return;
+
+    const shells = this.querySelectorAll('[data-product-recommendations-swiper]');
+    if (!shells.length) return;
+
+    shells.forEach((shell) => {
+      if (!(shell instanceof HTMLElement)) return;
+
+      const swiperEl = shell.querySelector('.product-recommendations__swiper');
+      if (!(swiperEl instanceof HTMLElement)) return;
+
+      const paginationEl = shell.querySelector('.product-recommendations__pagination');
+      const slidesDesktop = Number(shell.dataset.slidesDesktop || 4);
+      const spaceBetween = Number(shell.dataset.spaceBetween || 16);
+      const paginationStyle = shell.dataset.paginationStyle || 'none';
+
+      const swiper = new window.Swiper(swiperEl, {
+        slidesPerView: 2.2,
+        spaceBetween,
+        loop: false,
+        slidesPerGroup: 1,
+        breakpoints: {
+          750: {
+            slidesPerView: slidesDesktop,
+            slidesPerGroup: slidesDesktop,
+            spaceBetween,
+          },
+        },
+        ...(paginationStyle === 'progress' && paginationEl
+          ? {
+              pagination: {
+                el: paginationEl,
+                clickable: true,
+                renderBullet: function (_index, className) {
+                  return '<button class="' + className + '" aria-label="Go to slide"></button>';
+                },
+              },
+            }
+          : {}),
+      });
+
+      this.#swipers.push(swiper);
+    });
   }
 }
 

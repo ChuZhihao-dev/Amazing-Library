@@ -121,12 +121,27 @@
           {% when 'grid' %}
             {{ list_items }}
           {% when 'carousel' %}
-            {% render 'resource-list-carousel',
-              ref: 'resourceListCarousel',
-              slides: slides,
-              slide_count: recommendations.products.size,
-              settings: section.settings
-            %}
+            <div
+              class="product-recommendations__swiper-shell"
+              data-product-recommendations-swiper
+              data-slides-desktop="{{ section.settings.columns | default: 4 }}"
+              data-space-between="{{ section.settings.columns_gap | default: 16 }}"
+              data-pagination-style="{{ section.settings.carousel_pagination_style | default: 'none' }}"
+            >
+              <div class="swiper product-recommendations__swiper">
+                <div class="swiper-wrapper">
+                  {% for slide in slides %}
+                    <div class="swiper-slide product-recommendations__swiper-slide">
+                      {{ slide }}
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+
+              {% if section.settings.carousel_pagination_style == 'progress' %}
+                <div class="product-recommendations__pagination"></div>
+              {% endif %}
+            </div>
         {% endcase %}
       </div>
 
@@ -192,6 +207,75 @@
   @media screen and (min-width: 750px) {
     .resource-list--grid {
       grid-template-columns: var(--resource-list-columns, 1fr);
+    }
+  }
+
+  .product-recommendations__swiper-shell {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .product-recommendations__swiper {
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .product-recommendations__swiper > .swiper-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    box-sizing: content-box;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    will-change: transform;
+  }
+
+  .product-recommendations__swiper > .swiper-wrapper > .swiper-slide {
+    flex-shrink: 0;
+    width: 100%;
+    height: auto;
+    position: relative;
+    display: block;
+    min-width: 0;
+  }
+
+  .product-recommendations__swiper-slide,
+  .product-recommendations__swiper-slide > * {
+    height: 100%;
+  }
+
+  .product-recommendations__pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 40px;
+  }
+
+  .product-recommendations__pagination .swiper-pagination-bullet {
+    width: 70px;
+    height: 2px;
+    margin: 0 !important;
+    border-radius: 0;
+    background: rgb(var(--color-foreground-rgb) / 0.18);
+    opacity: 1;
+  }
+
+  .product-recommendations__pagination .swiper-pagination-bullet-active {
+    background: var(--color-foreground);
+  }
+
+  @media screen and (max-width: 749px) {
+    .product-recommendations__pagination {
+      gap: 6px;
+      margin-top: 28px;
+    }
+
+    .product-recommendations__pagination .swiper-pagination-bullet {
+      width: 35px;
     }
   }
 {% endstylesheet %}
