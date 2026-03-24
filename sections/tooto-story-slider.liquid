@@ -252,12 +252,11 @@
   /* ── More Story 空心按钮 ── */
   .tooto-story-slider__cta {
     display: inline-block;
-    padding: 11px 32px;
-    border: 1.5px solid var(--color-foreground);
+    padding: 14px 68px;
+    border: 1px solid rgba(115, 102, 88, 0.37);
     color: var(--color-foreground);
-    font-size: 0.8125rem;
-    font-weight: 400;
-    letter-spacing: 0.02em;
+    font-size: 16px;
+    font-weight: 300;
     text-decoration: none;
     white-space: nowrap;
     transition: background-color 0.2s ease, color 0.2s ease;
@@ -275,12 +274,18 @@
       line-height: 32px;
     }
     .tooto-story-slider__header {
-      padding: 32px;
+      padding: 0 32px 32px;
     }
 
     .tooto-story-slider__caption-text {
       font-size: 13px;
       max-width: 50%;
+    }
+    .tooto-story-slider__cta {
+      display: none;
+    }
+    .tooto-story-slider__footer {
+      display: none;
     }
   }
 {% endstylesheet %}

@@ -18,12 +18,15 @@ class HeaderDrawer extends Component {
     super.connectedCallback();
 
     this.addEventListener('keyup', this.#onKeyUp);
+    this.refs.details.addEventListener('toggle', this.#syncDrawerState);
     this.#setupAnimatedElementListeners();
+    this.#syncDrawerState();
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     this.removeEventListener('keyup', this.#onKeyUp);
+    this.refs.details.removeEventListener('toggle', this.#syncDrawerState);
   }
 
   /**
@@ -42,6 +45,26 @@ class HeaderDrawer extends Component {
   get isOpen() {
     return this.refs.details.hasAttribute('open');
   }
+
+
+  #syncDrawerState = () => {
+    const details = this.refs.details;
+    const isOpen = details.hasAttribute('open');
+    const summary = details.querySelector('summary');
+
+    summary?.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+
+    if (isOpen) {
+      details.classList.add('menu-open');
+      return;
+    }
+
+    details.classList.remove('menu-open');
+    this.refs.menuDrawer.classList.remove('menu-drawer--has-submenu-opened');
+
+    const openNestedDetails = this.querySelectorAll('details[open]:not(#Details-menu-drawer-container)');
+    openNestedDetails.forEach((nestedDetails) => reset(nestedDetails));
+  };
 
   /**
    * Get the closest details element to the event target
@@ -121,20 +144,20 @@ class HeaderDrawer extends Component {
     // This avoids waiting for child accordion/resource-card animations which can cause issues on Firefox
     const drawer = details.querySelector('.menu-drawer, .menu-drawer__submenu');
 
-    onAnimationEnd(
-      drawer || details,
-      () => {
-        reset(details);
-        if (details === this.refs.details) {
-          removeTrapFocus();
-          const openDetails = this.querySelectorAll('details[open]:not(accordion-custom > details)');
-          openDetails.forEach(reset);
-        } else {
-          trapFocus(this.refs.details);
-        }
-      },
-      { subtree: false }
-    );
+    const finalizeClose = () => {
+      reset(details);
+      if (details === this.refs.details) {
+        removeTrapFocus();
+        const openDetails = this.querySelectorAll('details[open]:not(accordion-custom > details)');
+        openDetails.forEach(reset);
+      } else {
+        trapFocus(this.refs.details);
+      }
+      this.#syncDrawerState();
+    };
+
+    onAnimationEnd(drawer || details, finalizeClose, { subtree: false });
+    setTimeout(finalizeClose, 350);
   }
 
   /**
