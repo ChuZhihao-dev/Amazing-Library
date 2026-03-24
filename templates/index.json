@@ -22,7 +22,7 @@
             "heading_light": "Inspiration",
             "description": "Unroll Your Story",
             "cta_label": "See More",
-            "cta_url": "shopify://collections"
+            "cta_url": "shopify://collections/all"
           }
         },
         "slide_DyPbXm": {
@@ -34,7 +34,7 @@
             "heading_light": "Inspiration",
             "description": "Unroll Your Story",
             "cta_label": "See More",
-            "cta_url": "shopify://collections"
+            "cta_url": "shopify://collections/all"
           }
         }
       },
