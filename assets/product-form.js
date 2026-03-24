@@ -198,7 +198,7 @@ class ProductFormComponent extends Component {
   /** @type {boolean} */
   #variantChangeInProgress = false;
 
-  /** @type {Array<{variantId: string, quantity: number}>} */
+  /** @type {Array<{variantId: string, quantity: number, properties?: Record<string, string>}>} */
   #addToCartQueue = [];
 
   connectedCallback() {
@@ -285,9 +285,19 @@ class ProductFormComponent extends Component {
     if (this.#variantChangeInProgress) {
       const intendedVariantId = this.#getIntendedVariantId();
       const quantity = this.#getQuantity();
+      const queuedItems = [];
 
       if (intendedVariantId) {
-        this.#addToCartQueue.push({ variantId: intendedVariantId, quantity });
+        queuedItems.push({ variantId: intendedVariantId, quantity });
+      }
+
+      const selectedSampleItem = this.#getSelectedSampleItem();
+      if (selectedSampleItem) {
+        queuedItems.push(selectedSampleItem);
+      }
+
+      if (queuedItems.length) {
+        this.#addToCartQueue.push(...queuedItems);
       }
 
       this.refs.addToCartButtonContainer?.animateAddToCart?.();
@@ -379,6 +389,20 @@ class ProductFormComponent extends Component {
     }
     if (overrideQuantity !== undefined) {
       formData.set('quantity', overrideQuantity.toString());
+    }
+
+    const selectedSampleItem = overrideVariantId ? null : this.#getSelectedSampleItem();
+    if (selectedSampleItem) {
+      const mainVariantId = formData.get('id');
+      const mainQuantity = Number(formData.get('quantity')) || Number(this.dataset.quantityDefault) || 1;
+
+      if (!mainVariantId) throw new Error('Form ID is required');
+
+      this.#processBatchAddToCart([
+        { variantId: mainVariantId.toString(), quantity: mainQuantity },
+        selectedSampleItem,
+      ]);
+      return;
     }
 
     const cartItemsComponents = document.querySelectorAll('cart-items-component');
@@ -508,6 +532,7 @@ class ProductFormComponent extends Component {
       items: items.map((item) => ({
         id: Number(item.variantId),
         quantity: item.quantity,
+        ...(item.properties ? { properties: item.properties } : {}),
       })),
       sections: cartItemComponentsSectionIds.join(','),
     };
@@ -585,6 +610,31 @@ class ProductFormComponent extends Component {
       .catch((error) => {
         console.error(error);
       });
+  }
+
+
+  #getSelectedSampleItem() {
+    const buyButtonsBlock = this.closest('.buy-buttons-block');
+    const sampleButton = buyButtonsBlock?.querySelector('[data-rug-sample-button="true"][data-selected="true"]');
+    if (!(sampleButton instanceof HTMLElement)) return null;
+
+    const sampleVariantId = sampleButton.getAttribute('data-sample-variant-id');
+    if (!sampleVariantId) return null;
+
+    const sourceProductId = buyButtonsBlock?.getAttribute('data-product-id') || '';
+    const sourceVariantId = this.refs.variantId?.value || '';
+    const sampleSourceTitle = sampleButton.getAttribute('data-sample-source-title') || '';
+    const properties = {};
+
+    if (sampleSourceTitle) properties['Sample For'] = sampleSourceTitle;
+    if (sourceProductId) properties._source_product_id = sourceProductId;
+    if (sourceVariantId) properties._source_variant_id = sourceVariantId;
+
+    return {
+      variantId: sampleVariantId,
+      quantity: 1,
+      properties,
+    };
   }
 
   /**

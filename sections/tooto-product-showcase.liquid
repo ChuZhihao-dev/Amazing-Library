@@ -58,6 +58,13 @@
           <div class="swiper-wrapper">
             {%- for block in section.blocks -%}
               <div class="swiper-slide tooto-product-showcase__slide" {{ block.shopify_attributes }}>
+                {%- if section.settings.product_url != blank -%}
+                  <a
+                    class="tooto-product-showcase__product-link"
+                    href="{{ section.settings.product_url }}"
+                    aria-label="{{ section.settings.product_name_bold | append: section.settings.product_name_light | strip | escape }}"
+                  >
+                {%- endif -%}
                 <div class="tooto-product-showcase__product-image-wrapper">
                   {%- if block.settings.product_image != blank -%}
                     {{
@@ -74,6 +81,9 @@
                     {{ 'product-1' | placeholder_svg_tag: 'tooto-product-showcase__product-image tooto-product-showcase__product-image--placeholder' }}
                   {%- endif -%}
                 </div>
+                {%- if section.settings.product_url != blank -%}
+                  </a>
+                {%- endif -%}
               </div>
             {%- endfor -%}
           </div>
@@ -332,6 +342,13 @@
   }
 
   /* 产品图 */
+  .tooto-product-showcase__product-link {
+    display: block;
+    width: 100%;
+    color: inherit;
+    text-decoration: none;
+  }
+
   .tooto-product-showcase__product-image-wrapper {
     overflow: hidden;
     display: flex;
@@ -533,6 +550,11 @@
       "id": "product_subtitle",
       "label": "Product Subtitle",
       "default": "Woven Serenity Wool Rug  0981"
+    },
+    {
+      "type": "url",
+      "id": "product_url",
+      "label": "Product URL"
     },
     {
       "type": "header",

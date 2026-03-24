@@ -28,6 +28,13 @@
         -%}
         <div class="tooto-product-grid__card" {{ block.shopify_attributes }}>
 
+          {%- if block.settings.product_url != blank -%}
+            <a
+              class="tooto-product-grid__image-link"
+              href="{{ block.settings.product_url }}"
+              aria-label="{{ block.settings.product_name | escape }}"
+            >
+          {%- endif -%}
           <div class="tooto-product-grid__image-wrapper" data-initial-media-index="{{ initial_media_index }}">
             {%- if block.settings.product_image != blank -%}
               <div class="tooto-product-grid__media{% if initial_media_index == 0 %} is-active{% endif %}" data-media-index="0" {% if initial_media_index != 0 %}hidden{% endif %}>
@@ -93,6 +100,9 @@
               {{ 'product-1' | placeholder_svg_tag: 'tooto-product-grid__image tooto-product-grid__image--placeholder' }}
             {%- endif -%}
           </div>
+          {%- if block.settings.product_url != blank -%}
+            </a>
+          {%- endif -%}
 
           <div class="tooto-product-grid__swatches">
             {%- if block.settings.swatch_color_1 != blank -%}
@@ -232,6 +242,13 @@
     position: relative;
   }
 
+  .tooto-product-grid__image-link {
+    width: 100%;
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+
   .tooto-product-grid__media {
     width: 100%;
     height: 100%;
@@ -298,7 +315,7 @@
   }
   .tooto-product-grid__name {
     margin: 0;
-    font-size: 14px;
+    font-size: 1rem;
     font-weight: 500;
     color: var(--color-foreground-heading);
     letter-spacing: 0.01em;
@@ -307,7 +324,7 @@
 
   .tooto-product-grid__price {
     margin: 0;
-    font-size: 0.875rem;
+    font-size: 1rem;
     font-weight: 400;
     color: var(--color-foreground);
     line-height: 1.4;
@@ -351,6 +368,7 @@
       overflow-x: auto;
       scroll-snap-type: x mandatory;
       gap: 0;
+      overflow-y: hidden;
       -ms-overflow-style: none;
       scrollbar-width: none;
     }

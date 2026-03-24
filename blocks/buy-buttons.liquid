@@ -261,32 +261,37 @@
             form_obj: form
           %}
 
-          {%- if is_product_page -%}
-            <div class="buy-buttons-block__secondary-actions">
-              <a
-                href="{{ customize_page_url }}"
-                class="button-secondary buy-buttons-block__secondary-button buy-buttons-block__customize-link"
-              >
-                Customize
-              </a>
-
-              <button
-                type="button"
-                class="button-secondary buy-buttons-block__secondary-button buy-buttons-block__sample-button"
-                data-rug-sample-button="true"
-                data-sample-variant-id="{% if rug_sample_variant != blank %}{{ rug_sample_variant.id }}{% endif %}"
-                data-sample-source-title="{{ product.title | escape }}"
-                {% if rug_sample_variant == blank or rug_sample_variant.available == false %}
-                  disabled
-                {% endif %}
-              >
-                {{ rug_sample_button_label | strip }}
-              </button>
-            </div>
-          {%- endif -%}
         </div>
       {%- endform -%}
     </product-form-component>
+
+    {%- if is_product_page -%}
+      <div class="buy-buttons-block__secondary-actions">
+        <a
+          href="{{ customize_page_url }}"
+          class="button-secondary buy-buttons-block__secondary-button buy-buttons-block__customize-link"
+        >
+          Customize
+        </a>
+
+        <button
+          type="button"
+          class="button-secondary buy-buttons-block__secondary-button buy-buttons-block__sample-button"
+          data-rug-sample-button="true"
+          data-sample-variant-id="{% if rug_sample_variant != blank %}{{ rug_sample_variant.id }}{% endif %}"
+          data-sample-source-title="{{ product.title | escape }}"
+          data-selected="false"
+          data-default-label="{{ rug_sample_button_label | strip | escape }}"
+          data-selected-label="{{ rug_sample_button_label | strip | escape }} · Selected"
+          aria-pressed="false"
+          {% if rug_sample_variant == blank or rug_sample_variant.available == false %}
+            disabled
+          {% endif %}
+        >
+          {{ rug_sample_button_label | strip }}
+        </button>
+      </div>
+    {%- endif -%}
   {%- else -%}
     <div class="product-form-buttons">
       <button
@@ -308,82 +313,25 @@
       if (document.documentElement.hasAttribute(initAttr)) return;
       document.documentElement.setAttribute(initAttr, 'true');
 
-      document.addEventListener('click', async function (event) {
+      document.addEventListener('click', function (event) {
         const button = event.target.closest('.buy-buttons-block--{{ block.id }} [data-rug-sample-button="true"]');
         if (!button) return;
 
         event.preventDefault();
+        event.stopPropagation();
 
         if (button.disabled) return;
 
-        const sampleVariantId = button.getAttribute('data-sample-variant-id');
-        if (!sampleVariantId) return;
+        const isSelected = button.getAttribute('data-selected') === 'true';
+        const nextSelected = !isSelected;
+        const nextLabel = button.getAttribute(nextSelected ? 'data-selected-label' : 'data-default-label');
 
-        const buyButtonsBlock = button.closest('.buy-buttons-block');
-        const productForm = button.closest('form');
-        const variantIdInput = productForm ? productForm.querySelector('input[name="id"]') : null;
-        const sectionIds = Array.from(document.querySelectorAll('cart-items-component[data-section-id]'))
-          .map((element) => element.dataset.sectionId)
-          .filter(Boolean)
-          .join(',');
+        button.setAttribute('data-selected', nextSelected ? 'true' : 'false');
+        button.setAttribute('aria-pressed', nextSelected ? 'true' : 'false');
+        button.classList.toggle('is-selected', nextSelected);
 
-        const properties = {};
-        const sampleSourceTitle = button.getAttribute('data-sample-source-title');
-        const sourceProductId = buyButtonsBlock ? buyButtonsBlock.getAttribute('data-product-id') : '';
-        const sourceVariantId = variantIdInput ? variantIdInput.value : '';
-
-        if (sampleSourceTitle) properties['Sample For'] = sampleSourceTitle;
-        if (sourceProductId) properties._source_product_id = sourceProductId;
-        if (sourceVariantId) properties._source_variant_id = sourceVariantId;
-
-        const payload = {
-          items: [
-            {
-              id: Number(sampleVariantId),
-              quantity: 1,
-              properties: properties,
-            },
-          ],
-        };
-
-        if (sectionIds) payload.sections = sectionIds;
-
-        button.disabled = true;
-
-        try {
-          const response = await fetch((window.Theme && window.Theme.routes && window.Theme.routes.cart_add_url) || '/cart/add.js', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Accept: 'application/json',
-            },
-            body: JSON.stringify(payload),
-          });
-          const data = await response.json();
-
-          if (data.status) {
-            throw data;
-          }
-
-          document.dispatchEvent(
-            new CustomEvent('cart:update', {
-              detail: {
-                resource: {},
-                sourceId: sampleVariantId,
-                data: {
-                  source: 'product-form-component',
-                  itemCount: 1,
-                  productId: sourceProductId,
-                  variantId: sampleVariantId,
-                  sections: data.sections,
-                },
-              },
-            })
-          );
-        } catch (error) {
-          console.error('Failed to add rug sample:', error);
-        } finally {
-          button.disabled = false;
+        if (nextLabel) {
+          button.textContent = nextLabel;
         }
       });
     })();
@@ -668,6 +616,12 @@
     padding-block: 0;
     text-decoration: none;
     text-transform: none;
+  }
+
+  .buy-buttons-block--product-page .buy-buttons-block__sample-button.is-selected {
+    background-color: var(--color-foreground);
+    color: var(--color-background);
+    border-color: var(--color-foreground);
   }
 
   .product-form-text__error {
