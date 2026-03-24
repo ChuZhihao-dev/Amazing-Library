@@ -389,7 +389,7 @@
               id="filters-drawer-heading"
               class="facets-drawer__title h3"
             >
-              {{ 'blocks.filter' | t }}
+             Category
 
               {% if total_active_values > 0 %}
                 <span
@@ -496,7 +496,7 @@
             type="button"
             on:click="dialog-component/closeDialog"
           >
-            {{- 'actions.see_items' | t: count: products_count -}}
+            Comfirm
           </button>
         {% endif %}
       </div>
@@ -601,6 +601,8 @@
   .facets-block-wrapper--vertical + .facets-toggle {
     @media screen and (max-width: 749px) {
       margin: 0;
+      border-block: 1px solid #d8d8d8;
+      margin-bottom: 32px;
     }
   }
 
@@ -699,6 +701,33 @@
     border-right: var(--style-border-drawer);
     box-shadow: var(--shadow-drawer);
     padding-inline: 0;
+  }
+
+  @media screen and (max-width: 749px) {
+    .facets--drawer {
+      width: 100vw;
+      max-width: 100vw;
+      height: 100dvh;
+      max-height: 100dvh;
+      inset: 0 0 0 auto;
+      border-right: 0;
+      box-shadow: none;
+    }
+
+    .facets-drawer__form-wrapper,
+    .facets-drawer__form-wrapper .facets__form,
+    .facets-drawer__filters {
+      width: 100%;
+    }
+
+    .facets__drawer-actions {
+      padding-inline: var(--padding-xl);
+      padding-bottom: var(--padding-xl);
+    }
+
+    .facets__see-results {
+      width: 100%;
+    }
   }
 
   .facets--drawer[open] {
@@ -835,6 +864,7 @@
   .facets__filters-wrapper .facets__summary {
     font-size: 16px;
     font-weight: bold;
+    padding-block: 24px 16px;
   }
   .facets--horizontal .facets__summary {
     @media screen and (min-width: 750px) {
@@ -918,7 +948,7 @@
   .facets__inputs-wrapper:not(:has(.facets__inputs-list)),
   .facets__inputs-wrapper .facets__inputs-list {
     display: flex;
-    gap: var(--facets-mobile-gap);
+    gap: 16px;
     flex-direction: column;
 
     @media screen and (min-width: 750px) {
@@ -1180,10 +1210,12 @@
     }
   }
 
-  .facets-drawer__title {
+  h2.facets-drawer__title.h3 {
     --variant-picker-swatch-width: 32px;
     --variant-picker-swatch-height: 32px;
-
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 32px;
     margin: 0;
     display: flex;
     align-items: center;
@@ -1298,6 +1330,9 @@
     min-width: var(--facets-see-results-min-width);
     flex-grow: 1;
     padding-block: var(--padding-lg);
+    font-size: 16px;
+    font-weight: 500;
+    padding: 11px;
   }
 
   .facets-horizontal-remove {

@@ -2191,7 +2191,12 @@ deferred-media[class] :is(.deferred-media__poster-button img, .deferred-media__p
     --scaling-factor: 0.65;
   }
 }
-
+@media (max-width: 768px) {
+  .swatch {
+    width: 16px;
+    height: 16px;
+  }
+}
 .variant-picker .variant-option--buttons label:has(.swatch) {
   border-radius: var(--variant-picker-swatch-radius);
 }
