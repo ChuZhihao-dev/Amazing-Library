@@ -25,7 +25,7 @@
   {%- liquid
     assign preview_image = block_settings.background_image
     if block_settings.background_media == 'video'
-      assign preview_image = block_settings.video.preview_image
+      assign preview_image = block_settings.video_poster_image | default: block_settings.video.preview_image
     endif
 
     assign show_placeholder = false
@@ -75,6 +75,7 @@
         background_video: block_settings.video,
         background_video_position: 'cover',
         background_video_loop: true,
+        background_video_poster_image: block_settings.video_poster_image,
         background_image: block_settings.background_image,
         background_image_position: 'cover'
       %}
@@ -390,6 +391,13 @@
       "type": "video",
       "id": "video",
       "label": "t:settings.video",
+      "visible_if": "{{ block.settings.background_media == \"video\" }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "video_poster_image",
+      "label": "Video Poster Image",
+      "info": "Shown before the background video loads or starts.",
       "visible_if": "{{ block.settings.background_media == \"video\" }}"
     },
     {

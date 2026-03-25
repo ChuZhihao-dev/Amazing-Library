@@ -320,6 +320,13 @@
     },
     {
       "type": "image_picker",
+      "id": "video_poster_image",
+      "label": "Video Poster Image",
+      "info": "Shown before the background video loads or starts.",
+      "visible_if": "{{ block.settings.background_media == 'video' }}"
+    },
+    {
+      "type": "image_picker",
       "id": "background_image",
       "label": "t:settings.image",
       "visible_if": "{{ block.settings.background_media == 'image' }}"
