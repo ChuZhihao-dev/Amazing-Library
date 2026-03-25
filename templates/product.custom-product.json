@@ -301,7 +301,7 @@
               "name": "Tooto Style Selector",
               "settings": {
                 "made_to_measure_product": "made-to-measure",
-                "wall_to_wall_product": "charmeuse-rug",
+                "wall_to_wall_product": "wall-to-wall",
                 "tooltip_text": "Helpful information about style options."
               },
               "blocks": {}
