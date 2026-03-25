@@ -28,24 +28,38 @@
 
     {%- if form.errors and form.id == form_id -%}
       <div
-        class="contact-form__error"
+        class="contact-form__feedback contact-form__feedback--error"
         tabindex="-1"
         autofocus
+        role="alert"
       >
-        {{- 'icon-error.svg' | inline_asset_content -}}
-        {{- form.errors.translated_fields.email | capitalize }}
-        {{ form.errors.messages.email -}}
+        <span class="contact-form__feedback-icon">
+          {{- 'icon-error.svg' | inline_asset_content -}}
+        </span>
+        <div class="contact-form__feedback-content">
+          <p class="contact-form__feedback-title">There was a problem submitting your message.</p>
+          <p class="contact-form__feedback-text">
+            {{- form.errors.translated_fields.email | capitalize }}
+            {{ form.errors.messages.email -}}
+          </p>
+        </div>
       </div>
     {%- endif -%}
 
     {%- if form.posted_successfully? and form.id == form_id -%}
       <div
-        class="contact-form__success"
+        class="contact-form__feedback contact-form__feedback--success"
         tabindex="-1"
         autofocus
+        role="status"
       >
-        {{- 'icon-checkmark.svg' | inline_asset_content -}}
-        {{- 'blocks.contact_form.post_success' | t -}}
+        <span class="contact-form__feedback-icon">
+          {{- 'icon-checkmark.svg' | inline_asset_content -}}
+        </span>
+        <div class="contact-form__feedback-content">
+          <p class="contact-form__feedback-title">Your message has been submitted successfully.</p>
+          <p class="contact-form__feedback-text">Thank you — we’ll get back to you as soon as possible.</p>
+        </div>
       </div>
     {%- endif -%}
 
@@ -181,13 +195,59 @@
     opacity: 0.85;
   }
 
-  .contact-form__error,
-  .contact-form__success {
+  .contact-form__feedback {
     display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px 18px;
+    margin-bottom: 16px;
+    border: 1px solid transparent;
+  }
+
+  .contact-form__feedback--success {
+    background-color: #F5F5EF;
+    border-color: #D9D9D0;
+    color: #060002;
+  }
+
+  .contact-form__feedback--error {
+    background-color: #FFF1F1;
+    border-color: #F1B8B8;
+    color: #8A1F1F;
+  }
+
+  .contact-form__feedback-icon {
+    display: inline-flex;
     align-items: center;
-    gap: var(--gap-xs);
-    color: #ffffff;
-    margin-bottom: 1rem;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+  }
+
+  .contact-form__feedback-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .contact-form__feedback-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .contact-form__feedback-title {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+
+  .contact-form__feedback-text {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
   }
   @media(max-width: 768px) {
     .contact-form__title {
@@ -215,6 +275,19 @@
       font-size: 13px;
       line-height: 17px;
       margin-top: 10px;
+    }
+    .contact-form__feedback {
+      gap: 10px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+    .contact-form__feedback-title {
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    .contact-form__feedback-text {
+      font-size: 12px;
+      line-height: 1.5;
     }
   }
 {% endstylesheet %}
