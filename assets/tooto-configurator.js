@@ -47,8 +47,10 @@
   function syncShapePicker(picker, input) {
     var label = picker.querySelector('[data-shape-label]');
     var thumb = picker.querySelector('[data-shape-thumb]');
+    var thumbWrap = picker.querySelector('.tooto-configurator__select-thumb');
     var nextLabel = input.getAttribute('data-shape-text') || input.value;
     var nextImage = input.getAttribute('data-shape-image') || '';
+    var isRound = nextLabel && nextLabel.toLowerCase() === 'round';
 
     if (label) {
       label.textContent = nextLabel;
@@ -57,6 +59,71 @@
     if (thumb && nextImage) {
       thumb.setAttribute('src', nextImage);
       thumb.setAttribute('alt', nextLabel);
+    }
+
+    if (thumbWrap) {
+      thumbWrap.classList.toggle('is-round', !!isRound);
+    }
+  }
+
+  function getSelectedColorImage(root) {
+    var scope = document;
+    var selectedInput = scope.querySelector(
+      'variant-picker .variant-option--swatch-cards input[type="radio"]:checked, variant-picker .variant-option--swatches input[type="radio"]:checked'
+    );
+
+    if (!selectedInput && root) {
+      selectedInput = root.querySelector(
+        '.variant-option--swatch-cards input[type="radio"]:checked, .variant-option--swatches input[type="radio"]:checked'
+      );
+    }
+
+    if (!selectedInput) return '';
+
+    var selectedLabel = selectedInput.closest('label');
+    if (!selectedLabel) return '';
+
+    var swatchCardImage = selectedLabel.querySelector('.variant-option__swatch-card-image');
+    if (swatchCardImage && swatchCardImage.getAttribute('src')) {
+      return swatchCardImage.getAttribute('src');
+    }
+
+    var swatchImage = selectedLabel.querySelector('.swatch[style*="--swatch-background"]');
+    if (swatchImage) {
+      var style = swatchImage.getAttribute('style') || '';
+      var match = style.match(/url\((['"]?)(.*?)\1\)/);
+      if (match && match[2]) return match[2];
+    }
+
+    return '';
+  }
+
+  function syncShapeImagesToSelectedColor(root) {
+    var picker = root.querySelector('[data-shape-picker]');
+    if (!picker) return;
+
+    var colorImage = getSelectedColorImage(root);
+    if (!colorImage) return;
+
+    picker.querySelectorAll('[data-shape-option]').forEach(function (input) {
+      input.setAttribute('data-shape-image', colorImage);
+
+      var optionWrap = input.parentElement && input.parentElement.querySelector('.tooto-configurator__select-option-thumb');
+      var optionImage = input.parentElement && input.parentElement.querySelector('.tooto-configurator__select-option-thumb img');
+      var optionLabel = input.getAttribute('data-shape-text') || input.value || 'Shape';
+      var isRound = optionLabel && optionLabel.toLowerCase() === 'round';
+      if (optionImage) {
+        optionImage.setAttribute('src', colorImage);
+        optionImage.setAttribute('alt', optionLabel);
+      }
+      if (optionWrap) {
+        optionWrap.classList.toggle('is-round', !!isRound);
+      }
+    });
+
+    var checkedInput = picker.querySelector('[data-shape-option]:checked') || picker.querySelector('[data-shape-option]');
+    if (checkedInput) {
+      syncShapePicker(picker, checkedInput);
     }
   }
 
@@ -140,6 +207,14 @@
 
     setupShapePicker(root);
     setupInfoTooltips(root);
+    syncShapeImagesToSelectedColor(root);
+
+    document.addEventListener('change', function (event) {
+      if (!(event.target instanceof HTMLElement)) return;
+      if (event.target.matches('variant-picker .variant-option--swatch-cards input[type="radio"], variant-picker .variant-option--swatches input[type="radio"]')) {
+        syncShapeImagesToSelectedColor(root);
+      }
+    });
   }
 
   function initAll(scope) {
