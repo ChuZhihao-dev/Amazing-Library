@@ -123,7 +123,7 @@
             "title": "Special Request",
             "description": "For unique designs or special customization needs, please feel free to contact our team.",
             "button_label": "Contact Us",
-            "button_link": "shopify://collections",
+            "button_link": "shopify://pages/contact",
             "button_style": "outline"
           }
         }
@@ -134,7 +134,7 @@
         "option_3_special"
       ],
       "settings": {
-        "heading": "Custom Rug <br>Options",
+        "heading": "Custom Rug Options",
         "color_scheme": "scheme-1",
         "padding-block-start": 0,
         "padding-block-end": 100
