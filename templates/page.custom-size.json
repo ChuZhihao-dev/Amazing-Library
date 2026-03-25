@@ -193,7 +193,7 @@
       ],
       "settings": {
         "heading": "FAQ",
-        "decoration_icon": "shopify://shop_images/4423.svg",
+        "faq_page": "faq",
         "color_scheme": "scheme-1",
         "padding-block-start": 64,
         "padding-block-end": 64
