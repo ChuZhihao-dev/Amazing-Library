@@ -6,8 +6,21 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
+    "tooto_simple_banner_VqYEab": {
+      "type": "tooto-simple-banner",
+      "name": "Tooto Simple Banner",
+      "settings": {
+        "image": "shopify://shop_images/2_2x_7.webp",
+        "title": "",
+        "height": 20,
+        "height_mobile": 30,
+        "color_scheme": "scheme-1",
+        "section_width": "full-width"
+      }
+    },
     "search": {
       "type": "search-header",
       "blocks": {
@@ -18,6 +31,8 @@
             "type_preset": "h2",
             "font": "var(--font-primary--family)",
             "font_size": "",
+            "font_size_mobile": "",
+            "weight": "",
             "line_height": "normal",
             "letter_spacing": "normal",
             "case": "none",
@@ -122,6 +137,8 @@
                 "type_preset": "rte",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
+                "font_size_mobile": "",
+                "weight": "",
                 "line_height": "normal",
                 "letter_spacing": "normal",
                 "case": "none",
@@ -149,6 +166,8 @@
                 "alignment": "left",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
+                "font_size_mobile": "",
+                "weight": "",
                 "line_height": "normal",
                 "letter_spacing": "normal",
                 "case": "none",
@@ -172,6 +191,8 @@
         "layout_type": "grid",
         "product_card_size": "medium",
         "mobile_product_card_size": "small",
+        "enable_infinite_scroll": true,
+        "products_per_page": 24,
         "product_grid_width": "centered",
         "full_width_on_mobile": true,
         "columns_gap_horizontal": 16,
@@ -185,6 +206,7 @@
     }
   },
   "order": [
+    "tooto_simple_banner_VqYEab",
     "search",
     "main"
   ]
