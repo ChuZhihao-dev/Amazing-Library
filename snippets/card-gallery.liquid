@@ -66,7 +66,7 @@
   endif
 
   assign enable_second_image_hover = false
-  if product != blank and settings.product_card_carousel != true
+  if product != blank and settings.show_second_image_on_hover
     if product.media.size > 1
       assign enable_second_image_hover = true
     endif
@@ -214,7 +214,7 @@
       aria-label="{{- product.title -}}"
       {% if enable_second_image_hover %}
         on:pointerenter="product-card/previewImage"
-        on:pointerleave="product-card/resetImage"
+        on:pointerleave="product-card/resetImageToInitial"
       {% endif %}
     >
       {% render 'slideshow',

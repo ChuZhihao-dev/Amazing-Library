@@ -19,6 +19,7 @@
   <h1 class="contact-form__title">Contact Us</h1>
 
   {% assign form_id = block.id | default: section.id | prepend: 'ContactForm-' %}
+  {%- assign show_success_feedback = form.posted_successfully? -%}
   {%- form 'contact', id: form_id, class: 'contact-form__form' -%}
     <input
       name="contact[id]"
@@ -26,7 +27,7 @@
       value="{{ form_id }}"
     >
 
-    {%- if form.errors and form.id == form_id -%}
+    {%- if form.errors -%}
       <div
         class="contact-form__feedback contact-form__feedback--error"
         tabindex="-1"
@@ -46,22 +47,25 @@
       </div>
     {%- endif -%}
 
-    {%- if form.posted_successfully? and form.id == form_id -%}
-      <div
-        class="contact-form__feedback contact-form__feedback--success"
-        tabindex="-1"
+    <div
+      class="contact-form__feedback contact-form__feedback--success{% unless show_success_feedback %} contact-form__feedback--hidden{% endunless %}"
+      data-contact-success-message
+      tabindex="-1"
+      {% if show_success_feedback %}
         autofocus
-        role="status"
-      >
-        <span class="contact-form__feedback-icon">
-          {{- 'icon-checkmark.svg' | inline_asset_content -}}
-        </span>
-        <div class="contact-form__feedback-content">
-          <p class="contact-form__feedback-title">Your message has been submitted successfully.</p>
-          <p class="contact-form__feedback-text">Thank you — we’ll get back to you as soon as possible.</p>
-        </div>
+      {% else %}
+        hidden
+      {% endif %}
+      role="status"
+    >
+      <span class="contact-form__feedback-icon">
+        {{- 'icon-checkmark.svg' | inline_asset_content -}}
+      </span>
+      <div class="contact-form__feedback-content">
+        <p class="contact-form__feedback-title">Your message has been submitted successfully.</p>
+        <p class="contact-form__feedback-text">Thank you — we’ll get back to you as soon as possible.</p>
       </div>
-    {%- endif -%}
+    </div>
 
     <div class="contact-form__form-row">
       <label class="visually-hidden" for="ContactForm-name">
@@ -91,7 +95,7 @@
         autocapitalize="off"
         value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
         aria-required="true"
-        {% if form.errors contains 'email' and form.id == form_id %}
+        {% if form.errors contains 'email' %}
           aria-invalid="true"
           aria-describedby="ContactForm-email-error"
         {% endif %}
@@ -114,6 +118,33 @@
 
     {{ submit_button }}
   {%- endform -%}
+
+  <script>
+    (function () {
+      const formEl = document.getElementById('{{ form_id }}');
+      if (!formEl) return;
+
+      const successEl = formEl.querySelector('[data-contact-success-message]');
+      if (!(successEl instanceof HTMLElement)) return;
+
+      const url = new URL(window.location.href);
+      const isPosted = url.searchParams.get('contact_posted') === 'true';
+      const hashMatches = window.location.hash === '#{{ form_id }}';
+
+      if (!isPosted || !hashMatches) return;
+
+      successEl.hidden = false;
+      successEl.classList.remove('contact-form__feedback--hidden');
+
+      requestAnimationFrame(function () {
+        try {
+          successEl.focus();
+        } catch (error) {
+          console.warn('Contact form success focus failed', error);
+        }
+      });
+    })();
+  </script>
 </div>
 
 {% stylesheet %}
@@ -202,6 +233,10 @@
     padding: 16px 18px;
     margin-bottom: 16px;
     border: 1px solid transparent;
+  }
+
+  .contact-form__feedback--hidden {
+    display: none;
   }
 
   .contact-form__feedback--success {

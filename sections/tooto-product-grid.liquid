@@ -16,6 +16,7 @@
       {%- for block in section.blocks -%}
         {%- liquid
           assign initial_media_index = 0
+          assign hover_media_index = blank
           if block.settings.product_image == blank
             if block.settings.swatch_image_1 != blank
               assign initial_media_index = 1
@@ -24,6 +25,10 @@
             elsif block.settings.swatch_image_3 != blank
               assign initial_media_index = 3
             endif
+          endif
+
+          if block.settings.product_image != blank and block.settings.swatch_image_1 != blank
+            assign hover_media_index = 1
           endif
         -%}
         <div class="tooto-product-grid__card" {{ block.shopify_attributes }}>
@@ -35,7 +40,7 @@
               aria-label="{{ block.settings.product_name | escape }}"
             >
           {%- endif -%}
-          <div class="tooto-product-grid__image-wrapper" data-initial-media-index="{{ initial_media_index }}">
+          <div class="tooto-product-grid__image-wrapper" data-initial-media-index="{{ initial_media_index }}"{% if hover_media_index != blank %} data-hover-media-index="{{ hover_media_index }}"{% endif %}>
             {%- if block.settings.product_image != blank -%}
               <div class="tooto-product-grid__media{% if initial_media_index == 0 %} is-active{% endif %}" data-media-index="0" {% if initial_media_index != 0 %}hidden{% endif %}>
                 {{
@@ -173,30 +178,58 @@
     if (!sectionEl) return;
 
     sectionEl.querySelectorAll('.tooto-product-grid__card').forEach(function (cardEl) {
+      const imageWrapperEl = cardEl.querySelector('.tooto-product-grid__image-wrapper');
       const mediaItems = Array.from(cardEl.querySelectorAll('.tooto-product-grid__media'));
       const swatchButtons = Array.from(cardEl.querySelectorAll('.tooto-product-grid__swatch[data-image-index]'));
 
-      if (!mediaItems.length || !swatchButtons.length) return;
+      if (!(imageWrapperEl instanceof HTMLElement) || !mediaItems.length) return;
 
-      function setActiveMedia(targetIndex) {
+      let selectedIndex = imageWrapperEl.dataset.initialMediaIndex || '0';
+      const hoverIndex = imageWrapperEl.dataset.hoverMediaIndex || '';
+
+      function setActiveMedia(targetIndex, options) {
+        const settings = options || {};
+        const syncSwatches = settings.syncSwatches !== false;
+
         mediaItems.forEach(function (mediaEl) {
           const isActive = mediaEl.dataset.mediaIndex === targetIndex;
-          mediaEl.hidden = !isActive;
           mediaEl.classList.toggle('is-active', isActive);
+          mediaEl.setAttribute('aria-hidden', isActive ? 'false' : 'true');
         });
 
-        swatchButtons.forEach(function (buttonEl) {
-          buttonEl.classList.toggle('is-active', buttonEl.dataset.imageIndex === targetIndex);
-        });
+        if (syncSwatches) {
+          swatchButtons.forEach(function (buttonEl) {
+            buttonEl.classList.toggle('is-active', buttonEl.dataset.imageIndex === targetIndex);
+          });
+        }
       }
+
+      mediaItems.forEach(function (mediaEl) {
+        mediaEl.hidden = false;
+      });
+      setActiveMedia(selectedIndex);
 
       swatchButtons.forEach(function (buttonEl) {
         buttonEl.addEventListener('click', function () {
           const targetIndex = buttonEl.dataset.imageIndex;
           if (!targetIndex) return;
+          selectedIndex = targetIndex;
           setActiveMedia(targetIndex);
         });
       });
+
+      if (hoverIndex) {
+        imageWrapperEl.addEventListener('pointerenter', function (event) {
+          if (!(event instanceof PointerEvent) || event.pointerType !== 'mouse') return;
+          if (hoverIndex === selectedIndex) return;
+          setActiveMedia(hoverIndex, { syncSwatches: false });
+        });
+
+        imageWrapperEl.addEventListener('pointerleave', function (event) {
+          if (!(event instanceof PointerEvent) || event.pointerType !== 'mouse') return;
+          setActiveMedia(selectedIndex);
+        });
+      }
     });
   })();
 </script>
@@ -250,8 +283,20 @@
   }
 
   .tooto-product-grid__media {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.35s ease, visibility 0s linear 0.35s;
+  }
+
+  .tooto-product-grid__media.is-active {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.35s ease;
   }
 
   .tooto-product-grid__image {
@@ -339,7 +384,7 @@
   .tooto-product-grid__cta {
     display: inline-block;
     padding: 8px 40px;
-    background-color: var(--color-foreground);
+    background-color: #060002;
     color: #fff;
     font-size: 16px;
     font-weight: 600;

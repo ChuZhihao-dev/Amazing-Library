@@ -87,9 +87,13 @@
     justify-content: space-between;
     flex-wrap: wrap;
     width: 100%;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
   .tooto-footer-trust-bar__list::-webkit-scrollbar {
     display: none !important;
+    width: 0 !important;
+    height: 0 !important;
   }
   .tooto-footer-trust-bar__item {
     display: flex;
@@ -135,11 +139,14 @@
     .tooto-footer-trust-bar__list {
       gap: 38px;
       flex-wrap: nowrap;
-      overflow-x: scroll;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
     }
     .tooto-footer-trust-bar__list::-webkit-scrollbar {
-      display: none;
-      scrollbar-width: 0;
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
     }
     .tooto-footer-trust-bar__item {
       padding: 0;

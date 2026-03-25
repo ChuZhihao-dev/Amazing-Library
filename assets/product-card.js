@@ -433,6 +433,15 @@ export class ProductCard extends ProductCardLink {
   }
 
   /**
+   * Resets hover preview back to the first image.
+   * @param {PointerEvent} event
+   */
+  resetImageToInitial(event) {
+    if (event.pointerType !== 'mouse') return;
+    this.#selectInitialSlide();
+  }
+
+  /**
    * Resets the image to the variant image.
    */
   #resetVariant = () => {
@@ -449,7 +458,13 @@ export class ProductCard extends ProductCardLink {
       }
     }
 
-    // No variant selected - use initial slide if it's valid
+    this.#selectInitialSlide();
+  };
+
+  #selectInitialSlide = () => {
+    const { slideshow } = this.refs;
+    if (!slideshow) return;
+
     const initialSlide = slideshow.initialSlide;
     const slideId = initialSlide?.getAttribute('slide-id');
     if (initialSlide && slideshow.slides?.includes(initialSlide) && slideId) {
@@ -457,8 +472,7 @@ export class ProductCard extends ProductCardLink {
       return;
     }
 
-    // No valid initial slide or selected variant - go to previous
-    slideshow.previous(undefined, { animate: false });
+    slideshow.select(0, undefined, { animate: false });
   };
 
   /**
