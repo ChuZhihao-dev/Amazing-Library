@@ -262,8 +262,8 @@
       "settings": {
         "image": "shopify://shop_images/1211_2x_fb7e9105-cc53-4578-aa1f-c4aa429548ba.webp",
         "image_mobile": "shopify://shop_images/1211_2x_2.webp",
-        "overlay_opacity": 45,
-        "section_height": 55,
+        "overlay_opacity": 0,
+        "section_height": 60,
         "section_height_mobile": 50,
         "heading": "Personalised For\nYour Home",
         "description": "With Our Tailored To Fit Wool Rugs, You Can Personalise Your Rug By Choosing The Style, Colour, Size, Shape & Edging Best Suited To Your Home.",
