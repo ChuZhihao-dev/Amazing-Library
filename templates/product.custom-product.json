@@ -555,6 +555,7 @@
                   "settings": {
                     "text": "100% Authentic Luxury",
                     "icon": "lock",
+                    "image_upload": "shopify://shop_images/50_1.svg",
                     "icon_width": 28
                   },
                   "blocks": {}
@@ -564,6 +565,7 @@
                   "settings": {
                     "text": "Free Shipping",
                     "icon": "plane",
+                    "image_upload": "shopify://shop_images/51_1.svg",
                     "icon_width": 28
                   },
                   "blocks": {}
@@ -573,6 +575,7 @@
                   "settings": {
                     "text": "7-day Free Return",
                     "icon": "return",
+                    "image_upload": "shopify://shop_images/4.svg",
                     "icon_width": 28
                   },
                   "blocks": {}
