@@ -313,6 +313,7 @@
                 "show_pickup_availability": false,
                 "gift_card_form": true,
                 "customize_page": "",
+                "show_customize_button": false,
                 "rug_sample_product": "rug-sample",
                 "padding-block-start": 0,
                 "padding-block-end": 0,
