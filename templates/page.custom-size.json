@@ -110,7 +110,7 @@
             "title": "Wall To Wall",
             "description": "Full-room carpet customization that delivers a seamless and harmonious new look.",
             "button_label": "Customize Now",
-            "button_link": "shopify://collections",
+            "button_link": "/products/wall-to-wall",
             "button_style": "outline"
           }
         },
