@@ -16,7 +16,7 @@
         "image": "shopify://shop_images/2_2x_7.webp",
         "title": "",
         "height": 20,
-        "height_mobile": 30,
+        "height_mobile": 50,
         "color_scheme": "scheme-1",
         "section_width": "full-width"
       }
