@@ -59,7 +59,7 @@
           "type": "card",
           "settings": {
             "image": "shopify://shop_images/2548_2x_8168ec64-a1da-4e19-be1e-397f24b51277.webp",
-            "badge": "Cloud Series",
+            "badge": "Cloud <i style=\"font-weight: 275;font-style:normal;\">Series</i>",
             "title": "Woo Carpet Series 1",
             "link": "shopify://collections/cloud-scape"
           }
@@ -77,7 +77,7 @@
           "type": "card",
           "settings": {
             "image": "shopify://shop_images/2549_2x_efe11d3e-a41e-434c-8d3f-b16ec7106e77.webp",
-            "badge": "Pathof Style",
+            "badge": "Pathof <i style=\"font-weight: 275;font-style:normal\">Style</i>",
             "title": "Woo Carpet Series 3",
             "link": "shopify://collections/pathof-shule"
           }
@@ -86,7 +86,7 @@
           "type": "card",
           "settings": {
             "image": "shopify://shop_images/2548_2x_8168ec64-a1da-4e19-be1e-397f24b51277.webp",
-            "badge": "Cloud Series",
+            "badge": "Cloud <i style=\"font-weight:275;font-style:normal\">Series</i>",
             "title": "Woo Carpet Series 1",
             "link": "shopify://collections/cloud-scape"
           }
