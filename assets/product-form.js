@@ -377,6 +377,23 @@ class ProductFormComponent extends Component {
     return response.json();
   }
 
+
+  #getSourceProductContext() {
+    const stickyAddToCart = document.querySelector('sticky-add-to-cart[data-product-id]');
+    const stickyTitle = stickyAddToCart?.querySelector('[data-testid="sticky-product-title"]')?.textContent?.trim() || '';
+    const detailsTitle = document.querySelector('.view-product-title a, [data-testid="product-information-details"] h1')?.textContent?.trim() || '';
+
+    return {
+      sourceProductId: stickyAddToCart?.getAttribute('data-product-id') || this.dataset.productId || '',
+      sourceVariantId:
+        this.#getIntendedVariantId() ||
+        stickyAddToCart?.getAttribute('data-current-variant-id') ||
+        this.refs.variantId?.value ||
+        '',
+      sourceProductTitle: stickyTitle || detailsTitle || this.dataset.productTitle || '',
+    };
+  }
+
   async #processAddToCartWithSample(formData, selectedSampleItem, addToCartTextError) {
     const cartSectionIds = this.#getCartSectionIds();
     formData.delete('sections');
@@ -789,9 +806,10 @@ class ProductFormComponent extends Component {
     const sampleVariantId = sampleButton.getAttribute('data-sample-variant-id');
     if (!sampleVariantId) return null;
 
-    const sourceProductId = this.dataset.productId || buyButtonsBlock?.getAttribute('data-product-id') || '';
-    const sourceVariantId = this.#getIntendedVariantId() || this.refs.variantId?.value || '';
-    const sampleSourceTitle = this.dataset.productTitle || sampleButton.getAttribute('data-sample-source-title') || '';
+    const sourceContext = this.#getSourceProductContext();
+    const sourceProductId = sourceContext.sourceProductId || buyButtonsBlock?.getAttribute('data-product-id') || '';
+    const sourceVariantId = sourceContext.sourceVariantId || '';
+    const sampleSourceTitle = sourceContext.sourceProductTitle || sampleButton.getAttribute('data-sample-source-title') || '';
     const properties = {};
 
     if (sampleSourceTitle) properties['Sample For'] = sampleSourceTitle;
