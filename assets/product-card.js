@@ -109,6 +109,10 @@ export class ProductCard extends ProductCardLink {
     return this.refs.productCardLink.href;
   }
 
+  get hoverPreviewDisabled() {
+    return this.hasAttribute('data-hover-preview-disabled');
+  }
+
   /**
    * Gets the currently selected variant ID from the product card
    * @returns {string | null} The variant ID or null if none selected
@@ -399,7 +403,7 @@ export class ProductCard extends ProductCardLink {
    * @param {PointerEvent} event - The pointer event.
    */
   previewImage(event) {
-    if (event.pointerType !== 'mouse') return;
+    if (event.pointerType !== 'mouse' || this.hoverPreviewDisabled) return;
 
     const { slideshow } = this.refs;
 
@@ -437,7 +441,7 @@ export class ProductCard extends ProductCardLink {
    * @param {PointerEvent} event
    */
   resetImageToInitial(event) {
-    if (event.pointerType !== 'mouse') return;
+    if (event.pointerType !== 'mouse' || this.hoverPreviewDisabled) return;
     this.#selectInitialSlide();
   }
 
@@ -576,6 +580,10 @@ class SwatchesVariantPickerComponent extends VariantPicker {
    */
   variantChanged(event) {
     if (!(event.target instanceof HTMLElement)) return;
+
+    if (this.parentProductCard instanceof ProductCard) {
+      this.parentProductCard.setAttribute('data-hover-preview-disabled', 'true');
+    }
 
     // Check if this is a swatch input
     const isSwatchInput = event.target instanceof HTMLInputElement && event.target.name?.includes('-swatch');
