@@ -2488,7 +2488,7 @@ deferred-media[class] :is(.deferred-media__poster-button img, .deferred-media__p
 
 .variant-option__button-label--has-swatch:hover {
   outline: var(--focus-outline-width) solid rgb(var(--color-foreground-rgb) / var(--opacity-35-55));
-  outline-offset: var(--focus-outline-offset);
+  outline-offset: 1px;
 }
 
 .variant-option__button-label--has-swatch:has(:checked) {

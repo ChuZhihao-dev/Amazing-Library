@@ -65,6 +65,11 @@
     assign has_existing_swatches = true
   endif
 
+  assign enable_second_image_hover = false
+  if product != blank and product.media.size > 1 and settings.product_card_carousel != true
+    assign enable_second_image_hover = true
+  endif
+
   # Check if product has badges and determine position
   assign has_badges = false
   assign badge_position = null
@@ -117,7 +122,7 @@
 
 <div
   ref="cardGallery"
-  class="card-gallery card-gallery-{{ block.id }} spacing-style border-style{% if has_badges %} card-gallery--badge-{{ badge_position }}{% endif %}"
+  class="card-gallery card-gallery-{{ block.id }} spacing-style border-style{% if has_badges %} card-gallery--badge-{{ badge_position }}{% endif %}{% if enable_second_image_hover %} card-gallery--hover-secondary{% endif %}"
   style="
     {% render 'border-override', settings: block_settings %}
     {% render 'spacing-style', settings: block_settings %}
@@ -144,12 +149,45 @@
 
       # Arrows removed: image switching is handled by color swatches only
 
+      assign hover_media = blank
+      if enable_second_image_hover
+        for media in product.media
+          if media.id == product.featured_media.id
+            continue
+          endif
+
+          if media.media_type != 'image'
+            continue
+          endif
+
+          if variant_images contains media.src
+            continue
+          endif
+
+          assign hover_media = media
+          break
+        endfor
+
+        if hover_media == blank
+          for media in product.media
+            if media.id == product.featured_media.id
+              continue
+            endif
+
+            if media.media_type != 'image'
+              continue
+            endif
+
+            assign hover_media = media
+            break
+          endfor
+        endif
+      endif
+
       # Don't overfetch media if we don't need to
       assign max_visible_slide_count = 1
       if settings.product_card_carousel
         assign max_visible_slide_count = 5
-      elsif settings.show_second_image_on_hover
-        assign max_visible_slide_count = 2
       endif
 
       capture slides
@@ -215,6 +253,17 @@
         attributes: slideshow_attributes
       %}
     </a>
+    {% if hover_media != blank and enable_second_image_hover %}
+      {% liquid
+        assign hover_media_class = 'product-media-container media-fit product-media-container--[media_type]' | replace: '[media_type]', hover_media.media_type
+        if constrain_to_viewport
+          assign hover_media_class = hover_media_class | append: ' constrain-height'
+        endif
+      %}
+      <div class="card-gallery__hover-media {{ hover_media_class }}" aria-hidden="true">
+        {% render 'product-media', media: hover_media, sizes: image_sizes, loading: 'lazy', preview_image_only: true %}
+      </div>
+    {% endif %}
   {% elsif product != blank and product.media.size == 0 %}
     <product-title class="product-card-gallery__title-placeholder">
       <a
@@ -331,6 +380,36 @@
   .card-gallery__placeholder svg {
     height: 100%;
     width: 100%;
+  }
+
+  .card-gallery--hover-secondary {
+    position: relative;
+  }
+
+  .card-gallery__hover-media {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: scale(1.03);
+    transition: opacity 0.35s ease, transform 0.45s ease, visibility 0s linear 0.35s;
+  }
+
+  .card-gallery__hover-media .product-media,
+  .card-gallery__hover-media .product-media__image {
+    width: 100%;
+    height: 100%;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .card-gallery--hover-secondary:hover .card-gallery__hover-media {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1);
+      transition: opacity 0.35s ease, transform 0.45s ease;
+    }
   }
 
   .card-gallery svg {

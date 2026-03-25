@@ -108,8 +108,13 @@
   .tooto-custom-size-steps__flex {
     display: flex;
     gap: 24px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
-
+  .tooto-custom-size-steps__flex::-webkit-scrollbar {
+    display: none !important;
+    scrollbar-width: 0;
+  }
   .tooto-custom-size-steps__card {
     display: flex;
     flex-direction: column;

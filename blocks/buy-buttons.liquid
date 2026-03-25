@@ -267,12 +267,14 @@
 
     {%- if is_product_page -%}
       <div class="buy-buttons-block__secondary-actions">
-        <a
-          href="{{ customize_page_url }}"
-          class="button-secondary buy-buttons-block__secondary-button buy-buttons-block__customize-link"
-        >
-          Customize
-        </a>
+        {%- if block_settings.show_customize_button != false -%}
+          <a
+            href="{{ customize_page_url }}"
+            class="button-secondary buy-buttons-block__secondary-button buy-buttons-block__customize-link"
+          >
+            Customize
+          </a>
+        {%- endif -%}
 
         <button
           type="button"
@@ -604,8 +606,7 @@
   }
 
   .buy-buttons-block--product-page .buy-buttons-block__secondary-actions {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    display: flex;
     gap: var(--gap-sm);
     flex: 1 0 100%;
     width: 100%;
@@ -879,6 +880,12 @@
       "type": "page",
       "id": "customize_page",
       "label": "Customize page"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_customize_button",
+      "label": "Show Customize button",
+      "default": true
     },
     {
       "type": "product",
