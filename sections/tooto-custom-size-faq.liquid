@@ -1,6 +1,15 @@
 {%- liquid
   assign heading = section.settings.heading
   assign unique_id = section.id
+  assign faq_page = section.settings.faq_page
+
+  if faq_page != blank
+    assign faq_url = faq_page.url
+  elsif pages['faq'] != blank
+    assign faq_url = pages['faq'].url
+  else
+    assign faq_url = routes.root_url | append: 'pages/faq'
+  endif
 -%}
 
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
@@ -16,7 +25,7 @@
       {%- endif -%}
 
       {%- comment -%} Decorative Icon {%- endcomment -%}
-      <div class="tooto-custom-size-faq__decoration">
+      <div class="tooto-custom-size-faq__decoration{% if section.settings.decoration_icon == blank %} tooto-custom-size-faq__decoration--link{% endif %}">
         {%- if section.settings.decoration_icon != blank -%}
           {%- liquid
             assign icon_widths = '50, 70, 100'
@@ -33,10 +42,7 @@
               class: 'tooto-custom-size-faq__decoration-img'
           }}
         {%- else -%}
-          <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <circle cx="12" cy="12" r="11" fill="currentColor"/>
-            <path d="M12 4c4.41 0 8 3.59 8 8s-3.59 8-8 8-8-3.59-8-8 3.59-8 8-8zm0-2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm3 11h-2v2h-2v-2h-2v-2h2V9h2v2h2v2z" fill="white"/>
-          </svg>
+          <a href="{{ faq_url }}" class="tooto-custom-size-faq__decoration-link">See More</a>
         {%- endif -%}
       </div>
     </div>
@@ -140,6 +146,11 @@
     color: var(--color-foreground);
   }
 
+  .tooto-custom-size-faq__decoration--link {
+    width: auto;
+    height: auto;
+  }
+
   .tooto-custom-size-faq__decoration svg {
     width: 100%;
     height: 100%;
@@ -150,6 +161,26 @@
     height: 100%;
     object-fit: contain;
     display: block;
+  }
+
+  .tooto-custom-size-faq__decoration-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-foreground);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.2;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .tooto-custom-size-faq__decoration-link::after {
+    content: '→';
+  }
+
+  .tooto-custom-size-faq__decoration-link:hover {
+    opacity: 0.7;
   }
 
   .tooto-custom-size-faq__list {
@@ -272,6 +303,16 @@
       height: 30px;
     }
 
+    .tooto-custom-size-faq__decoration--link {
+      width: auto;
+      height: auto;
+    }
+
+    .tooto-custom-size-faq__decoration-link {
+      font-size: 13px;
+      gap: 6px;
+    }
+
     .tooto-custom-size-faq__question {
       font-size: 14px;
       line-height: 1.4;
@@ -336,7 +377,12 @@
     {
       "type": "image_picker",
       "id": "decoration_icon",
-      "label": "Decoration Icon (top right, overrides default SVG)"
+      "label": "Decoration Icon (top right)"
+    },
+    {
+      "type": "page",
+      "id": "faq_page",
+      "label": "FAQ Page"
     },
     {
       "type": "color_scheme",
