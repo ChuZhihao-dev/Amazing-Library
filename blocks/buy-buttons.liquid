@@ -78,6 +78,7 @@
     <product-form-component
       data-section-id="{{ section.id }}"
       data-product-id="{{ product.id }}"
+      data-product-title="{{ product.title | escape }}"
       data-product-url="{{ product.url }}"
       on:submit="/handleSubmit"
       data-quantity-default="{% if product.selected_or_first_available_variant.quantity_rule.min %}{{ product.selected_or_first_available_variant.quantity_rule.min }}{% else %}1{% endif %}"

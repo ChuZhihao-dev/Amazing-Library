@@ -3,7 +3,7 @@ const ROOT_SELECTOR = '.section, .product-information, featured-product-informat
 const INNER_WRAPPER_SELECTOR =
   '.section-content-wrapper, [class$="__inner"], .product-information__grid, .section-resource-list__content, .resource-list, .block-resource-list';
 const EXCLUDE_SELECTOR =
-  '.section-background, .custom-section-background, script, style, .sticky-add-to-cart, .menu-drawer, .menu-drawer__submenu, .mega-menu, .facets, .facets-block-wrapper, dialog, dialog-component, .background-overlay, .header__underlay, .collection-wrapper, .main-collection-grid, .product-grid, .product-grid__item';
+  '.section-background, .custom-section-background, script, style, .sticky-add-to-cart, .menu-drawer, .menu-drawer__submenu, .mega-menu, .facets, .facets-block-wrapper, dialog, dialog-component, .background-overlay, .header__underlay, .collection-wrapper, .main-collection-grid, .product-grid, .product-grid__item, .product-details';
 
 class AutoReveal {
   constructor() {

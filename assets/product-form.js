@@ -317,6 +317,150 @@ class ProductFormComponent extends Component {
     return Number(this.refs.quantitySelector?.getValue?.()) || Number(this.dataset.quantityDefault) || 1;
   }
 
+
+  /**
+   * Extracts line item properties from the current product form.
+   * @param {FormData} formData
+   * @returns {Record<string, string> | undefined}
+   */
+  #getMainItemProperties(formData) {
+    const properties = {};
+
+    for (const [key, value] of formData.entries()) {
+      if (typeof key !== 'string' || !key.startsWith('properties[') || !key.endsWith(']')) continue;
+      if (typeof value !== 'string' || value === '') continue;
+
+      const propertyName = key.slice(11, -1);
+      if (!propertyName) continue;
+
+      properties[propertyName] = value;
+    }
+
+    return Object.keys(properties).length ? properties : undefined;
+  }
+
+
+  #getCartSectionIds() {
+    const cartItemsComponents = document.querySelectorAll('cart-items-component');
+    const cartItemComponentsSectionIds = [];
+
+    cartItemsComponents.forEach((item) => {
+      if (item instanceof HTMLElement && item.dataset.sectionId) {
+        cartItemComponentsSectionIds.push(item.dataset.sectionId);
+      }
+    });
+
+    return cartItemComponentsSectionIds;
+  }
+
+  async #addSampleItem(selectedSampleItem, sections) {
+    const payload = {
+      items: [
+        {
+          id: Number(selectedSampleItem.variantId),
+          quantity: selectedSampleItem.quantity,
+          ...(selectedSampleItem.properties ? { properties: selectedSampleItem.properties } : {}),
+        },
+      ],
+      sections,
+    };
+
+    const response = await fetch(Theme.routes.cart_add_url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    return response.json();
+  }
+
+  async #processAddToCartWithSample(formData, selectedSampleItem, addToCartTextError) {
+    const cartSectionIds = this.#getCartSectionIds();
+    formData.delete('sections');
+    formData.append('sections', cartSectionIds.join(','));
+
+    const fetchCfg = fetchConfig('javascript', { body: formData });
+    const mainResponse = await fetch(Theme.routes.cart_add_url, {
+      ...fetchCfg,
+      headers: {
+        ...fetchCfg.headers,
+        Accept: 'text/html',
+      },
+    }).then((response) => response.json());
+
+    if (mainResponse.status) {
+      this.dispatchEvent(
+        new CartErrorEvent(
+          this.querySelector('form')?.getAttribute('id') || '',
+          mainResponse.message,
+          mainResponse.description,
+          mainResponse.errors
+        )
+      );
+
+      if (addToCartTextError) {
+        addToCartTextError.classList.remove('hidden');
+        const textNode = addToCartTextError.childNodes[2];
+        if (textNode) {
+          textNode.textContent = mainResponse.message;
+        } else {
+          addToCartTextError.appendChild(document.createTextNode(mainResponse.message));
+        }
+        this.#setLiveRegionText(mainResponse.message);
+
+        this.#timeout = setTimeout(() => {
+          addToCartTextError.classList.add('hidden');
+          this.#clearLiveRegionText();
+        }, ERROR_MESSAGE_DISPLAY_DURATION);
+      }
+
+      this.dispatchEvent(
+        new CartAddEvent({}, this.id, {
+          didError: true,
+          source: 'product-form-component',
+          itemCount: Number(formData.get('quantity')) || Number(this.dataset.quantityDefault),
+          productId: this.dataset.productId,
+        })
+      );
+      return;
+    }
+
+    const sampleResponse = await this.#addSampleItem(selectedSampleItem, cartSectionIds.join(','));
+
+    if (addToCartTextError) {
+      addToCartTextError.classList.add('hidden');
+      addToCartTextError.removeAttribute('aria-live');
+    }
+
+    const allAddToCartContainers = /** @type {NodeListOf<AddToCartComponent>} */ (
+      this.querySelectorAll('add-to-cart-component')
+    );
+    const anyAddToCartButton = allAddToCartContainers[0]?.refs.addToCartButton;
+    if (anyAddToCartButton) {
+      const addedTextElement = anyAddToCartButton.querySelector('.add-to-cart-text--added');
+      const addedText = addedTextElement?.textContent?.trim() || Theme.translations.added;
+      this.#setLiveRegionText(addedText);
+      setTimeout(() => this.#clearLiveRegionText(), SUCCESS_MESSAGE_DISPLAY_DURATION);
+    }
+
+    await this.#fetchAndUpdateCartQuantity();
+
+    const mainQuantity = Number(formData.get('quantity')) || Number(this.dataset.quantityDefault) || 1;
+    const sampleQuantity = sampleResponse.status ? 0 : selectedSampleItem.quantity;
+
+    this.dispatchEvent(
+      new CartAddEvent({}, this.id, {
+        source: 'product-form-component',
+        itemCount: mainQuantity + sampleQuantity,
+        productId: this.dataset.productId,
+        sections: sampleResponse.sections || mainResponse.sections,
+      })
+    );
+  }
+
   /**
    * @param {string} [overrideVariantId]
    * @param {number} [overrideQuantity]
@@ -391,17 +535,41 @@ class ProductFormComponent extends Component {
       formData.set('quantity', overrideQuantity.toString());
     }
 
+    const resolvedMainVariantId =
+      overrideVariantId || this.#getIntendedVariantId() || this.refs.variantId?.value || formData.get('id')?.toString();
+    if (resolvedMainVariantId) {
+      formData.set('id', resolvedMainVariantId.toString());
+    }
+
     const selectedSampleItem = overrideVariantId ? null : this.#getSelectedSampleItem();
+
+    console.log('[tooto debug] product form submit', {
+      productId: this.dataset.productId,
+      resolvedMainVariantId,
+      formVariantId: formData.get('id')?.toString() || null,
+      sampleVariantId: selectedSampleItem?.variantId || null,
+      sampleSelected: Boolean(selectedSampleItem),
+    });
     if (selectedSampleItem) {
-      const mainVariantId = formData.get('id');
+      const mainVariantId =
+        overrideVariantId || this.#getIntendedVariantId() || this.refs.variantId?.value || formData.get('id')?.toString();
       const mainQuantity = Number(formData.get('quantity')) || Number(this.dataset.quantityDefault) || 1;
+      const mainItemProperties = this.#getMainItemProperties(formData);
 
       if (!mainVariantId) throw new Error('Form ID is required');
 
-      this.#processBatchAddToCart([
-        { variantId: mainVariantId.toString(), quantity: mainQuantity },
-        selectedSampleItem,
-      ]);
+      formData.set('id', mainVariantId.toString());
+      formData.set('quantity', mainQuantity.toString());
+
+      if (mainItemProperties) {
+        for (const [propertyName, propertyValue] of Object.entries(mainItemProperties)) {
+          formData.set(`properties[${propertyName}]`, propertyValue);
+        }
+      }
+
+      this.#processAddToCartWithSample(formData, selectedSampleItem, addToCartTextError).catch((error) => {
+        console.error(error);
+      });
       return;
     }
 
@@ -621,9 +789,9 @@ class ProductFormComponent extends Component {
     const sampleVariantId = sampleButton.getAttribute('data-sample-variant-id');
     if (!sampleVariantId) return null;
 
-    const sourceProductId = buyButtonsBlock?.getAttribute('data-product-id') || '';
-    const sourceVariantId = this.refs.variantId?.value || '';
-    const sampleSourceTitle = sampleButton.getAttribute('data-sample-source-title') || '';
+    const sourceProductId = this.dataset.productId || buyButtonsBlock?.getAttribute('data-product-id') || '';
+    const sourceVariantId = this.#getIntendedVariantId() || this.refs.variantId?.value || '';
+    const sampleSourceTitle = this.dataset.productTitle || sampleButton.getAttribute('data-sample-source-title') || '';
     const properties = {};
 
     if (sampleSourceTitle) properties['Sample For'] = sampleSourceTitle;

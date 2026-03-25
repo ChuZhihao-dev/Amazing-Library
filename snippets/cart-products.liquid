@@ -122,11 +122,41 @@
 
           <tbody role="rowgroup">
             {% for item in cart.items %}
+              {%- liquid
+                assign linked_sample_parent = blank
+                assign linked_sample_source_product_id = item.properties['_source_product_id'] | append: ''
+                assign linked_sample_source_variant_id = item.properties['_source_variant_id'] | append: ''
+                assign is_linked_sample = false
+                assign parent_key = item.parent_relationship.parent.key
+                assign parent_title = item.parent_relationship.parent.title
+
+                if linked_sample_source_product_id != blank
+                  for candidate in cart.items
+                    assign candidate_source_product_id = candidate.properties['_source_product_id'] | append: ''
+                    assign candidate_product_id = candidate.product.id | append: ''
+                    assign candidate_variant_id = candidate.variant_id | append: ''
+
+                    if candidate.key == item.key or candidate_source_product_id != blank
+                      continue
+                    endif
+
+                    if candidate_product_id == linked_sample_source_product_id
+                      if linked_sample_source_variant_id == blank or candidate_variant_id == linked_sample_source_variant_id
+                        assign linked_sample_parent = candidate
+                        assign is_linked_sample = true
+                        assign parent_key = candidate.key
+                        assign parent_title = candidate.product.title
+                        break
+                      endif
+                    endif
+                  endfor
+                endif
+              -%}
               <tr
                 role="row"
-                class="cart-items__table-row{% if item.parent_relationship.parent != null %} cart-items__nested-line{% endif %}{% unless item.unit_price_measurement %} cart-items__table-row--full-width-variants{% endunless %}"
+                class="cart-items__table-row{% if item.parent_relationship.parent != null or is_linked_sample %} cart-items__nested-line{% endif %}{% if is_linked_sample %} cart-items__table-row--linked-sample{% endif %}{% unless item.unit_price_measurement %} cart-items__table-row--full-width-variants{% endunless %}"
                 ref="cartItemRows[]"
-                data-parent-key="{{ item.parent_relationship.parent.key }}"
+                data-parent-key="{{ parent_key }}"
                 data-key="{{ item.key }}"
               >
                 <td
@@ -170,13 +200,16 @@
                       <a
                         href="{{ item.url }}"
                         class="cart-items__title"
-                        {% if item.parent_relationship.parent != null %}
-                          aria-label="{{ 'accessibility.nested_product' | t: product_title: item.product.title, parent_title: item.parent_relationship.parent.title | escape }}"
+                        {% if item.parent_relationship.parent != null or is_linked_sample %}
+                          aria-label="{{ 'accessibility.nested_product' | t: product_title: item.product.title, parent_title: parent_title | escape }}"
                         {% endif %}
                       >
                         {{- item.product.title -}}
                       </a>
                     </p>
+                    {% if is_linked_sample and parent_title != blank %}
+                      <p class="cart-items__linked-reference">For {{ parent_title }}</p>
+                    {% endif %}
                     {% if item.product.vendor and block_settings.vendor %}
                       <p>
                         {{ item.product.vendor }}
@@ -220,6 +253,9 @@
                         assign has_visible_properties = false
                         for property in item.properties
                           assign property_first_char = property.first | slice: 0
+                          if is_linked_sample and property.first == 'Sample For'
+                            continue
+                          endif
                           if property.last != blank and property_first_char != '_'
                             assign has_visible_properties = true
                             break
@@ -230,6 +266,9 @@
                         <dl class="cart-items__properties">
                           {%- for property in item.properties -%}
                             {%- assign property_first_char = property.first | slice: 0 -%}
+                            {%- if is_linked_sample and property.first == 'Sample For' -%}
+                              {% continue %}
+                            {%- endif -%}
                             {%- if property.last != blank and property_first_char != '_' -%}
                               <div class="cart-items__property">
                                 <dt>{{ property.first }}:</dt>
@@ -552,6 +591,21 @@
     text-transform: var(--product-title-case);
     display: block;
     margin-block-start: calc((var(--font-size--md) - 1lh) / 2);
+  }
+
+  .cart-items__linked-reference {
+    margin-top: var(--margin-4xs);
+    font-size: var(--font-size--sm);
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+  }
+
+  .cart-items__table-row--linked-sample {
+    margin-top: calc(-1 * var(--margin-sm));
+  }
+
+  .cart-items__table-row--linked-sample .cart-items__media-container {
+    max-width: 5rem;
+    margin-left: auto;
   }
 
   .cart-items__variants {
