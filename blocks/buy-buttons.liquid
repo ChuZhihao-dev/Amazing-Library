@@ -17,6 +17,8 @@
 
   assign rug_sample_button_label = '+ Rug Sample $2'
   assign rug_sample_product = block_settings.rug_sample_product
+  assign rug_sample_quantity_in_cart = 0
+  assign source_product_id_string = product.id | append: ''
   if rug_sample_product != blank
     assign rug_sample_variant = rug_sample_product.selected_or_first_available_variant
 
@@ -25,6 +27,13 @@
         echo '+ Rug Sample '
         echo rug_sample_variant.price | money_without_trailing_zeros
       endcapture
+
+      for item in cart.items
+        assign item_source_product_id = item.properties['_source_product_id'] | append: ''
+        if item.variant_id == rug_sample_variant.id and item_source_product_id == source_product_id_string
+          assign rug_sample_quantity_in_cart = rug_sample_quantity_in_cart | plus: item.quantity
+        endif
+      endfor
     endif
   endif
 
@@ -103,13 +112,33 @@
             endif
           -%}
 
-          {%- if is_product_page -%}
+          {% capture quantity_block %}
+            {% content_for 'block', type: 'quantity', id: 'quantity' %}
+          {% endcapture %}
+
+          {% capture add_to_cart_block %}
+            {% content_for 'block',
+              type: 'add-to-cart',
+              id: 'add-to-cart',
+              can_add_to_cart: can_add_to_cart,
+              add_to_cart_text: add_to_cart_text
+            %}
+          {% endcapture %}
+
+          {%- assign quantity_block = quantity_block | strip -%}
+          {%- assign add_to_cart_block = add_to_cart_block | strip -%}
+          {%- assign show_quantity_controls = false -%}
+          {%- if add_to_cart_block != blank -%}
+            {%- assign show_quantity_controls = true -%}
+          {%- endif -%}
+
+          {%- if is_product_page and show_quantity_controls -%}
             <div class="buy-buttons-block__quantity-heading">
               {{ 'products.product.quantity' | t }}:
             </div>
           {%- endif -%}
 
-          {%- if has_quantity_rules -%}
+          {%- if has_quantity_rules and show_quantity_controls -%}
             {%- assign cart_quantity = cart | item_count_for_variant: variant.id -%}
             <div
               class="quantity-label"
@@ -125,9 +154,11 @@
             </div>
           {%- endif -%}
 
-          {% content_for 'block', type: 'quantity', id: 'quantity' %}
+          {% if show_quantity_controls %}
+            {{ quantity_block }}
+          {% endif %}
 
-          {%- if has_quantity_rules -%}
+          {%- if has_quantity_rules and show_quantity_controls -%}
             <div
               class="quantity-rules"
               ref="quantityRules"
@@ -247,12 +278,7 @@
             </span>
           {%- endunless -%}
 
-          {% content_for 'block',
-            type: 'add-to-cart',
-            id: 'add-to-cart',
-            can_add_to_cart: can_add_to_cart,
-            add_to_cart_text: add_to_cart_text
-          %}
+          {{ add_to_cart_block }}
 
           {% content_for 'block',
             type: 'accelerated-checkout',
@@ -278,10 +304,12 @@
 
         <button
           type="button"
-          class="button-secondary buy-buttons-block__secondary-button buy-buttons-block__sample-button"
+          class="button-secondary buy-buttons-block__secondary-button buy-buttons-block__sample-button{% if rug_sample_quantity_in_cart > 0 %} has-quantity{% endif %}"
           data-rug-sample-button="true"
           data-sample-variant-id="{% if rug_sample_variant != blank %}{{ rug_sample_variant.id }}{% endif %}"
           data-sample-source-title="{{ product.title | escape }}"
+          data-source-product-id="{{ product.id }}"
+          data-sample-quantity="{{ rug_sample_quantity_in_cart }}"
           data-selected="false"
           data-default-label="{{ rug_sample_button_label | strip | escape }}"
           data-selected-label="{{ rug_sample_button_label | strip | escape }} · Selected"
@@ -290,7 +318,7 @@
             disabled
           {% endif %}
         >
-          {{ rug_sample_button_label | strip }}
+          {{ rug_sample_button_label | strip }}{% if rug_sample_quantity_in_cart > 0 %} · {{ rug_sample_quantity_in_cart }} in cart{% endif %}
         </button>
       </div>
     {%- endif -%}
@@ -315,6 +343,47 @@
       if (document.documentElement.hasAttribute(initAttr)) return;
       document.documentElement.setAttribute(initAttr, 'true');
 
+      function updateButtonLabel(button) {
+        if (!(button instanceof HTMLElement)) return;
+
+        const isSelected = button.getAttribute('data-selected') === 'true';
+        const baseLabel = button.getAttribute(isSelected ? 'data-selected-label' : 'data-default-label') || '';
+        const quantity = Number(button.getAttribute('data-sample-quantity') || 0);
+        const quantitySuffix = quantity > 0 ? ' · ' + quantity + ' in cart' : '';
+
+        button.textContent = baseLabel + quantitySuffix;
+        button.classList.toggle('has-quantity', quantity > 0);
+      }
+
+      function getSampleQuantity(cart, button) {
+        const items = cart && Array.isArray(cart.items) ? cart.items : [];
+        const sampleVariantId = button.getAttribute('data-sample-variant-id') || '';
+        const sourceProductId = button.getAttribute('data-source-product-id') || '';
+
+        return items.reduce(function (sum, item) {
+          const itemVariantId = String(item.variant_id || '');
+          const itemSourceProductId = String((item.properties && item.properties._source_product_id) || '');
+
+          if (itemVariantId === sampleVariantId && itemSourceProductId === sourceProductId) {
+            return sum + Number(item.quantity || 0);
+          }
+
+          return sum;
+        }, 0);
+      }
+
+      function refreshButtons(cart) {
+        document.querySelectorAll('.buy-buttons-block--{{ block.id }} [data-rug-sample-button="true"]').forEach(function (button) {
+          const quantity = getSampleQuantity(cart, button);
+          button.setAttribute('data-sample-quantity', String(quantity));
+          updateButtonLabel(button);
+        });
+      }
+
+      document.querySelectorAll('.buy-buttons-block--{{ block.id }} [data-rug-sample-button="true"]').forEach(function (button) {
+        updateButtonLabel(button);
+      });
+
       document.addEventListener('click', function (event) {
         const button = event.target.closest('.buy-buttons-block--{{ block.id }} [data-rug-sample-button="true"]');
         if (!button) return;
@@ -326,15 +395,17 @@
 
         const isSelected = button.getAttribute('data-selected') === 'true';
         const nextSelected = !isSelected;
-        const nextLabel = button.getAttribute(nextSelected ? 'data-selected-label' : 'data-default-label');
 
         button.setAttribute('data-selected', nextSelected ? 'true' : 'false');
         button.setAttribute('aria-pressed', nextSelected ? 'true' : 'false');
         button.classList.toggle('is-selected', nextSelected);
+        updateButtonLabel(button);
+      });
 
-        if (nextLabel) {
-          button.textContent = nextLabel;
-        }
+      document.addEventListener('cart:update', function (event) {
+        const cart = event.detail && event.detail.resource;
+        if (!cart) return;
+        refreshButtons(cart);
       });
     })();
   </script>
