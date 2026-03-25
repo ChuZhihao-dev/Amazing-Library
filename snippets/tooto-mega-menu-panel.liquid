@@ -17,6 +17,10 @@
       assign root_panel_image = menu_settings.inspiration_panel_image
       assign root_panel_cta_link = menu_settings.inspiration_panel_image_link
       assign root_panel_image_link = menu_settings.inspiration_panel_image_link
+    when 'custom-size'
+      assign root_panel_image = menu_settings.custom_size_panel_image
+      assign root_panel_cta_link = menu_settings.custom_size_panel_image_link
+      assign root_panel_image_link = menu_settings.custom_size_panel_image_link
   endcase
 -%}
 

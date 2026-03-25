@@ -28,6 +28,10 @@
 - `Inspiration Image`
 - `Inspiration Image Link`
 
+### Custom Size Mega Menu
+- `Custom Size Image`
+- `Custom Size Image Link`
+
 ## 2. 菜单层级要求
 
 ### left-menu
@@ -47,12 +51,17 @@
   - `Campaign`
   - `Our Stories`
 
+### main-menu / right-menu
+- `Custom Size`
+  - 子项按你的菜单配置
+
 ## 3. 代码识别规则
 
-代码按菜单 handle 固定识别两个一级菜单：
+代码按菜单 handle 固定识别三个一级菜单：
 
 - `products`
 - `inspiration`
+- `custom-size`
 
 以及 Products 下两个二层分组：
 
@@ -67,6 +76,7 @@
 - `Shop By Material Image`：进入 `Shop By Material` 第二层后的右图
 - `Shop By Style Image`：进入 `Shop By Style` 第二层后的右图
 - `Inspiration Image`：Inspiration 第一层右图
+- `Custom Size Image`：Custom Size 第一层右图
 
 如果二层图片没配置，会自动回退使用该一级菜单的图片。
 如果一级图片也没配置，会显示 placeholder，不会白屏。
@@ -77,5 +87,6 @@
 - `Shop By Material Image Link`：点击 Material 第二层右图跳转
 - `Shop By Style Image Link`：点击 Style 第二层右图跳转
 - `Inspiration Image Link`：点击 Inspiration 右图跳转
+- `Custom Size Image Link`：点击 Custom Size 右图跳转
 
 如果图片链接留空，会回退到当前层级对应菜单链接。

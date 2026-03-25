@@ -82,7 +82,7 @@
       {% for link in block_settings.menu.links %}
         {% liquid
           assign use_custom_mega_menu = false
-          if link.handle == 'products' or link.handle == 'inspiration'
+          if link.handle == 'products' or link.handle == 'inspiration' or link.handle == 'custom-size'
             assign use_custom_mega_menu = true
           endif
         %}
@@ -1077,6 +1077,20 @@
       "type": "url",
       "id": "inspiration_panel_image_link",
       "label": "Inspiration Image Link"
+    },
+    {
+      "type": "header",
+      "content": "Custom Size Mega Menu"
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_size_panel_image",
+      "label": "Custom Size Image"
+    },
+    {
+      "type": "url",
+      "id": "custom_size_panel_image_link",
+      "label": "Custom Size Image Link"
     },
     {
       "type": "header",
