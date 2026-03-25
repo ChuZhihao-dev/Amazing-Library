@@ -97,7 +97,7 @@
             "title": "Made To Measure",
             "description": "Custom rugs precisely made to fit your space dimensions for home and commercial use.",
             "button_label": "Customize Now",
-            "button_link": "shopify://collections/custom-size",
+            "button_link": "/collections/all?sort_by=title-ascending&filter.p.tag=Made-to-measure&filter.p.tag=wall-to-wall",
             "button_style": "outline"
           }
         },
