@@ -10,6 +10,9 @@
   assign address_value = section.settings.contact_address
   assign copyright_text = section.settings.copyright_text
   assign section_width = section.settings.section_width | default: 'page-width'
+  assign subscribe_form_id = 'tooto-footer-subscribe-form-' | append: section.id
+  assign subscribe_input_id = 'tooto-footer-subscribe-email-' | append: section.id
+  assign subscribe_return_to = request.path | append: '#' | append: subscribe_form_id
 -%}
 
 <div class="tooto-footer-main section section--{{ section_width }} color-{{ section.settings.color_scheme }}">
@@ -44,21 +47,59 @@
 
         {%- comment -%} Email Subscribe Form {%- endcomment -%}
         <div class="tooto-footer-main__subscribe">
-          {%- form 'customer', id: 'tooto-footer-subscribe-form', class: 'tooto-footer-main__subscribe-form' -%}
+          {%- form 'customer', id: subscribe_form_id, class: 'tooto-footer-main__subscribe-form' -%}
             <input type="hidden" name="contact[tags]" value="newsletter">
-            <div class="tooto-footer-main__subscribe-row">
+            <input type="hidden" name="contact[id]" value="{{ subscribe_form_id }}">
+            <input type="hidden" name="return_to" value="{{ subscribe_return_to }}">
+            <div class="tooto-footer-main__subscribe-row{% if form.errors and form.id == subscribe_form_id %} is-error{% endif %}">
+              <label class="visually-hidden" for="{{ subscribe_input_id }}">
+                {{ section.settings.subscribe_placeholder | default: 'Email Address' }}
+              </label>
               <input
+                id="{{ subscribe_input_id }}"
                 type="email"
                 name="contact[email]"
                 class="tooto-footer-main__subscribe-input"
                 placeholder="{{ section.settings.subscribe_placeholder | default: 'Email Address' }}"
                 aria-label="{{ section.settings.subscribe_placeholder | default: 'Email Address' }}"
+                autocomplete="email"
+                autocapitalize="off"
+                spellcheck="false"
+                value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                {% if form.errors and form.id == subscribe_form_id %}
+                  aria-invalid="true"
+                  aria-describedby="{{ subscribe_form_id }}-error"
+                {% elsif form.posted_successfully? and form.id == subscribe_form_id %}
+                  aria-describedby="{{ subscribe_form_id }}-success"
+                {% endif %}
                 required
               >
               <button type="submit" class="tooto-footer-main__subscribe-btn">
                 {{ section.settings.subscribe_label | default: 'SUBSCRIBE' }}
               </button>
             </div>
+
+            {%- if form.errors and form.id == subscribe_form_id -%}
+              <div
+                id="{{ subscribe_form_id }}-error"
+                class="tooto-footer-main__subscribe-feedback tooto-footer-main__subscribe-feedback--error"
+                data-subscribe-feedback
+                tabindex="-1"
+                role="alert"
+              >
+                {{- form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email -}}
+              </div>
+            {%- elsif form.posted_successfully? and form.id == subscribe_form_id -%}
+              <div
+                id="{{ subscribe_form_id }}-success"
+                class="tooto-footer-main__subscribe-feedback tooto-footer-main__subscribe-feedback--success"
+                data-subscribe-feedback
+                tabindex="-1"
+                role="status"
+              >
+                {{- 'blocks.email_signup.success' | t -}}
+              </div>
+            {%- endif -%}
           {%- endform -%}
         </div>
 
@@ -188,6 +229,25 @@
   </div>
 </div>
 
+<script>
+  (function () {
+    const formEl = document.getElementById('{{ subscribe_form_id }}');
+    if (!formEl) return;
+    if (window.location.hash !== '#{{ subscribe_form_id }}') return;
+
+    const feedbackEl = formEl.querySelector('[data-subscribe-feedback]');
+    if (!(feedbackEl instanceof HTMLElement)) return;
+
+    requestAnimationFrame(function () {
+      try {
+        feedbackEl.focus();
+      } catch (error) {
+        console.warn('Footer subscribe feedback focus failed', error);
+      }
+    });
+  })();
+</script>
+
 {% stylesheet %}
   /* ===== WRAPPER ===== */
   .tooto-footer-main {
@@ -250,13 +310,25 @@
 
   .tooto-footer-main__subscribe-form {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
 
   .tooto-footer-main__subscribe-row {
     display: flex;
     align-items: stretch;
-    border: 1px solid rgba(209,209,209,0.6);
+    border: 1px solid rgba(var(--color-border-rgb), 0.6);
     overflow: hidden;
+    transition: border-color 0.2s ease;
+  }
+
+  .tooto-footer-main__subscribe-row:focus-within {
+    border-color: var(--color-foreground);
+  }
+
+  .tooto-footer-main__subscribe-row.is-error {
+    border-color: var(--color-foreground);
   }
 
   .tooto-footer-main__subscribe-input {
@@ -273,6 +345,21 @@
 
   .tooto-footer-main__subscribe-input::placeholder {
     color: var(--color-foreground);
+  }
+
+  .tooto-footer-main__subscribe-feedback {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--color-foreground);
+    opacity: 0.78;
+  }
+
+  .tooto-footer-main__subscribe-feedback--success {
+    opacity: 1;
+  }
+
+  .tooto-footer-main__subscribe-feedback--error {
+    opacity: 1;
   }
 
   .tooto-footer-main__subscribe-btn {
