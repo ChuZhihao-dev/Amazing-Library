@@ -180,7 +180,7 @@
         "link_url": "shopify://pages/city-of-gems",
         "overlay_opacity": 0,
         "section_height": 90,
-        "section_height_mobile": 75,
+        "section_height_mobile": 70,
         "section_width": "full-width",
         "color_scheme": "scheme-1",
         "padding-block-start": 0,
