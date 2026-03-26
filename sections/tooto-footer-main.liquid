@@ -84,22 +84,27 @@
                 id="{{ subscribe_form_id }}-error"
                 class="tooto-footer-main__subscribe-feedback tooto-footer-main__subscribe-feedback--error"
                 data-subscribe-feedback
+                data-subscribe-error-message
                 tabindex="-1"
                 role="alert"
               >
                 {{- form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email -}}
               </div>
-            {%- elsif form.posted_successfully? and form.id == subscribe_form_id -%}
-              <div
-                id="{{ subscribe_form_id }}-success"
-                class="tooto-footer-main__subscribe-feedback tooto-footer-main__subscribe-feedback--success"
-                data-subscribe-feedback
-                tabindex="-1"
-                role="status"
-              >
-                {{- 'blocks.email_signup.success' | t -}}
-              </div>
             {%- endif -%}
+
+            <div
+              id="{{ subscribe_form_id }}-success"
+              class="tooto-footer-main__subscribe-feedback tooto-footer-main__subscribe-feedback--success{% unless form.posted_successfully? and form.id == subscribe_form_id %} tooto-footer-main__subscribe-feedback--hidden{% endunless %}"
+              data-subscribe-feedback
+              data-subscribe-success-message
+              tabindex="-1"
+              {% unless form.posted_successfully? and form.id == subscribe_form_id %}
+                hidden
+              {% endunless %}
+              role="status"
+            >
+              {{- 'blocks.email_signup.success' | t -}}
+            </div>
           {%- endform -%}
         </div>
 
@@ -232,17 +237,46 @@
 <script>
   (function () {
     const formEl = document.getElementById('{{ subscribe_form_id }}');
-    if (!formEl) return;
-    if (window.location.hash !== '#{{ subscribe_form_id }}') return;
+    if (!(formEl instanceof HTMLFormElement)) return;
 
-    const feedbackEl = formEl.querySelector('[data-subscribe-feedback]');
-    if (!(feedbackEl instanceof HTMLElement)) return;
+    const storageKey = 'footer-subscribe-pending-{{ section.id }}';
+    const successEl = formEl.querySelector('[data-subscribe-success-message]');
+    const errorEl = formEl.querySelector('[data-subscribe-error-message]');
+    const url = new URL(window.location.href);
+    const hashMatches = window.location.hash === '#{{ subscribe_form_id }}';
+    const queryIndicatesSuccess = url.searchParams.get('customer_posted') === 'true';
+    const hasPendingSubmit = window.sessionStorage.getItem(storageKey) === 'true';
+
+    formEl.addEventListener('submit', function () {
+      window.sessionStorage.setItem(storageKey, 'true');
+    });
+
+    if (!hashMatches) return;
+
+    if (errorEl instanceof HTMLElement) {
+      window.sessionStorage.removeItem(storageKey);
+      requestAnimationFrame(function () {
+        try {
+          errorEl.focus();
+        } catch (error) {
+          console.warn('Footer subscribe error focus failed', error);
+        }
+      });
+      return;
+    }
+
+    const shouldShowSuccess = queryIndicatesSuccess || hasPendingSubmit;
+    if (!(successEl instanceof HTMLElement) || !shouldShowSuccess) return;
+
+    successEl.hidden = false;
+    successEl.classList.remove('tooto-footer-main__subscribe-feedback--hidden');
+    window.sessionStorage.removeItem(storageKey);
 
     requestAnimationFrame(function () {
       try {
-        feedbackEl.focus();
+        successEl.focus();
       } catch (error) {
-        console.warn('Footer subscribe feedback focus failed', error);
+        console.warn('Footer subscribe success focus failed', error);
       }
     });
   })();
@@ -352,6 +386,10 @@
     line-height: 1.5;
     color: var(--color-foreground);
     opacity: 0.78;
+  }
+
+  .tooto-footer-main__subscribe-feedback--hidden {
+    display: none;
   }
 
   .tooto-footer-main__subscribe-feedback--success {
