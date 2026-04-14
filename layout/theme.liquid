@@ -37,7 +37,13 @@
 
     {%- comment -%} Swiper.js — 本地版本（全局加载一次，供所有 tooto- section 使用） {%- endcomment -%}
     {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
-    <script src="{{ 'swiper-bundle.min.js' | asset_url }}" ></script>
+    <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>
+    
+    {%- comment -%} Choices.js — 用于增强 select 组件 {%- endcomment -%}
+    {{ 'choices.min.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'choices.min.js' | asset_url }}" defer></script>
+    <script src="{{ 'tooto-selects.js' | asset_url }}" defer></script>
+    
     {{ 'custom.css' | asset_url | stylesheet_tag }}
     {{ content_for_header }}
   </head>
