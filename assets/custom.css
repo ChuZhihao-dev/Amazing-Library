@@ -429,3 +429,38 @@ details.details[open] .details__header {
     display: none;
   }
 }
+
+.avpoptions-container__v2 .avp-option .apo-title {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.avpoptions-container__v2 .avp-option div.ap-label-tooltip {
+  margin-bottom: 12px;
+}
+
+.avpoptions-container__v2 .avp-option.ap-options__swatch-container.edging-box .ap-options__swatch.ap-options__swatch-image {
+  display: flex;
+}
+.avpoptions-container__v2 .avp-option.ap-options__swatch-container.edging-box .ap-options__swatch.ap-options__swatch-image :has(input[field-name]:checked) {
+  border-color: #000000;
+}
+.avpoptions-container__v2 .avp-option.ap-options__swatch-container.edging-box .ap-options__swatch.ap-options__swatch-image .avp-productoptionswatch::before {
+  content: "";
+  display: none;
+}
+.avpoptions-container__v2 .avp-option.ap-options__swatch-container.edging-box label.avp-productoptionswatchwrapper {
+  flex-direction: column;
+  border: 1px solid #D8D8D8;
+  padding: 6px;
+}
+.avpoptions-container__v2 .avp-option.ap-options__swatch-container.edging-box label.avp-productoptionswatchwrapper .avp-productoptionswatch {
+  width: 80px;
+  height: 80px;
+  border-radius: 0;
+  border: none;
+}
+.avpoptions-container__v2 .avp-option.ap-options__swatch-container.edging-box label.avp-productoptionswatchwrapper .swatch-variant-title {
+  max-width: 80px;
+  text-align: center;
+}
