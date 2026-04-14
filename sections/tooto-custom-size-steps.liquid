@@ -3,7 +3,8 @@
 -%}
 
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
-<div
+<div 
+  id="tooto-custom-size-steps-{{ section.id }}"
   class="section section--page-width color-{{ section.settings.color_scheme }}"
   style="padding-block-start: {{ section.settings.padding-block-start }}px; padding-block-end: {{ section.settings.padding-block-end }}px;"
 >
@@ -84,8 +85,82 @@
       {%- endfor -%}
     </div>
 
+    {%- comment -%} Swipe hint for mobile {%- endcomment -%}
+    <div class="tooto-custom-size-steps__swipe-hint" id="swipe-hint-{{ section.id }}">
+      <div class="tooto-custom-size-steps__swipe-arrow">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </div>
+    </div>
+
   </div>
 </div>
+
+<script>
+(function() {
+  document.addEventListener('DOMContentLoaded', function() {
+    // Only run on mobile
+    if (window.innerWidth > 749) return;
+    
+    const sectionEl = document.getElementById('tooto-custom-size-steps-{{ section.id }}');
+    if (!sectionEl) {
+      console.log('Section element not found: tooto-custom-size-steps-{{ section.id }}');
+      return;
+    }
+    
+    const swipeHintEl = document.getElementById('swipe-hint-{{ section.id }}');
+    const flexEl = sectionEl.querySelector('.tooto-custom-size-steps__flex');
+    
+    if (!flexEl || !swipeHintEl) {
+      console.log('Required elements not found', { flexEl: !!flexEl, swipeHintEl: !!swipeHintEl });
+      return;
+    }
+    
+    function checkScrollPosition() {
+      // 更宽松的边界判断：当剩余可滚动距离小于 100px 时开始隐藏
+      const remainingScroll = flexEl.scrollWidth - (flexEl.scrollLeft + flexEl.clientWidth);
+      const shouldHide = remainingScroll < 100;
+      
+      if (shouldHide) {
+        // 根据剩余距离计算透明度，实现渐变消失
+        const opacity = Math.max(0, remainingScroll / 100);
+        swipeHintEl.style.opacity = opacity;
+        
+        // 完全隐藏时禁用交互
+        if (opacity === 0) {
+          swipeHintEl.style.pointerEvents = 'none';
+        } else {
+          swipeHintEl.style.pointerEvents = 'auto';
+        }
+      } else {
+        // 完全显示
+        swipeHintEl.style.opacity = '1';
+        swipeHintEl.style.pointerEvents = 'auto';
+      }
+    }
+    
+    // Check on scroll
+    flexEl.addEventListener('scroll', checkScrollPosition);
+    
+    // Check on resize
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function() {
+        if (window.innerWidth <= 749) {
+          checkScrollPosition();
+        } else {
+          swipeHintEl.classList.add('hidden');
+        }
+      }, 150);
+    });
+    
+    // Initial check
+    setTimeout(checkScrollPosition, 100);
+  });
+})();
+</script>
 
 {% stylesheet %}
   .tooto-custom-size-steps__inner {
@@ -191,6 +266,9 @@
   @media screen and (max-width: 749px) {
     .tooto-custom-size-steps__flex  {
       overflow-x: scroll;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      gap: 12px;
     }
     .tooto-custom-size-steps__inner {
       gap: 24px;
@@ -204,9 +282,22 @@
     .tooto-custom-size-steps__card {
       padding: 0;
       flex-shrink: 0;
-      max-width: 40%;
+      max-width: 50%;
       justify-content: center;
       padding: 10px;
+      scroll-snap-align: start;
+      position: relative;
+    }
+    .tooto-custom-size-steps__card:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: -20px;
+      top: 0;
+      bottom: 0;
+      width: 20px;
+      background: linear-gradient(to right, transparent, rgba(var(--color-background-rgb), 0.9));
+      pointer-events: none;
+      z-index: 1;
     }
     .tooto-custom-size-steps__heading {
       font-size: 28px;
@@ -229,6 +320,56 @@
     .tooto-custom-size-steps__card-description {
       font-size: 13px;
       line-height: 17px;
+    }
+    .tooto-custom-size-steps__swipe-hint {
+      position: absolute;
+      top: 30%;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin-top: 16px;
+      padding-right: 20px;
+      height: 40px;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .tooto-custom-size-steps__swipe-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background-color: rgba(var(--color-foreground-rgb), 0.1);
+      border-radius: 50%;
+      color: var(--color-foreground);
+      animation: swipeHintPulse 2s ease-in-out infinite;
+    }
+    .tooto-custom-size-steps__swipe-arrow svg {
+      animation: swipeArrowMotion 2s ease-in-out infinite;
+    }
+    @keyframes swipeHintPulse {
+      0%, 100% { 
+        opacity: 0.6;
+        transform: scale(1);
+      }
+      50% { 
+        opacity: 1;
+        transform: scale(1.05);
+      }
+    }
+    @keyframes swipeArrowMotion {
+      0%, 100% { 
+        transform: translateX(0);
+        opacity: 0.7;
+      }
+      25% {
+        transform: translateX(2px);
+        opacity: 1;
+      }
+      75% {
+        transform: translateX(-2px);
+        opacity: 1;
+      }
     }
     .tooto-custom-size-steps-wrapper > .section {
       padding-bottom: 48px !important;
