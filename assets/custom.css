@@ -528,6 +528,7 @@ details.details[open] .details__header {
 .choices.tooto-select .choices__item--selectable {
   color: var(--color-foreground);
   font-weight: 500;
+  line-height: 1.4;
 }
 .choices.tooto-select .choices__placeholder {
   color: rgba(var(--color-foreground-rgb), 0.5);
