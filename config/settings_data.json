@@ -84,10 +84,10 @@
       "password-footer": {
         "type": "password-footer",
         "custom_css": [
-          ".password-footer {padding-bottom: 80px;}"
+          ".password-footer {padding-top: 20px; padding-bottom: 40px;}"
         ],
         "settings": {
-          "color_scheme": "scheme-3"
+          "color_scheme": "scheme-5"
         }
       }
     },
