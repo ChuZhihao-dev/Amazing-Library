@@ -83,8 +83,11 @@
     "sections": {
       "password-footer": {
         "type": "password-footer",
+        "custom_css": [
+          ".password-footer {padding-bottom: 80px;}"
+        ],
         "settings": {
-          "color_scheme": "scheme-5"
+          "color_scheme": "scheme-3"
         }
       }
     },
