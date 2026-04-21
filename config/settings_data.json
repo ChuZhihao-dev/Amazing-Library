@@ -80,6 +80,17 @@
     "variant_button_border_width": 1,
     "variant_button_radius": 0,
     "variant_button_width": "equal-width-buttons",
+    "sections": {
+      "password-footer": {
+        "type": "password-footer",
+        "custom_css": [
+          ".password-footer {padding-top: 20px; padding-bottom: 40px;}"
+        ],
+        "settings": {
+          "color_scheme": "scheme-5"
+        }
+      }
+    },
     "content_for_index": [],
     "blocks": {
       "1656560654682496077": {
@@ -90,11 +101,6 @@
       "7916451724185839711": {
         "type": "shopify://apps/avis-product-options/blocks/avisplus-product-options/e076618e-4c9c-447f-ad6d-4f1577799c29",
         "disabled": false,
-        "settings": {}
-      },
-      "3720565183479497137": {
-        "type": "shopify://apps/globo-product-options/blocks/app-embed-block/fdc9fad5-1a0f-4bd4-9c8a-1af6a6eef6b8",
-        "disabled": true,
         "settings": {}
       }
     },
