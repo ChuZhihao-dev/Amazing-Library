@@ -76,7 +76,7 @@
 </div>
 
 <script>
-(function () {
+document.addEventListener('DOMContentLoaded', function () {
   const sectionEl = document.getElementById('tooto-hero-swiper-{{ section.id }}');
   if (!sectionEl) return;
 
@@ -156,7 +156,7 @@
     }
   });
 
-})();
+});
 </script>
 
 {% stylesheet %}

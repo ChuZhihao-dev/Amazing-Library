@@ -92,7 +92,7 @@
 </div>
 
 <script>
-  (function () {
+  document.addEventListener('DOMContentLoaded', function () {
     const sectionEl = document.getElementById('tooto-fashion-trends-{{ section.id }}');
     if (!sectionEl) return;
 
@@ -124,7 +124,7 @@
         },
       },
     });
-  })();
+  });
 </script>
 
 {% stylesheet %}

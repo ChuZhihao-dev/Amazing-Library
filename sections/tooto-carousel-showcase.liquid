@@ -148,7 +148,7 @@
 {% endstylesheet %}
 
 <script>
-  (function () {
+  document.addEventListener('DOMContentLoaded', function () {
     const sectionEl = document.getElementById('tooto-carousel-showcase-{{ section.id }}');
     if (!sectionEl) return;
 
@@ -176,7 +176,7 @@
         }
       }
     });
-  })();
+  });
 </script>
 
 {% schema %}

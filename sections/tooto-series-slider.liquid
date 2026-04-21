@@ -77,7 +77,7 @@
 </div>
 
 <script>
-  (function () {
+  document.addEventListener('DOMContentLoaded', function () {
     const sectionEl = document.getElementById('tooto-series-slider-{{ section.id }}');
     if (!sectionEl) return;
 
@@ -141,7 +141,7 @@
         },
       },
     });
-  })();
+  });
 </script>
 
 {% stylesheet %}

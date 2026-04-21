@@ -129,7 +129,7 @@
 </div>
 
 <script>
-  (function () {
+  document.addEventListener('DOMContentLoaded', function () {
     const sectionEl = document.getElementById('tooto-product-showcase-{{ section.id }}');
     if (!sectionEl) return;
 
@@ -178,7 +178,7 @@
         swatch.classList.toggle('tooto-product-showcase__swatch--active', i === activeIndex);
       });
     }
-  })();
+  });
 </script>
 
 {% stylesheet %}
