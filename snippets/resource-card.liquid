@@ -25,22 +25,8 @@
     assign single_thumbnail_collection = true
   endif
 
-  if resource_type == 'product' and settings.transition_to_main_product
-    assign featured_media_url = resource.selected_or_first_available_variant.featured_image | image_url: width: image_width
-    if featured_media_url == blank
-      assign featured_media_url = resource.featured_media.preview_image | image_url: width: image_width
-    endif
-  endif
 %}
 
-{%- if resource_type == 'product' and settings.transition_to_main_product -%}
-  <product-card-link
-    data-product-id="{{ resource.id }}"
-    data-featured-media-url="{{ featured_media_url }}"
-    data-product-transition="true"
-    on:click="/handleViewTransition"
-  >
-{%- endif -%}
 <div
   class="resource-card{% if style == 'overlay' %} resource-card--overlay{% endif %}"
   data-resource-type="{{ resource_type }}"
@@ -56,10 +42,6 @@
   <div
     class="resource-card__media"
     style="--resource-card-aspect-ratio: {{ ratio }};"
-    {% if resource_type == 'product' and settings.transition_to_main_product %}
-      ref="cardGallery"
-      data-view-transition-to-main-product
-    {% endif %}
   >
     {%- if resource_type == 'product' or single_thumbnail_collection -%}
       {% comment %}
@@ -76,12 +58,6 @@
         endif
       %}
       {%- if featured_image != blank -%}
-        {% liquid
-          assign ref_image_to_transition = ''
-          if settings.transition_to_main_product
-            assign ref_image_to_transition = 'imagesToTransition[]'
-          endif
-        %}
         {{
           featured_image
           | image_url: width: image_width
@@ -90,7 +66,6 @@
             class: 'resource-card__image',
             widths: widths,
             sizes: image_sizes,
-            ref: ref_image_to_transition,
             data-media-id: featured_image.id,
             style: primary_focal_point_style
         }}
@@ -109,7 +84,6 @@
               class: 'resource-card__image resource-card__image--secondary',
               widths: widths,
               sizes: image_sizes,
-              ref: ref_image_to_transition,
               data-media-id: resource.media[1].id,
               style: secondary_focal_point_style
           }}
@@ -156,9 +130,6 @@
     {% endif %}
   </div>
 </div>
-{%- if resource_type == 'product' and settings.transition_to_main_product -%}
-  </product-card-link>
-{%- endif -%}
 
 {% stylesheet %}
   .resource-card {

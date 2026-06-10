@@ -12,13 +12,6 @@
     assign product = closest.product
   endif
 
-  if settings.transition_to_main_product
-    assign featured_media_url = product.selected_or_first_available_variant.featured_image | image_url: width: 500
-    if featured_media_url == blank
-      assign featured_media_url = product.featured_media.preview_image | image_url: width: 500
-    endif
-  endif
-
   assign url = product.selected_or_first_available_variant.url
   unless url
     assign url = product.first_available_variant.url
@@ -32,13 +25,6 @@
 
 <product-card
   data-product-id="{{ product.id }}"
-  {% if settings.transition_to_main_product %}
-    data-product-transition="true"
-    {% if featured_media_url != blank %}
-      data-featured-media-url="{{ featured_media_url }}"
-    {% endif %}
-    on:click="/handleViewTransition"
-  {% endif %}
 >
   <a
     href="{{ url }}"

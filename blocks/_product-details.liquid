@@ -10,9 +10,6 @@
   "
   style="--details-position: {{ block_settings.details_position }};"
   data-testid="product-information-details"
-  {% if settings.transition_to_main_product %}
-    data-view-transition-type="product-details"
-  {% endif %}
 >
   {% capture children %}
     <div class="view-product-title">

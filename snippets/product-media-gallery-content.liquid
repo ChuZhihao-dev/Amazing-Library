@@ -547,9 +547,9 @@
           {% endcapture %}
         {% endif %}
         {% if block_settings.zoom and media.media_type == 'model' %}
-          {%- capture attributes -%}"{% if settings.transition_to_main_product and forloop.first %} data-view-transition-type="product-image-transition"{% endif %}{% endcapture -%}
+          {%- capture attributes -%}"{% endcapture -%}
         {% elsif block_settings.zoom %}
-          {%- capture attributes -%}on:click="#zoom-dialog-{{ block_id }}/open/{{ forloop.index0 }}"{% if settings.transition_to_main_product and forloop.first %} data-view-transition-type="product-image-transition"{% endif %}{% endcapture -%}
+          {%- capture attributes -%}on:click="#zoom-dialog-{{ block_id }}/open/{{ forloop.index0 }}"{% endcapture -%}
         {% endif %}
 
         {% render 'slideshow-slide',
@@ -619,9 +619,6 @@
             ref="media[]"
             class="{{ product_media_container_class }} product-media-container--{{ media.media_type }}"
             style="{% if block_settings.aspect_ratio == 'adapt' %} --media-preview-ratio: {{ media.preview_image.aspect_ratio | default: 1.0 }};{% endif %}"
-            {% if settings.transition_to_main_product and forloop.first %}
-              data-view-transition-type="product-image-transition"
-            {% endif %}
             {% if media.presentation.focal_point != blank %}
               data-focal-point="{{ media.presentation.focal_point }}"
             {% endif %}
