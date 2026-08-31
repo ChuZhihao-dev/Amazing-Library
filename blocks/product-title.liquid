@@ -13,7 +13,7 @@
 {% if closest.product == blank %}
   {% assign text = 'placeholders.product_title' | t %}
   {% assign product_title = '<p>' | append: text | append: '</p>' %}
-  {% render 'text', fallback_text: product_title, block: block, class: 'product-title-mobile-size--' | append: block.id %}
+  {% render 'text', fallback_text: product_title, block: block, class: 'product-title-mobile-size--', append: block.id %}
 {% else %}
   {% assign product_title = '<p>' | append: closest.product.title | append: '</p>' %}
   <a
@@ -21,7 +21,7 @@
     ref="productTitleLink"
     href="{{ closest.product.selected_or_first_available_variant.url }}"
   >
-    {% render 'text', fallback_text: product_title, block: block, class: 'product-title-mobile-size--' | append: block.id %}
+    {% render 'text', fallback_text: product_title, block: block, class: 'product-title-mobile-size--', append: block.id %}
   </a>
 {% endif %}
 
@@ -448,3 +448,20 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'text', fallback_text: product_title, block: block, class: 'product-title-mobile-size--'
+    | append: block.id %}"
+  to: "{% render 'text', fallback_text: product_title, block: block, class: 'product-title-mobile-size--',
+    append: block.id %}"
+  position: 446..565
+- from: "{% render 'text', fallback_text: product_title, block: block, class: 'product-title-mobile-size--'
+    | append: block.id %}"
+  to: "{% render 'text', fallback_text: product_title, block: block, class: 'product-title-mobile-size--',
+    append: block.id %}"
+  position: 814..933
+{% endcomment %}
